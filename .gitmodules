@@ -1,0 +1,6 @@
+[submodule "DocSort-Frontend"]
+	path = DocSort-Frontend
+	url = https://github.com/ch-a-os/DocSort-Frontend
+[submodule "DocSort-Backend"]
+	path = DocSort-Backend
+	url = https://github.com/ch-a-os/DocSort-Backend
