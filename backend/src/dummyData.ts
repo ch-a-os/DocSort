@@ -27,7 +27,7 @@ export async function insertDummyData() {
             salt: salt
         }).save();
     }
-    let user: User = await User.findOne({where: {username: "Mondei1"}});
+    let user: User = await User.findOne({where: {username: "spYro"}});
     // 1. save document
     let highestDoc = await Document.findOne({
         select: ["primaryNumber"],
