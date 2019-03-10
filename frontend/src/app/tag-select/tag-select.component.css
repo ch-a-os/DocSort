@@ -1,0 +1,24 @@
+#tagsSelector {
+    display: inline-block;
+    width: 500px;
+}
+
+#tagsAvailable {
+    position: relative;
+    display: inline-table;
+    left: 200px;
+    top: 0px;
+    background-color: rgb(187, 187, 255);
+    width: 100px;
+    height: 100%;
+}
+
+#tagsSelected {
+    position: relative;
+    display: inline-table;
+    left: 0px;
+    top: 0px;
+    background-color: rgb(168, 255, 168);
+    width: 100px;
+    height: 100%;
+}

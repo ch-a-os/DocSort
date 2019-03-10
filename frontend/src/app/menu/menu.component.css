@@ -1,0 +1,15 @@
+.main {
+    position: static;
+    top: 0px;
+    margin: 0px;
+    padding: 0px;
+    background-color: orange;
+    height: 20px;
+}
+
+.username {
+    float: right;
+    background-color: rgb(163, 255, 163);
+    color: black;
+    width: 100px;
+}

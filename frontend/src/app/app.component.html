@@ -1,0 +1,9 @@
+<div *ngIf="this.api.isLoggedIn == false">
+    <h1>first, please login</h1>
+    <app-login></app-login>
+</div>
+<div *ngIf="this.api.isLoggedIn == true">
+    <app-menu></app-menu>
+    <router-outlet></router-outlet>
+</div>
+<ng-snotify class="material"></ng-snotify>

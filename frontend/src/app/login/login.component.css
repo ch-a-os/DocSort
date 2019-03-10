@@ -1,0 +1,9 @@
+#login {
+    border: 5px solid red;
+}
+#failed {
+    color: red;
+}
+input {
+    margin-bottom: 15px;
+}

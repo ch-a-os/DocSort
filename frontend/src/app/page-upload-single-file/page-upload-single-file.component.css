@@ -1,0 +1,18 @@
+#pageUploadSingleFile {
+    border: 5px solid green;
+    padding: 15px;
+}
+
+#tags {
+    display: inline;
+    padding-right: 15px;
+}
+#tags p {
+    display: inline-block;
+    cursor: pointer;
+    padding: 10px;
+}
+
+p {
+    margin-bottom: 0;
+}

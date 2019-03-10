@@ -1,0 +1,10 @@
+<div id="pageUploadSingleFile">
+  <input type="file" id="singleDocument" class="fileUpload" (change)="onFileChanged($event.target.files)"><br>
+  <span>Title: </span><input id="title" type="text" [(ngModel)]="uploadTitle"><br>
+  <span>Note: </span><input id="note" type="text" [(ngModel)]="note"><br>
+
+  <p>Tags: </p>
+  <app-tag-select (tagsToSend)="tagsToSendList($event)"></app-tag-select>
+  <br>
+  <button (click)="onUpload()">Upload!</button>
+</div>
