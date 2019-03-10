@@ -2,10 +2,7 @@ import * as jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
 import { config } from '../config';
 
-/**
- * Express Middleware to validate user jwt-keys
- */
-export function validateJWT(req: Request, res: Response, next: Function): boolean | void {
+export default function validateJWT(req: Request, res: Response, next: Function): boolean | void {
     let token = "";
 
     if(req.headers.token == null && req.query.token == null) {
@@ -16,7 +13,7 @@ export function validateJWT(req: Request, res: Response, next: Function): boolea
     
     try {
         jwt.verify(token, config.secretJWT);
-        next(); // Token is vaild.
+        next();
     } catch(err) {
         if(err) console.error(err);
         res.status(401).send({error: "Sorry, but that token you gave me is not vaild."})
