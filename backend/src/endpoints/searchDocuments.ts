@@ -48,17 +48,17 @@ function createQueryBuilder(documentQueryBuilder, req: Request) {
         documentQueryBuilder.orderBy("createdAt", "DESC");
     }
 
-    const primaryNumber = parseInt(req.header("option-where-primaryNumber"));
+    const primaryNumber = parseInt(req.header("option-where-primarynumber"));
     if(isNaN(primaryNumber) == false) {
         documentQueryBuilder.andWhere("document.primaryNumber = :primaryNumber", { primaryNumber: primaryNumber });
     }
 
-    const secondaryNumber = parseInt(req.header("option-where-secondaryNumber"));
+    const secondaryNumber = parseInt(req.header("option-where-secondarynumber"));
     if(isNaN(primaryNumber) == false) {
         documentQueryBuilder.andWhere("document.secondaryNumber = :secondaryNumber", { secondaryNumber: secondaryNumber });
     }
 
-    const fileExtension = req.header("option-where-fileExtension");
+    const fileExtension = req.header("option-where-fileextension");
     if(fileExtension != null) {
         documentQueryBuilder.andWhere("document.fileExtension = :fileExtension", { fileExtension: fileExtension });
     }
@@ -73,12 +73,12 @@ function createQueryBuilder(documentQueryBuilder, req: Request) {
         documentQueryBuilder.andWhere("document.note LIKE :note", { note: `%${note}%` });
     }
 
-    const mimeType = req.header("option-where-mimeType");
+    const mimeType = req.header("option-where-mimetype");
     if(mimeType != null) {
         documentQueryBuilder.andWhere("document.mimeType LIKE :mimeType", { mimeType: `%${mimeType}%` });
     }
 
-    const ocrEnabled = req.header("option-where-ocrEnabled");
+    const ocrEnabled = req.header("option-where-ocrenabled");
     if(ocrEnabled != null && (ocrEnabled == "true" || ocrEnabled == "false")) {
         let value: boolean;
         if(ocrEnabled == "true") {
@@ -89,9 +89,31 @@ function createQueryBuilder(documentQueryBuilder, req: Request) {
         documentQueryBuilder.andWhere("document.ocrEnabled = :ocrEnabled", { ocrEnabled: value });
     }
 
-    const ocrText = req.header("option-where-ocrText");
+    const ocrFinished = req.header("option-where-ocrfinished");
+    if(ocrFinished != null && (ocrFinished == "true" || ocrFinished == "false")) {
+        let value: boolean;
+        if(ocrFinished == "true") {
+            value = true;
+        } else if(ocrFinished == "false") {
+            value = false;
+        }
+        documentQueryBuilder.andWhere("document.ocrFinished = :ocrFinished", { ocrFinished: value });
+    }
+
+    const ocrText = req.header("option-where-ocrtext");
     if(ocrText != null) {
         documentQueryBuilder.andWhere("document.ocrText LIKE :ocrText", { ocrText: `%${ocrText}%` });
     }
 
+    const createdAtFrom = req.header("option-where-created-from");
+    const createdAtTo = req.header("option-where-created-to");
+    if(createdAtFrom != null && createdAtTo != null) {
+        documentQueryBuilder.andWhere("document.createdAt BETWEEN :from AND :to", { from: createdAtFrom, to: createdAtTo });
+    }
+
+    const updatedAtFrom = req.header("option-where-updated-from");
+    const updatedAtTo = req.header("option-where-updated-to");
+    if(updatedAtFrom != null && updatedAtTo != null) {
+        documentQueryBuilder.andWhere("document.updatedAt BETWEEN :from AND :to", { from: updatedAtFrom, to: updatedAtTo });
+    }
 }
