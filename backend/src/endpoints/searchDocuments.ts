@@ -50,10 +50,9 @@ export default async function searchDocuments(req: Request, res: Response) {
 class Options {
     take: Number;
     order: OptionOrder;
-    where: any;
+    where: OptionWhere;
 
     constructor(req: Request) {
-        this.where
         this.setDefaults();
         this.parseRequest(req);
     }
@@ -67,7 +66,8 @@ class Options {
         if(parsedTake != NaN) {
             this.take = parsedTake;
         }
-        this.order = new OptionOrder(req.header("option-order"));
+        this.order = new OptionOrder(req);
+        this.where = new OptionWhere(req);
     }
 }
 
@@ -75,22 +75,24 @@ class OptionOrder {
     field: string;
     order: string;
 
-    constructor(order: any) {
-        if(order == null) {
+    constructor(req: Request) {
+        const order = req.header("option-order-order");
+        const field = req.header("option-order-field");
+        if(field == null || order == null) {
             this.setDefaults();
             return;
         }
-        if(order.field == null || order.order == null) {
+        if(order != "asc" && order != "desc") {
             this.setDefaults();
             return;
         }
-        this.field = order.field;
-        this.order = order.order;
+        this.field = field;
+        this.order = order;
     }
 
     setDefaults() {
         this.field = "createdAt";
-        this.order = "DESC";
+        this.order = "desc";
     }
 }
 
@@ -108,6 +110,11 @@ class OptionWhere {
     //updatedAt: Date;
 
     constructor(req: Request) {
+        this.parseRequest(req);
+        this.removeEmptyObjects();
+    }
+
+    parseRequest(req: Request) {
         if(req.header("option-where-primaryNumber") != undefined) {
             const _primaryNumber = parseInt(req.header("option-where-primaryNumber"));
             if(_primaryNumber != NaN) {
@@ -123,28 +130,40 @@ class OptionWhere {
         }
 
         if(req.header("option-where-fileExtension") != undefined) {
-
+            this.fileExtension = req.header("option-where-fileExtension");
         }
 
         if(req.header("option-where-title") != undefined) {
-
+            this.title = req.header("option-where-title");
         }
 
         if(req.header("option-where-note") != undefined) {
-
+            this.note = req.header("option-where-note");
         }
 
         if(req.header("option-where-mimeType") != undefined) {
-
+            this.mimeType = req.header("option-where-mimeType");
         }
 
         if(req.header("option-where-ocrEnabled") != undefined) {
-
+            const _ocrEnabled = req.header("option-where-ocrEnabled");
+            if(_ocrEnabled == "true") {
+                this.ocrEnabled = true;
+            } else if(_ocrEnabled == "false") {
+                this.ocrEnabled = false;
+            }
         }
 
         if(req.header("option-where-ocrText") != undefined) {
-
+            this.ocrText = req.header("option-where-ocrText");
         }
     }
 
+    removeEmptyObjects() {
+        for (const key in this) {
+            if(this[key] == null) {
+                delete this[key];
+            }
+        }
+    }
 }
