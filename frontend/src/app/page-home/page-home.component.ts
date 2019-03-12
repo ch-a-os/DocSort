@@ -15,7 +15,7 @@ export class PageHomeComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.allDocuments = await this.api.getAllDocumentsMeta();
+    this.allDocuments = await this.api.getLatestDocuments();
     console.log(this.allDocuments);
   }
 
