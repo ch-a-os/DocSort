@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { User } from "../entity/user";
 import { getUserIDFromJWT } from "../libs/getUserIDFromJWT";
-import { getManager } from "typeorm";
+import { getManager, SelectQueryBuilder } from "typeorm";
 import { Document } from "../entity/document";
 
 export default async function searchDocuments(req: Request, res: Response) {
@@ -14,7 +14,7 @@ export default async function searchDocuments(req: Request, res: Response) {
             return;
         }
 
-        let documentQueryBuilder = getManager().createQueryBuilder(Document, "document")
+        let documentQueryBuilder: SelectQueryBuilder<Document> = getManager().createQueryBuilder(Document, "document");
         documentQueryBuilder.where("document.userId = :userId", { userId: userId });
         createQueryBuilder(documentQueryBuilder, req);
         let documents = await documentQueryBuilder.getMany();
@@ -30,7 +30,7 @@ export default async function searchDocuments(req: Request, res: Response) {
     }
 }
 
-function createQueryBuilder(documentQueryBuilder, req: Request) {
+function createQueryBuilder(documentQueryBuilder: SelectQueryBuilder<Document>, req: Request) {
 
     const take = parseInt(req.header("option-take"), 10);
 
@@ -115,5 +115,18 @@ function createQueryBuilder(documentQueryBuilder, req: Request) {
     const updatedAtTo = req.header("option-where-updated-to");
     if(updatedAtFrom != null && updatedAtTo != null) {
         documentQueryBuilder.andWhere("document.updatedAt BETWEEN :from AND :to", { from: updatedAtFrom, to: updatedAtTo });
+    }
+
+    const tags = req.header("option-where-tags");
+    if(tags != null) {
+        let parsedTags: Array<number>;
+        try {
+            parsedTags = JSON.parse(tags);
+            if(parsedTags.length > 0) { // TODO
+                documentQueryBuilder.innerJoin("document.tags", "tag", "tag.id = :id", {id: 1})
+            }
+        } catch (error) {
+            console.log(`error while parsing tags: ${error}`);
+        }
     }
 }
