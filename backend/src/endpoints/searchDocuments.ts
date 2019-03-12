@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
-import { Document } from "../entity/document";
 import { User } from "../entity/user";
 import { getUserIDFromJWT } from "../libs/getUserIDFromJWT";
+import { getManager } from "typeorm";
+import { Document } from "../entity/document";
 
 export default async function searchDocuments(req: Request, res: Response) {
     try {
@@ -12,30 +13,12 @@ export default async function searchDocuments(req: Request, res: Response) {
             res.status(500).send();
             return;
         }
+
+        let documentQueryBuilder = getManager().createQueryBuilder(Document, "document")
+        documentQueryBuilder.where("document.userId = :userId", { userId: userId });
+        createQueryBuilder(documentQueryBuilder, req);
+        let documents = await documentQueryBuilder.getMany();
         
-        let optionLimit = parseInt(req.header("optionLimit"));
-        let optionOrderField = req.header("optionOrderField");
-        let optionOrder = req.header("optionOrder");
-
-        if(optionLimit == null) {
-            optionLimit = 5;
-        }
-        if(optionOrderField == null) {
-            optionOrderField = "updatedAt";
-        }
-        if(optionOrder == null) {
-            optionOrder = "DESC";
-        }
-
-        let queryOptions: any = {};
-        queryOptions.order = {};
-        queryOptions.where = new Array();
-        queryOptions.where.push({ user: user });
-
-        queryOptions.take = optionLimit;
-        queryOptions.order[optionOrderField] = optionOrder;
-
-        const documents = await Document.find(queryOptions);
         res.status(200).send({
             documents: documents
         });
@@ -47,123 +30,68 @@ export default async function searchDocuments(req: Request, res: Response) {
     }
 }
 
-class Options {
-    take: Number;
-    order: OptionOrder;
-    where: OptionWhere;
+function createQueryBuilder(documentQueryBuilder, req: Request) {
 
-    constructor(req: Request) {
-        this.setDefaults();
-        this.parseRequest(req);
+    const take = parseInt(req.header("option-take"), 10);
+
+    if(isNaN(take) == false) {
+        documentQueryBuilder.take(take);
+    } else {
+        documentQueryBuilder.take(10);
     }
 
-    setDefaults() {
-        this.take = 10;
+    const order = req.header("option-order-order");
+    const field = req.header("option-order-field");
+    if(field != null && order != null && (order == "ASC" || order == "DESC")) {
+        documentQueryBuilder.orderBy(field, order);
+    } else {
+        documentQueryBuilder.orderBy("createdAt", "DESC");
     }
 
-    parseRequest(req: Request) {
-        const parsedTake = parseInt(req.header("option-take"), 10);
-        if(parsedTake != NaN) {
-            this.take = parsedTake;
-        }
-        this.order = new OptionOrder(req);
-        this.where = new OptionWhere(req);
-    }
-}
-
-class OptionOrder {
-    field: string;
-    order: string;
-
-    constructor(req: Request) {
-        const order = req.header("option-order-order");
-        const field = req.header("option-order-field");
-        if(field == null || order == null) {
-            this.setDefaults();
-            return;
-        }
-        if(order != "asc" && order != "desc") {
-            this.setDefaults();
-            return;
-        }
-        this.field = field;
-        this.order = order;
+    const primaryNumber = parseInt(req.header("option-where-primaryNumber"));
+    if(isNaN(primaryNumber) == false) {
+        documentQueryBuilder.andWhere("document.primaryNumber = :primaryNumber", { primaryNumber: primaryNumber });
     }
 
-    setDefaults() {
-        this.field = "createdAt";
-        this.order = "desc";
-    }
-}
-
-class OptionWhere {
-    primaryNumber: number;
-    secondaryNumber: number;
-    fileExtension: string;
-    title: string;
-    note: string;
-    // tags: any;
-    mimeType: string;
-    ocrEnabled: boolean;
-    ocrText: string;
-    //createdAt: Date;
-    //updatedAt: Date;
-
-    constructor(req: Request) {
-        this.parseRequest(req);
-        this.removeEmptyObjects();
+    const secondaryNumber = parseInt(req.header("option-where-secondaryNumber"));
+    if(isNaN(primaryNumber) == false) {
+        documentQueryBuilder.andWhere("document.secondaryNumber = :secondaryNumber", { secondaryNumber: secondaryNumber });
     }
 
-    parseRequest(req: Request) {
-        if(req.header("option-where-primaryNumber") != undefined) {
-            const _primaryNumber = parseInt(req.header("option-where-primaryNumber"));
-            if(_primaryNumber != NaN) {
-                this.primaryNumber = _primaryNumber;
-            }
-        }
-        
-        if(req.header("option-where-secondaryNumber") != undefined) {
-            const _secondaryNumber = parseInt(req.header("option-where-secondaryNumber"));
-            if(_secondaryNumber != NaN) {
-                this.secondaryNumber = _secondaryNumber;
-            }
-        }
-
-        if(req.header("option-where-fileExtension") != undefined) {
-            this.fileExtension = req.header("option-where-fileExtension");
-        }
-
-        if(req.header("option-where-title") != undefined) {
-            this.title = req.header("option-where-title");
-        }
-
-        if(req.header("option-where-note") != undefined) {
-            this.note = req.header("option-where-note");
-        }
-
-        if(req.header("option-where-mimeType") != undefined) {
-            this.mimeType = req.header("option-where-mimeType");
-        }
-
-        if(req.header("option-where-ocrEnabled") != undefined) {
-            const _ocrEnabled = req.header("option-where-ocrEnabled");
-            if(_ocrEnabled == "true") {
-                this.ocrEnabled = true;
-            } else if(_ocrEnabled == "false") {
-                this.ocrEnabled = false;
-            }
-        }
-
-        if(req.header("option-where-ocrText") != undefined) {
-            this.ocrText = req.header("option-where-ocrText");
-        }
+    const fileExtension = req.header("option-where-fileExtension");
+    if(fileExtension != null) {
+        documentQueryBuilder.andWhere("document.fileExtension = :fileExtension", { fileExtension: fileExtension });
     }
 
-    removeEmptyObjects() {
-        for (const key in this) {
-            if(this[key] == null) {
-                delete this[key];
-            }
-        }
+    const title = req.header("option-where-title");
+    if(title != null) {
+        documentQueryBuilder.andWhere("document.title LIKE :title", { title: `%${title}%` });
     }
+
+    const note = req.header("option-where-note");
+    if(note != null) {
+        documentQueryBuilder.andWhere("document.note LIKE :note", { note: `%${note}%` });
+    }
+
+    const mimeType = req.header("option-where-mimeType");
+    if(mimeType != null) {
+        documentQueryBuilder.andWhere("document.mimeType LIKE :mimeType", { mimeType: `%${mimeType}%` });
+    }
+
+    const ocrEnabled = req.header("option-where-ocrEnabled");
+    if(ocrEnabled != null && (ocrEnabled == "true" || ocrEnabled == "false")) {
+        let value: boolean;
+        if(ocrEnabled == "true") {
+            value = true;
+        } else if(ocrEnabled == "false") {
+            value = false;
+        }
+        documentQueryBuilder.andWhere("document.ocrEnabled = :ocrEnabled", { ocrEnabled: value });
+    }
+
+    const ocrText = req.header("option-where-ocrText");
+    if(ocrText != null) {
+        documentQueryBuilder.andWhere("document.ocrText LIKE :ocrText", { ocrText: `%${ocrText}%` });
+    }
+
 }
