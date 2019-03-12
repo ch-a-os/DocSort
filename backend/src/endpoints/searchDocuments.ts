@@ -46,3 +46,105 @@ export default async function searchDocuments(req: Request, res: Response) {
         res.status(500).send({error: "Please see console output for error message."})
     }
 }
+
+class Options {
+    take: Number;
+    order: OptionOrder;
+    where: any;
+
+    constructor(req: Request) {
+        this.where
+        this.setDefaults();
+        this.parseRequest(req);
+    }
+
+    setDefaults() {
+        this.take = 10;
+    }
+
+    parseRequest(req: Request) {
+        const parsedTake = parseInt(req.header("option-take"), 10);
+        if(parsedTake != NaN) {
+            this.take = parsedTake;
+        }
+        this.order = new OptionOrder(req.header("option-order"));
+    }
+}
+
+class OptionOrder {
+    field: string;
+    order: string;
+
+    constructor(order: any) {
+        if(order == null) {
+            this.setDefaults();
+            return;
+        }
+        if(order.field == null || order.order == null) {
+            this.setDefaults();
+            return;
+        }
+        this.field = order.field;
+        this.order = order.order;
+    }
+
+    setDefaults() {
+        this.field = "createdAt";
+        this.order = "DESC";
+    }
+}
+
+class OptionWhere {
+    primaryNumber: number;
+    secondaryNumber: number;
+    fileExtension: string;
+    title: string;
+    note: string;
+    // tags: any;
+    mimeType: string;
+    ocrEnabled: boolean;
+    ocrText: string;
+    //createdAt: Date;
+    //updatedAt: Date;
+
+    constructor(req: Request) {
+        if(req.header("option-where-primaryNumber") != undefined) {
+            const _primaryNumber = parseInt(req.header("option-where-primaryNumber"));
+            if(_primaryNumber != NaN) {
+                this.primaryNumber = _primaryNumber;
+            }
+        }
+        
+        if(req.header("option-where-secondaryNumber") != undefined) {
+            const _secondaryNumber = parseInt(req.header("option-where-secondaryNumber"));
+            if(_secondaryNumber != NaN) {
+                this.secondaryNumber = _secondaryNumber;
+            }
+        }
+
+        if(req.header("option-where-fileExtension") != undefined) {
+
+        }
+
+        if(req.header("option-where-title") != undefined) {
+
+        }
+
+        if(req.header("option-where-note") != undefined) {
+
+        }
+
+        if(req.header("option-where-mimeType") != undefined) {
+
+        }
+
+        if(req.header("option-where-ocrEnabled") != undefined) {
+
+        }
+
+        if(req.header("option-where-ocrText") != undefined) {
+
+        }
+    }
+
+}
