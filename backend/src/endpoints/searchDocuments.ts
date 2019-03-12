@@ -43,9 +43,9 @@ function createQueryBuilder(documentQueryBuilder: SelectQueryBuilder<Document>, 
     const order = req.header("option-order-order");
     const field = req.header("option-order-field");
     if(field != null && order != null && (order == "ASC" || order == "DESC")) {
-        documentQueryBuilder.orderBy(field, order);
+        documentQueryBuilder.orderBy(`document.${field}`, order);
     } else {
-        documentQueryBuilder.orderBy("createdAt", "DESC");
+        documentQueryBuilder.orderBy("document.createdAt", "DESC");
     }
 
     const primaryNumber = parseInt(req.header("option-where-primarynumber"));
@@ -122,8 +122,8 @@ function createQueryBuilder(documentQueryBuilder: SelectQueryBuilder<Document>, 
         let parsedTags: Array<number>;
         try {
             parsedTags = JSON.parse(tags);
-            if(parsedTags.length > 0) { // TODO
-                documentQueryBuilder.innerJoin("document.tags", "tag", "tag.id = :id", {id: 1})
+            if(parsedTags.length > 0) {
+                documentQueryBuilder.innerJoin("document.tags", "tag", "tag.id IN (:...ids)", {ids: parsedTags})
             }
         } catch (error) {
             console.log(`error while parsing tags: ${error}`);
