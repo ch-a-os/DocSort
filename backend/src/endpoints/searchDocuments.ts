@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { User } from "../entity/user";
 import { getUserIDFromJWT } from "../libs/getUserIDFromJWT";
-import { getManager } from "typeorm";
+import { getManager, SelectQueryBuilder } from "typeorm";
 import { Document } from "../entity/document";
 
 export default async function searchDocuments(req: Request, res: Response) {
@@ -14,7 +14,7 @@ export default async function searchDocuments(req: Request, res: Response) {
             return;
         }
 
-        let documentQueryBuilder = getManager().createQueryBuilder(Document, "document")
+        let documentQueryBuilder: SelectQueryBuilder<Document> = getManager().createQueryBuilder(Document, "document");
         documentQueryBuilder.where("document.userId = :userId", { userId: userId });
         createQueryBuilder(documentQueryBuilder, req);
         let documents = await documentQueryBuilder.getMany();
@@ -30,10 +30,9 @@ export default async function searchDocuments(req: Request, res: Response) {
     }
 }
 
-function createQueryBuilder(documentQueryBuilder, req: Request) {
+function createQueryBuilder(documentQueryBuilder: SelectQueryBuilder<Document>, req: Request) {
 
     const take = parseInt(req.header("option-take"), 10);
-
     if(isNaN(take) == false) {
         documentQueryBuilder.take(take);
     } else {
@@ -43,9 +42,9 @@ function createQueryBuilder(documentQueryBuilder, req: Request) {
     const order = req.header("option-order-order");
     const field = req.header("option-order-field");
     if(field != null && order != null && (order == "ASC" || order == "DESC")) {
-        documentQueryBuilder.orderBy(field, order);
+        documentQueryBuilder.orderBy(`document.${field}`, order);
     } else {
-        documentQueryBuilder.orderBy("createdAt", "DESC");
+        documentQueryBuilder.orderBy("document.createdAt", "DESC");
     }
 
     const primaryNumber = parseInt(req.header("option-where-primarynumber"));
@@ -115,5 +114,21 @@ function createQueryBuilder(documentQueryBuilder, req: Request) {
     const updatedAtTo = req.header("option-where-updated-to");
     if(updatedAtFrom != null && updatedAtTo != null) {
         documentQueryBuilder.andWhere("document.updatedAt BETWEEN :from AND :to", { from: updatedAtFrom, to: updatedAtTo });
+    }
+
+    const tags = req.header("option-where-tags");
+    if(tags != null) {
+        let parsedTags: Array<number>;
+        try {
+            parsedTags = JSON.parse(tags);
+            if(parsedTags.length > 0) {
+                documentQueryBuilder.innerJoin("document.tags", "tag");
+                documentQueryBuilder.groupBy("document.uid");
+                documentQueryBuilder.having("COUNT(*) >= :count", { count: parsedTags.length })
+                documentQueryBuilder.andWhere("document_tag.tagId IN(:...ids)", { ids: parsedTags });
+            }
+        } catch (error) {
+            console.log(`error while parsing tags: ${error}`);
+        }
     }
 }
