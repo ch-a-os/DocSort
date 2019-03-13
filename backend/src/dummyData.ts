@@ -175,6 +175,15 @@ export async function insertDummyData() {
             fileExtension: 'png',
             user: test2,
             tags: [tagInvoice]
+        },
+        {
+            primaryNumber: 12,
+            secondaryNumber: 0,
+            title: "Sample document 14 - DigiDoc",
+            note: "Can be cool name too",
+            fileExtension: 'jpg',
+            user: test2,
+            tags: [tagInvoice, tagWarning]
         }
     ]
 

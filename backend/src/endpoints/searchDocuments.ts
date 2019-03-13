@@ -40,7 +40,7 @@ function createQueryBuilder(documentQueryBuilder, req: Request) {
         documentQueryBuilder.take(10);
     }
 
-    const order = req.header("option-order-order");
+    const order = req.header("option-order-order"); // TODO: Maybe find better name. Sounds weird.
     const field = req.header("option-order-field");
     if(field != null && order != null && (order == "ASC" || order == "DESC")) {
         documentQueryBuilder.orderBy(field, order);

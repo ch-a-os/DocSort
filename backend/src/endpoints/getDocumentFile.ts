@@ -1,5 +1,4 @@
 import { Document } from "../entity/document";
-import * as fs from 'fs';
 import { generateFilePath } from "../libs/generateFilePath";
 
 export default async function getDocumentFile(req: any, res: any) {

@@ -150,15 +150,17 @@ export class ApiService {
   async getLatestDocuments(): Promise<Array<IDocument>> {
     let response = null;
     try {
-      response = await this.http.get(`${this.serverString}/getDocuments?limit=5&order=0`, {
+      response = await this.http.get(`${this.serverString}/searchDocuments`, {
         reportProgress: true,
         observe: 'response',
         headers: new HttpHeaders().set('token', this.jwt)
+                .set('option-take', '5')
+                .set('option-order-order', 'DESC')
       }).toPromise();
     } catch (error) {
       console.log("error in getAllDocumentsMeta: " + error);
     }
-    return response.body;
+    return response.body.documents;
   }
 
   async downloadDocument(docID): Promise<HttpResponse<Object>> {
