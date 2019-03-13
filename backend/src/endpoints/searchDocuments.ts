@@ -33,7 +33,6 @@ export default async function searchDocuments(req: Request, res: Response) {
 function createQueryBuilder(documentQueryBuilder: SelectQueryBuilder<Document>, req: Request) {
 
     const take = parseInt(req.header("option-take"), 10);
-
     if(isNaN(take) == false) {
         documentQueryBuilder.take(take);
     } else {
@@ -123,7 +122,10 @@ function createQueryBuilder(documentQueryBuilder: SelectQueryBuilder<Document>, 
         try {
             parsedTags = JSON.parse(tags);
             if(parsedTags.length > 0) {
-                documentQueryBuilder.innerJoin("document.tags", "tag", "tag.id IN (:...ids)", {ids: parsedTags})
+                documentQueryBuilder.innerJoin("document.tags", "tag");
+                documentQueryBuilder.groupBy("document.uid");
+                documentQueryBuilder.having("COUNT(*) >= :count", { count: parsedTags.length })
+                documentQueryBuilder.andWhere("document_tag.tagId IN(:...ids)", { ids: parsedTags });
             }
         } catch (error) {
             console.log(`error while parsing tags: ${error}`);
