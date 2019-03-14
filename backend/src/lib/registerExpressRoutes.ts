@@ -4,7 +4,7 @@ import getDocumentFile from "../endpoints/getDocumentFile";
 import validateJWT from "./validateJwt";
 import getAllTags from "../endpoints/getAllTags";
 import getDocument from "../endpoints/getDocument";
-import searchDocuments from "../endpoints/searchDocuments";
+import { searchDocuments } from "../endpoints/searchDocuments";
 const multer = require('multer');
 const upload = multer({ storage: multer.memoryStorage() });
 

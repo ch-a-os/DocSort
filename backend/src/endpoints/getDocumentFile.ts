@@ -1,6 +1,8 @@
-import { Document } from "../entity/document";
 import * as fs from 'fs';
-import { generateFilePath } from "../libs/generateFilePath";
+
+import { Document } from "../models/document/document.model";
+import { IDocument } from "../models/document/document.interface";
+import { generateFilePath } from '../lib/generateFilePath';
 
 export default async function getDocumentFile(req: any, res: any) {
     const documentId: number = parseInt(req.header("documentId"));
@@ -9,7 +11,7 @@ export default async function getDocumentFile(req: any, res: any) {
         return;
     }
 
-    const doc: Document = await Document.findOne({ where: { uid: documentId }});
+    const doc: IDocument = await Document.findOne({ id: documentId });
     const filepath = generateFilePath(doc);
     const docFile = fs.readFileSync(filepath);
     res.status(200).send(docFile);
