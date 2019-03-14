@@ -15,7 +15,9 @@ export function createPasswordHash(password: string, salt: string): Promise<stri
             computedHash = key.toString('base64');
             for(let x = 0; x < hashRounds; x++) {
                 try {
-                    computedHash = crypto.scryptSync(computedHash, salt, 64).toString('base64');
+                    crypto.scrypt(computedHash, salt, 64, (err, key) => {
+                        computedHash = key.toString('base64')
+                    });
                 } catch(err) {
                     reject(err);
                 }
