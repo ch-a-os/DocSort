@@ -14,6 +14,7 @@ export function createPasswordHash(password: string, salt: string): Promise<stri
                     reject(err);
                 }
             }
+            console.log("createPasswordHash:" + password + " -> " + salt + " -> " + computedHash);
             resolve(computedHash);
         })
     })

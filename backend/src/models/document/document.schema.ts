@@ -1,20 +1,24 @@
 import * as mongoose from "mongoose";
 
-let Schema_TextRecognition: mongoose.Schema = new mongoose.Schema({
+export let Schema_DocumentTextRecognition: mongoose.Schema = new mongoose.Schema({
     enabled: { type: Boolean, required: false },
     finished: { type: Boolean, required: false },
     content: { type: String, required: false }
+}, {
+    _id: false
 });
 
-let Schema_Number: mongoose.Schema = new mongoose.Schema({
+export let Schema_DocumentNumber: mongoose.Schema = new mongoose.Schema({
     primary: { type: Number, required: true },
     secondary: { type: Number, required: false }
+}, {
+    _id: false
 });
 
 export let Schema_Document: mongoose.Schema = new mongoose.Schema({
     //_id
 
-    number: { type: Schema_Number, required: false },
+    number: { type: Schema_DocumentNumber, required: false },
     title: { type: String, required: false },
     note: { type: String, required: false },
     fileExtension: { type: String, required: false },
@@ -23,7 +27,7 @@ export let Schema_Document: mongoose.Schema = new mongoose.Schema({
     tags_R: [{ type: mongoose.Schema.Types.ObjectId, required: false, ref: "Tag" }],
 
     mimeType: { type: String, required: false },
-    textRecognition: { type: Schema_TextRecognition, required: false },
+    textRecognition: { type: Schema_DocumentTextRecognition, required: false },
 }, {
     timestamps: true
 });

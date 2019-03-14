@@ -5,6 +5,14 @@ export function generateFilePath(document: IDocument) {
     if(document.number.secondary != null) {
         numberSequence += `.${document.number.secondary}`;
     }
-    const filePath = `../uploads/${document.get("user_R")}/${document.id}_${numberSequence}.${document.fileExtension}`;
+    let userId = "";;
+    if(document.populated("user_R") == null) {
+        userId = document.user_R.toString();
+    } else {
+        userId = document.user_R.id;
+    }
+    console.log("generateFilePath -> userId = " + userId);
+    //const filePath = `./uploads/${userId}/${numberSequence}_(${document.id}).${document.fileExtension}`;
+    const filePath = `./uploads/${userId}/${numberSequence}.${document.fileExtension}`;
     return filePath;
 }

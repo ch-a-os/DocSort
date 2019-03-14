@@ -22,6 +22,7 @@ export default async function login(req: Request, res: Response) {
     }
 
     const hashedPassword = await createPasswordHash(password, user.salt);
+    console.log("login: hashedPassword=" + hashedPassword);
     if(user.password == hashedPassword) {
         console.log(`User ${username} is now logged in.`);
 

@@ -5,6 +5,7 @@ import { registerExpressRoutes } from './lib/registerExpressRoutes';
 import createExpressServer from './lib/createExpressServer';
 import { config } from './config';
 import { User } from './models/user/user.model';
+import { insertDummyData } from './insertDummyData';
 
 const mongoose: Mongoose = require("mongoose");
 
@@ -14,8 +15,8 @@ async function run() {
     // todo: clean db
     console.log("- database cleaned");
 
-    if (!fs.existsSync("./uploads")) {
-        fs.mkdirSync("./uploads");
+    if (!fs.existsSync("../uploads")) {
+        fs.mkdirSync("../uploads");
     }
     console.log("- uploads-folder existing");
     
@@ -48,11 +49,8 @@ async function run() {
     server.listen(9090, () => {
         console.log("- Server started on port 9090!");
         console.log("DocSort is ready to use");
-        let user = new User();
-        user.username = "test";
-        user.password = "123";
-        user.save().then(() => {
-            console.log("test-user erstellt");
+        insertDummyData().then(() => {
+            console.log("insertDummyData finished");
         });
     });  
 }
