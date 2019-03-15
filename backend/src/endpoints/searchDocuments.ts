@@ -1,134 +1,158 @@
 import { Request, Response } from "express";
-import { User } from "../entity/user";
-import { getUserIDFromJWT } from "../libs/getUserIDFromJWT";
-import { getManager, SelectQueryBuilder } from "typeorm";
-import { Document } from "../entity/document";
+import { getUserIDFromJWT } from "../lib/getUserIDFromJWT";
+import { User } from "../models/user/user.model";
+import { Document } from "../models/document/document.model";
+import * as mongoose from "mongoose";
 
-export default async function searchDocuments(req: Request, res: Response) {
-    try {
-        const userId = getUserIDFromJWT(req.headers.token.toString());
-        const user = await User.findOne({ where: { id: userId }});
-        if(user == null) {
-            console.log(`User with ID ${userId} does not exist in the database`);
-            res.status(500).send();
-            return;
-        }
-
-        let documentQueryBuilder: SelectQueryBuilder<Document> = getManager().createQueryBuilder(Document, "document");
-        documentQueryBuilder.where("document.userId = :userId", { userId: userId });
-        createQueryBuilder(documentQueryBuilder, req);
-        let documents = await documentQueryBuilder.getMany();
-        
-        res.status(200).send({
-            documents: documents
-        });
-        console.log(`searchDocuments: returning ${documents.length} documents`);
-        return true;
-    } catch(err) {
-        console.error(err);
-        res.status(500).send({error: "Please see console output for error message."})
+export async function searchDocuments(req: Request, res: Response) {
+    const userId = getUserIDFromJWT(req.headers.token.toString());
+    const user = await User.findOne({ _id: userId });
+    if(user == null) {
+        console.log(`User with ID ${userId} does not exist in the database`);
+        res.status(500).send();
+        return;
     }
-}
+    let query = Document.where("user_R").equals(userId);
 
-function createQueryBuilder(documentQueryBuilder: SelectQueryBuilder<Document>, req: Request) {
-
-    const take = parseInt(req.header("option-take"), 10);
-    if(isNaN(take) == false) {
-        documentQueryBuilder.take(take);
+    // take
+    const limit = parseInt(req.header("option-limit"), 10);
+    if(isNaN(limit) == false) {
+        query.limit(limit);
     } else {
-        documentQueryBuilder.take(10);
+        query.limit(10);
     }
 
+    // order by
     const order = req.header("option-order-order");
     const field = req.header("option-order-field");
     if(field != null && order != null && (order == "ASC" || order == "DESC")) {
-        documentQueryBuilder.orderBy(`document.${field}`, order);
+        let orderSymbol = "";
+        if(order == "DESC") {
+            orderSymbol = "-";
+        }
+        query.sort(`${orderSymbol}${field}`);
     } else {
-        documentQueryBuilder.orderBy("document.createdAt", "DESC");
+        query.sort("createdAt");
     }
 
-    const primaryNumber = parseInt(req.header("option-where-primarynumber"));
-    if(isNaN(primaryNumber) == false) {
-        documentQueryBuilder.andWhere("document.primaryNumber = :primaryNumber", { primaryNumber: primaryNumber });
+    // number-primary
+    const numberPrimary = parseInt(req.header("option-where-number-primary"));
+    if(isNaN(numberPrimary) == false) {
+        query.where("number.primary").equals(numberPrimary);
     }
 
-    const secondaryNumber = parseInt(req.header("option-where-secondarynumber"));
-    if(isNaN(primaryNumber) == false) {
-        documentQueryBuilder.andWhere("document.secondaryNumber = :secondaryNumber", { secondaryNumber: secondaryNumber });
+    // number-secondary
+    const numberSecondary = parseInt(req.header("option-where-number-secondary"));
+    if(isNaN(numberSecondary) == false) {
+        query.where("number.secondary").equals(numberSecondary);
     }
 
+    // fileExtension
     const fileExtension = req.header("option-where-fileextension");
     if(fileExtension != null) {
-        documentQueryBuilder.andWhere("document.fileExtension = :fileExtension", { fileExtension: fileExtension });
+        query.where("fileExtension").equals(fileExtension);
     }
 
+    // title
     const title = req.header("option-where-title");
     if(title != null) {
-        documentQueryBuilder.andWhere("document.title LIKE :title", { title: `%${title}%` });
+        query.where("title").regex(new RegExp(`${title}`));
     }
 
+    // note
     const note = req.header("option-where-note");
     if(note != null) {
-        documentQueryBuilder.andWhere("document.note LIKE :note", { note: `%${note}%` });
+        query.where("note").regex(new RegExp(`${note}`));
     }
 
+    // mimeType
     const mimeType = req.header("option-where-mimetype");
     if(mimeType != null) {
-        documentQueryBuilder.andWhere("document.mimeType LIKE :mimeType", { mimeType: `%${mimeType}%` });
+        query.where("mimeType").regex(new RegExp(`${mimeType}`));
     }
 
-    const ocrEnabled = req.header("option-where-ocrenabled");
-    if(ocrEnabled != null && (ocrEnabled == "true" || ocrEnabled == "false")) {
-        let value: boolean;
-        if(ocrEnabled == "true") {
-            value = true;
-        } else if(ocrEnabled == "false") {
-            value = false;
-        }
-        documentQueryBuilder.andWhere("document.ocrEnabled = :ocrEnabled", { ocrEnabled: value });
+    // textRecognition-enabled
+    const textRecognitionEnabled = req.header("option-where-textRecognition-enabled");
+    if(textRecognitionEnabled == "true") {
+        query.where("textRecognition.enabled").equals(true);
+    } else if(textRecognitionEnabled == "false") {
+        query.where("textRecognition.enabled").equals(false);
     }
 
-    const ocrFinished = req.header("option-where-ocrfinished");
-    if(ocrFinished != null && (ocrFinished == "true" || ocrFinished == "false")) {
-        let value: boolean;
-        if(ocrFinished == "true") {
-            value = true;
-        } else if(ocrFinished == "false") {
-            value = false;
-        }
-        documentQueryBuilder.andWhere("document.ocrFinished = :ocrFinished", { ocrFinished: value });
+    // textRecognition-finished
+    const textRecognitionFinished = req.header("option-where-textRecognition-finished");
+    if(textRecognitionFinished == "true") {
+        query.where("textRecognition.finished").equals(true);
+    } else if(textRecognitionFinished == "false") {
+        query.where("textRecognition.finished").equals(false);
     }
 
-    const ocrText = req.header("option-where-ocrtext");
-    if(ocrText != null) {
-        documentQueryBuilder.andWhere("document.ocrText LIKE :ocrText", { ocrText: `%${ocrText}%` });
+    // textRecognition-content
+    const textRecognitionContent = req.header("option-where-textRecognition-content");
+    if(textRecognitionContent != null) {
+        query.where("textRecognition.content").regex(new RegExp(`${textRecognitionContent}`));
     }
 
-    const createdAtFrom = req.header("option-where-created-from");
-    const createdAtTo = req.header("option-where-created-to");
-    if(createdAtFrom != null && createdAtTo != null) {
-        documentQueryBuilder.andWhere("document.createdAt BETWEEN :from AND :to", { from: createdAtFrom, to: createdAtTo });
+    // createdAt range
+    const createdFrom = parseDateFromHeader(req, "option-where-created-from");
+    const createdTo = parseDateFromHeader(req, "option-where-created-to");
+    if(createdFrom != null && createdTo != null) {
+        query.where("createdAt").gte(createdFrom).lte(createdTo);
     }
 
-    const updatedAtFrom = req.header("option-where-updated-from");
-    const updatedAtTo = req.header("option-where-updated-to");
-    if(updatedAtFrom != null && updatedAtTo != null) {
-        documentQueryBuilder.andWhere("document.updatedAt BETWEEN :from AND :to", { from: updatedAtFrom, to: updatedAtTo });
+    // updatedAt range
+    const updatedFrom = parseDateFromHeader(req, "option-where-updated-from");
+    const updatedTo = parseDateFromHeader(req, "option-where-updated-to");
+    if(updatedFrom != null && updatedTo != null) {
+        query.where("updatedAt").gte(updatedFrom).lte(updatedTo);
     }
 
+    // tags
     const tags = req.header("option-where-tags");
     if(tags != null) {
-        let parsedTags: Array<number>;
+        let parsedTags: Array<string>;
         try {
             parsedTags = JSON.parse(tags);
-            if(parsedTags.length > 0) {
-                documentQueryBuilder.innerJoin("document.tags", "tag");
-                documentQueryBuilder.groupBy("document.uid");
-                documentQueryBuilder.having("COUNT(*) >= :count", { count: parsedTags.length })
-                documentQueryBuilder.andWhere("document_tag.tagId IN(:...ids)", { ids: parsedTags });
-            }
+            let objectIds = parsedTags.map((entry) => {
+                return mongoose.Types.ObjectId(entry);
+            });
+
+            // @ts-ignore: Bug in mongoose (https://github.com/Automattic/mongoose/issues/7612)
+            query.where("tags_R").all(objectIds);
         } catch (error) {
-            console.log(`error while parsing tags: ${error}`);
+            console.log("searchDocuments: error while parsing/searching tags: " + error);
         }
     }
+
+    let result = await query.exec();
+    
+    // code-block for detailed query-debugging. Can be removed later
+    /*console.log("done with query--------------------------------------------------- ");
+    console.log("query=" + JSON.stringify(query.getQuery(), null, 4));
+    console.log("queryOptions=" + JSON.stringify(query.getOptions(), null, 4));
+    console.log("################################################################");
+    console.log("result=" + JSON.stringify(result, null, 4));*/
+
+    res.status(200).send(result);
+}
+
+function parseDateFromHeader(req: Request, fieldName: string): Date|null {
+    const headerValue = req.header(fieldName);
+    if(headerValue == null) {
+        return null;
+    }
+    const splittedDate = headerValue.split("-");
+
+    let year = splittedDate[0];
+    let month = splittedDate[1];
+    let day = splittedDate[2];
+
+    let yearInt = parseInt(year);
+    if(month[0] == "0") {
+        month = month[1];
+    }
+    let monthInt = parseInt(month)-1;
+    let dayInt = parseInt(day);
+    let date = new Date(yearInt, monthInt, dayInt);
+    return date;
 }

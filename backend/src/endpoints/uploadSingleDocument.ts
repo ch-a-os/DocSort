@@ -1,12 +1,13 @@
 import * as fs from "fs";
 import { Request, Response } from "express";
-import { Document } from "../entity/document";
-import { User } from "../entity/user";
-import { Tag } from "../entity/tag";
-import { getNewPrimaryNumber } from "../libs/getNewPrimaryNumber";
-import { getUserIDFromJWT } from "../libs/getUserIDFromJWT";
-import { generateFilePath } from "../libs/generateFilePath";
-import extractFileExtension from "../libs/extractFileExtension";
+import { Document } from "../models/document/document.model";
+import { User } from "../models/user/user.model";
+import { Tag } from "../models/tag/tag.model";
+import { getNewPrimaryNumber } from "../lib/getNewPrimaryNumber";
+import { getUserIDFromJWT } from "../lib/getUserIDFromJWT";
+import { generateFilePath } from "../lib/generateFilePath";
+import extractFileExtension from "../lib/extractFileExtension";
+import { IDocument } from "../models/document/document.interface";
 
 interface IRequestTag {
     name: string;
@@ -28,52 +29,52 @@ export default async function uploadSingleDocument(req: Request, res: Response) 
             fs.mkdirSync("./uploads");
         }
 
-        const userId = getUserIDFromJWT(req.headers.token.toString());
-        const user = await User.findOne({ where: { id: userId }});
-        const nextPrimaryNumber = await getNewPrimaryNumber();
+        const userId = getUserIDFromJWT(req.header("token"));
+        const user = await User.findOne({ id: userId }).populate("tags_R").exec();
+        const nextPrimaryNumber = await getNewPrimaryNumber(userId);
 
         const requestBody: IRequestBody = req.body;
         const file: Express.Multer.File = req.file;
 
-        const document: Document = new Document();
-        document.primaryNumber = nextPrimaryNumber;
-        document.secondaryNumber = 0;
+        const document: IDocument = new Document();
+        document.number.primary = nextPrimaryNumber;
 
         document.title = requestBody.title;
         document.note = requestBody.note;
-        document.user = user;
+        document.user_R = user;
         document.mimeType = file.mimetype;
-        document.ocrEnabled = false;
-        document.ocrFinished = false;
-        document.ocrText = null;
+        document.textRecognition.enabled = false;
+        document.textRecognition.finished = false;
         document.fileExtension = extractFileExtension(req.file.originalname);
 
         // Setting up TAGs
         const givenTags: Array<IRequestTag|number> = JSON.parse(requestBody.tags);
         if(givenTags != null) {
-            document.tags = new Array();
+            document.tags_R = new Array();
             for (const tag of givenTags) {
                 if(typeof tag == "number") {
-                    let existingTag = await Tag.findOne({ where: { id: tag }});
+                    let existingTag = await Tag.findOne({ id: tag });
                     if(existingTag != null) {
-                        document.tags.push(existingTag);
+                        document.tags_R.push(existingTag);
                     }
                 } else {
                     let newTag = new Tag();
                     console.log("debug-tag=" + JSON.stringify(tag));
                     newTag.name = tag.name;
                     if(tag.logo != null) {
-                        newTag.logo = tag.logo;
+                        newTag.style.logo = tag.logo;
                     }
                     if(tag.colorBackground != null) {
-                        newTag.colorBackground = tag.colorBackground;
+                        newTag.style.colorBackground = tag.colorBackground;
                     }
                     if(tag.colorForeground != null) {
-                        newTag.colorForeground = tag.colorForeground;
+                        newTag.style.colorForeground = tag.colorForeground;
                     }
-                    newTag.user = user;
+                    user.tags_R.push(newTag);
+                    //newTag.user_R = user;
                     await newTag.save();
-                    document.tags.push(newTag);
+                    await user.save();
+                    document.tags_R.push(newTag);
                 }
             }
         }
@@ -86,7 +87,7 @@ export default async function uploadSingleDocument(req: Request, res: Response) 
         console.log(`file written: ${filePath}`);
         await wait(4000);
         res.status(200).send({
-            newID: document.uid
+            newID: document.id
         });
     } catch(err) {
         res.status(500).send({message: "Please see console output for error message."});

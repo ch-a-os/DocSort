@@ -1,8 +1,9 @@
-import { Request, Response } from "express";
-import { User } from "../entity/user";
 import * as jwt from 'jsonwebtoken';
+import { Request, Response } from "express";
+import { IUser } from '../models/user/user.interface';
+import { User } from '../models/user/user.model';
+import { createPasswordHash } from '../lib/createPasswordHash';
 import { config } from '../config';
-import { createPasswordHash } from "../libs/createPasswordHash";
 
 export default async function login(req: Request, res: Response) {
     const username = req.header("username");
@@ -13,11 +14,7 @@ export default async function login(req: Request, res: Response) {
         return;
     }
 
-    const user: User = await User.findOne({
-        where: {
-            username: username
-        }
-    })
+    const user: IUser = await User.findOne({ username: username }).exec();
 
     if(user == null) {
         res.status(404).send();
@@ -25,6 +22,7 @@ export default async function login(req: Request, res: Response) {
     }
 
     const hashedPassword = await createPasswordHash(password, user.salt);
+    console.log("login: hashedPassword=" + hashedPassword);
     if(user.password == hashedPassword) {
         console.log(`User ${username} is now logged in.`);
 
