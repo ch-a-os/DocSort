@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { getUserIDFromJWT } from "../lib/getUserIDFromJWT";
 import { User } from "../models/user/user.model";
 import { Document } from "../models/document/document.model";
-import { MongooseDocument } from "mongoose";
 import * as mongoose from "mongoose";
 
 export async function searchDocuments(req: Request, res: Response) {
@@ -16,9 +15,9 @@ export async function searchDocuments(req: Request, res: Response) {
     let query = Document.where("user_R").equals(userId);
 
     // take
-    const take = parseInt(req.header("option-take"), 10);
-    if(isNaN(take) == false) {
-        query.limit(take);
+    const limit = parseInt(req.header("option-limit"), 10);
+    if(isNaN(limit) == false) {
+        query.limit(limit);
     } else {
         query.limit(10);
     }
@@ -95,17 +94,17 @@ export async function searchDocuments(req: Request, res: Response) {
     }
 
     // createdAt range
-    const createdAtFrom = req.header("option-where-created-from");
-    const createdAtTo = req.header("option-where-created-to");
-    if(createdAtFrom != null && createdAtTo != null) {
-        query.where("createdAt").gte(new Date(2018,5,20)).lte(new Date(2018,10,20));
+    const createdFrom = parseDateFromHeader(req, "option-where-created-from");
+    const createdTo = parseDateFromHeader(req, "option-where-created-to");
+    if(createdFrom != null && createdTo != null) {
+        query.where("createdAt").gte(createdFrom).lte(createdTo);
     }
 
     // updatedAt range
-    const updatedAtFrom = req.header("option-where-updated-from");
-    const updatedAtTo = req.header("option-where-updated-to");
-    if(updatedAtFrom != null && updatedAtTo != null) {
-        query.where("updatedAt").gte(new Date(updatedAtFrom)).lte(new Date(updatedAtTo));
+    const updatedFrom = parseDateFromHeader(req, "option-where-updated-from");
+    const updatedTo = parseDateFromHeader(req, "option-where-updated-to");
+    if(updatedFrom != null && updatedTo != null) {
+        query.where("updatedAt").gte(updatedFrom).lte(updatedTo);
     }
 
     // tags
@@ -126,11 +125,34 @@ export async function searchDocuments(req: Request, res: Response) {
     }
 
     let result = await query.exec();
-    console.log("done with query--------------------------------------------------- ");
-    console.log("query=" + JSON.stringify(query.getQuery()));
-    console.log("queryOptions=" + JSON.stringify(query.getOptions()));
+    
+    // code-block for detailed query-debugging. Can be removed later
+    /*console.log("done with query--------------------------------------------------- ");
+    console.log("query=" + JSON.stringify(query.getQuery(), null, 4));
+    console.log("queryOptions=" + JSON.stringify(query.getOptions(), null, 4));
     console.log("################################################################");
-    console.log("result=" + JSON.stringify(result));
+    console.log("result=" + JSON.stringify(result, null, 4));*/
 
     res.status(200).send(result);
+}
+
+function parseDateFromHeader(req: Request, fieldName: string): Date|null {
+    const headerValue = req.header(fieldName);
+    if(headerValue == null) {
+        return null;
+    }
+    const splittedDate = headerValue.split("-");
+
+    let year = splittedDate[0];
+    let month = splittedDate[1];
+    let day = splittedDate[2];
+
+    let yearInt = parseInt(year);
+    if(month[0] == "0") {
+        month = month[1];
+    }
+    let monthInt = parseInt(month)-1;
+    let dayInt = parseInt(day);
+    let date = new Date(yearInt, monthInt, dayInt);
+    return date;
 }
