@@ -6,23 +6,29 @@ import * as crypto from 'crypto';
  * @param password Password to hash
  * @param salt String that get's appended at password
  */
-export function createPasswordHash(password: string, salt: string): Promise<string> {
-    return new Promise<string>((resolve, reject) => {
-        let computedHash: string = "";
-        const hashRounds = 2;
-        crypto.scrypt(password, salt, 64, (err, key) => {
-            if(err) reject(err);
-            computedHash = key.toString('base64');
-            for(let x = 0; x < hashRounds; x++) {
-                try {
-                    crypto.scrypt(computedHash, salt, 64, (err, key) => {
-                        computedHash = key.toString('base64')
-                    });
-                } catch(err) {
-                    reject(err);
-                }
+export async function createPasswordHash(password: string, salt: string): Promise<string> {
+    return new Promise<string>(async (resolve, reject) => {
+        const hashRounds = 100;
+        let computedHash = await scrypt(password, salt);    // First round
+        for(let x = 0; x < hashRounds; x++) {
+            try {
+                computedHash = await scrypt(computedHash, salt);
+            } catch(err) {
+                reject(err);
             }
-            resolve(computedHash);
+        }
+        resolve(computedHash);
+    })
+}
+
+/**
+ * Small wrapper to make async crypto.scrypt function to an promise.
+ */
+function scrypt(hash, salt): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+        crypto.scrypt(hash, salt, 64, (err, key) => {
+            if(err) reject(err);
+            resolve(key.toString("base64"));
         })
     })
 }
