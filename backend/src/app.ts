@@ -6,6 +6,7 @@ import createExpressServer from './lib/createExpressServer';
 import { config } from './config';
 import { User } from './models/user/user.model';
 import { insertDummyData } from './insertDummyData';
+import * as del from "del";
 
 const mongoose: Mongoose = require("mongoose");
 
@@ -15,9 +16,10 @@ async function run() {
     // todo: clean db
     console.log("- database cleaned");
 
-    if (!fs.existsSync("../uploads")) {
-        fs.mkdirSync("../uploads");
+    if (fs.existsSync("./uploads")) {
+        del.sync("./uploads");
     }
+    fs.mkdirSync("./uploads");
     console.log("- uploads-folder existing");
     
     // Create connection to MongoDB
@@ -38,9 +40,6 @@ async function run() {
     // Create Express server
     const { app, server } = createExpressServer();
 
-    // todo: await insertDummyData();
-    console.log("- dummydata inserted");
-
     // Register routes
     registerExpressRoutes(app);
     console.log("- routes registered");
@@ -54,4 +53,19 @@ async function run() {
         });
     });  
 }
+
+/*var deleteFolderRecursive = function(path) {
+    if( fs.existsSync(path) ) {
+      fs.readdirSync(path).forEach(function(file,index){
+        var curPath = path + "/" + file;
+        if(fs.lstatSync(curPath).isDirectory()) { // recurse
+          deleteFolderRecursive(curPath);
+        } else { // delete file
+          fs.unlinkSync(curPath);
+        }
+      });
+      fs.rmdirSync(path);
+    }
+  };*/
+
 run();

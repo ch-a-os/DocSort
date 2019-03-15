@@ -79,7 +79,7 @@ export async function insertDummyData() {
     doc_3.title = "tui mahnung - antwort";
     doc_3.note = "mein antwort-brief zur mahnung, warte auf antwort...";
     doc_3.fileExtension = "png";
-    doc_3.user_R = user_test;
+    doc_3.user_R = user_brother;
     doc_3.tags_R = new Array();
     doc_3.tags_R.push(tag_tui, tag_mahnung, tag_warteAufAntwort);
     doc_3.createdAt = new Date(2018, 7, 16);
