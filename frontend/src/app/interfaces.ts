@@ -1,5 +1,5 @@
 export interface ITag {
-  id?: string;
+  _id?: string;
   name: string;
   style: {
     logo: string;
@@ -23,7 +23,7 @@ export interface IUploadFile {
 }
 
 export interface IDocument {
-  uid: number;
+  _id: string;
   primaryNumber: number;
   secondaryNumber?: number;
   fileExtension: string;

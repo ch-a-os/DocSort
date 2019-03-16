@@ -25,6 +25,11 @@ interface IRequestBody {
     title: string;
     note: string;
     tags: string;
+    textRecognition?: {
+        enabled?: boolean;
+        finished?: boolean;
+        content?: string;
+    }
 }
 
 export default async function uploadSingleDocument(req: Request, res: Response) {
@@ -35,7 +40,7 @@ export default async function uploadSingleDocument(req: Request, res: Response) 
         }
 
         const userId = getUserIDFromJWT(req.header("token"));
-        const user = await User.findOne({ id: userId }).populate("tags_R").exec();
+        const user = await User.findOne({ _id: userId }).populate("tags_R").exec();
         const nextPrimaryNumber = await getNextPrimaryNumber(userId);
 
         const requestBody: IRequestBody = req.body;
@@ -49,9 +54,13 @@ export default async function uploadSingleDocument(req: Request, res: Response) 
         document.note = requestBody.note;
         document.user_R = user;
         document.mimeType = file.mimetype;
-        document.textRecognition = {};
-        document.textRecognition.enabled = false;
-        document.textRecognition.finished = false;
+
+        if(requestBody.textRecognition != null) {
+            document.textRecognition = {};
+            document.textRecognition.enabled = requestBody.textRecognition.enabled;
+            document.textRecognition.finished = requestBody.textRecognition.finished;
+        }
+        
         document.fileExtension = extractFileExtension(req.file.originalname);
 
         // Setting up TAGs
@@ -60,6 +69,7 @@ export default async function uploadSingleDocument(req: Request, res: Response) 
         if(givenTags != null) {
             document.tags_R = new Array();
             for (const tag of givenTags) {
+                console.log("checking TAG:", tag);
                 if(typeof tag == "string") {
                     // Add existing tag to array
                     let existingTag = await Tag.findOne({ _id: mongoose.Types.ObjectId(tag) });
@@ -69,7 +79,6 @@ export default async function uploadSingleDocument(req: Request, res: Response) 
                 } else {
                     // Create a new tag If it's not existing (because it's not a number)
                     let newTag = new Tag();
-                    console.log("debug-tag=" + JSON.stringify(tag));
                     newTag.name = tag.name;
                     newTag.style = {};
                     if(tag.style.logo != null) {

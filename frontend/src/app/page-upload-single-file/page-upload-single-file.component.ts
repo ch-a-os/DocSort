@@ -37,8 +37,8 @@ export class PageUploadSingleFileComponent implements OnInit {
   tagsToSendList(tagList: Array<ITag>) {
     this.tags = new Array();
     for (const entry of tagList) {
-      if(entry.id != null) {
-        this.tags.push(entry.id);
+      if(entry._id != null) {
+        this.tags.push(entry._id);
       } else {
         this.tags.push(entry);
       }
