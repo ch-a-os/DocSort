@@ -1,5 +1,3 @@
-import * as fs from 'fs';
-
 import { Document } from "../models/document/document.model";
 import { IDocument } from "../models/document/document.interface";
 import { generateFilePath } from '../lib/generateFilePath';
@@ -11,7 +9,8 @@ export default async function getDocumentFile(req: any, res: any) {
         return;
     }
 
-    const doc: IDocument = await Document.findOne({ id: documentId }).select('user_R number');
+    const doc: IDocument = await Document.findOne({ id: documentId }, 'title fileExtension user_R number');
+    console.log("Selected fields:", doc.toString())
     const filepath = generateFilePath(doc);
     res.download(filepath, `${doc.title}.${doc.fileExtension}`);
 }
