@@ -16,8 +16,6 @@ export let Schema_DocumentNumber: mongoose.Schema = new mongoose.Schema({
 });
 
 export let Schema_Document: mongoose.Schema = new mongoose.Schema({
-    //_id
-
     number: { type: Schema_DocumentNumber, required: false },
     title: { type: String, required: false },
     note: { type: String, required: false },

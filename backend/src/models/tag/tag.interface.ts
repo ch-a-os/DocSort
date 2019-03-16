@@ -7,7 +7,6 @@ interface IStyle {
 }
 
 export interface ITag extends mongoose.Document {
-    // id
     name: string;
     style: IStyle;
 }

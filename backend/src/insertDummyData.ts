@@ -16,8 +16,10 @@ export async function insertDummyData() {
     // Create tags -----------------------------
     let tagInvoice = await Tag.create({
         name: "Invoice",
-        colorBackground: "#f1c40f",
-        colorForeground: '#ffffff'
+        style: {
+            colorBackground: "#f1c40f",
+            colorForeground: '#ffffff'
+        }
     });
     await tagInvoice.save();
 
@@ -28,8 +30,10 @@ export async function insertDummyData() {
 
     let tagTravel = await Tag.create({
         name: "Travel",
-        colorBackground: "#2ecc71",
-        colorForeground: '#ffffff'
+        style: {
+            colorBackground: "#2ecc71",
+            colorForeground: '#ffffff'
+        }
     });
     await tagTravel.save();
 
@@ -45,8 +49,10 @@ export async function insertDummyData() {
 
     let tagMisc = await Tag.create({
         name: "Misc",
-        colorBackground: "#1c1c1c",
-        colorForeground: "#ffffff"
+        style: {
+            colorBackground: "#1c1c1c",
+            colorForeground: "#ffffff"
+        }
     });
     await tagMisc.save();
 
@@ -68,10 +74,8 @@ export async function insertDummyData() {
     await user_brother.save();
     fs.mkdirSync("./uploads/" + user_brother.id)
 
-    const documents = [
+    const documents: Array<any> = [
         {
-            primaryNumber: 1,
-            secondaryNumber: 0,
             title: "Sample document 1 - Watermarked",
             note: "What the title says",
             fileExtension: 'pdf',
@@ -80,8 +84,6 @@ export async function insertDummyData() {
             createdAt: new Date(2018, 4, 26)
         },
         {
-            primaryNumber: 2,
-            secondaryNumber: 0,
             title: "Sample document 2",
             note: "This is cool text",
             fileExtension: 'pdf',
@@ -90,18 +92,14 @@ export async function insertDummyData() {
             createdAt: new Date(2018, 4, 27)
         },
         {
-            primaryNumber: 3,
-            secondaryNumber: 0,
             title: "Sample document 3",
             note: "$4.500 :(",
-            fileExtension: 'pdf',
+            fileExtension: 'png',
             user_R: user_test,
             tags: [tagTravel, tagInvoice],
             createdAt: new Date(2018, 4, 27)
         },
         {
-            primaryNumber: 4,
-            secondaryNumber: 0,
             title: "Sample document 4 awww",
             note: "Awwww",
             fileExtension: 'pdf',
@@ -110,8 +108,6 @@ export async function insertDummyData() {
             createdAt: new Date(2018, 5, 10)
         },
         {
-            primaryNumber: 5,
-            secondaryNumber: 0,
             title: "Sample document 5",
             note: "Did you????",
             fileExtension: 'pdf',
@@ -120,8 +116,6 @@ export async function insertDummyData() {
             createdAt: new Date(2018, 5, 30)
         },
         {
-            primaryNumber: 5,
-            secondaryNumber: 1,
             title: "Sample document 6 - Magic",
             note: "Right?",
             fileExtension: 'pdf',
@@ -130,8 +124,6 @@ export async function insertDummyData() {
             createdAt: new Date(2018, 7, 6)
         },
         {
-            primaryNumber: 5,
-            secondaryNumber: 2,
             title: "Sample document 7",
             note: "More magic",
             fileExtension: 'pdf',
@@ -140,8 +132,6 @@ export async function insertDummyData() {
             createdAt: new Date(2018, 7, 14)
         },
         {
-            primaryNumber: 6,
-            secondaryNumber: 0,
             title: "Can you OCR?",
             note: "[Fill in here a good note]",
             fileExtension: 'pdf',
@@ -150,8 +140,6 @@ export async function insertDummyData() {
             createdAt: new Date(2018, 9, 11)
         },
         {
-            primaryNumber: 7,
-            secondaryNumber: 0,
             title: "Sample document 9 - Base64",
             note: "Bipp, boop, bipp",
             fileExtension: 'pdf',
@@ -160,8 +148,6 @@ export async function insertDummyData() {
             createdAt: new Date(2018, 9, 31)
         },
         {
-            primaryNumber: 8,
-            secondaryNumber: 0,
             title: "Sample document 10",
             note: "Funny joke",
             fileExtension: 'pdf',
@@ -170,8 +156,6 @@ export async function insertDummyData() {
             createdAt: new Date(2018, 12, 3)
         },
         {
-            primaryNumber: 9,
-            secondaryNumber: 0,
             title: "Sample document 11",
             note: "ftw!!!!!!",
             fileExtension: 'pdf',
@@ -180,33 +164,51 @@ export async function insertDummyData() {
             createdAt: new Date(2019, 1, 12)
         },
         {
-            primaryNumber: 10,
-            secondaryNumber: 0,
             title: "Sample document 12 - pnnnnnnnng",
             note: "PDF is boring, now PNG.",
-            fileExtension: 'png',
+            fileExtension: 'pdf',
             user_R: user_test,
             tags: [tagMisc, tagInvoice],
             createdAt: new Date(2019, 2, 17)
         },
         {
-            primaryNumber: 11,
-            secondaryNumber: 0,
             title: "Sample document 13",
             note: "Be brave.",
-            fileExtension: 'png',
+            fileExtension: 'pdf',
             user_R: user_brother,
             tags: [tagInvoice],
             createdAt: new Date(2019, 3, 16)
         },
         {
-            primaryNumber: 12,
-            secondaryNumber: 0,
             title: "Sample document 14 - DigiDoc",
             note: "Can be cool name too",
+            fileExtension: 'pdf',
+            user_R: user_brother,
+            tags_R: [tagInvoice, tagWarning],
+            createdAt: new Date(2019, 3, 16)
+        },
+        {
+            title: "Sample document 15 - Rechnung $50.450!!",
+            note: "xD",
+            fileExtension: 'png',
+            user_R: user_brother,
+            tags_R: [tagInvoice, tagTUI],
+            createdAt: new Date(2019, 3, 16)
+        },
+        {
+            title: "Sample document 16 - Die hassen mich",
+            note: "lel",
+            fileExtension: 'png',
+            user_R: user_brother,
+            tags_R: [tagWarning, tagTUI],
+            createdAt: new Date(2019, 3, 16)
+        },
+        {
+            title: "Sample document 17 - Sind die blöd????",
+            note: "Looooooooooooooooooooooooooooooooooooooooooong",
             fileExtension: 'jpg',
             user_R: user_brother,
-            tags: [tagInvoice, tagWarning],
+            tags_R: [tagWaitForReponse, tagTUI],
             createdAt: new Date(2019, 3, 16)
         }
     ]
@@ -214,55 +216,16 @@ export async function insertDummyData() {
     console.log("Begin to save all dummy documents ...")
     for(let i = 0; i < documents.length; i++) {
         const document = documents[i];
+        document.number = {};
+        document.number.primary = await getNextPrimaryNumber(document.user_R._id);
         const db = await Document.create(document);
-        await db.save();
-        console.log(`Document ${i} of ${documents.length} has been saved.`)
+
+        // Copy file into uploads/{USER ID}/
+        const docPath = generateFilePath(db);
+        fs.copyFileSync(`./_dummyFiles/${i+1}.${document.fileExtension}`, docPath);
+
+        console.log(`Document ${i} of ${documents.length} has been saved (primary: ${document.number.primary}).\n`)
     }
-
-    // Create doc_1
-    let doc_1 = new Document();
-    doc_1.number = {};
-    doc_1.number.primary = await getNextPrimaryNumber(doc_1._id);
-    doc_1.title = "tui rechnung";
-    doc_1.note = "die rechnung zu tui";
-    doc_1.fileExtension = "pdf";
-    doc_1.user_R = user_test;
-    doc_1.tags_R = new Array();
-    doc_1.tags_R.push(tagTUI, tagInvoice);
-    doc_1.createdAt = new Date(2018, 7, 1);
-    await doc_1.save();
-    let doc_1_path = generateFilePath(doc_1);
-    fs.copyFileSync("./_dummyFiles/2.pdf", doc_1_path);
-
-    // Create doc_2
-    let doc_2 = new Document();
-    doc_2.number = {};
-    doc_2.number.primary = await getNextPrimaryNumber(doc_1._id);
-    doc_2.title = "tui mahnung";
-    doc_2.note = "leider ne mahnung bekommen...";
-    doc_2.fileExtension = "pdf";
-    doc_2.user_R = user_test;
-    doc_2.tags_R = new Array();
-    doc_2.tags_R.push(tagTUI, tagWarning);
-    doc_2.createdAt = new Date(2018, 7, 14);
-    await doc_2.save();
-    let doc_2_path = generateFilePath(doc_2);
-    fs.copyFileSync("./_dummyFiles/2.pdf", doc_2_path);
-
-    // Create doc_3
-    let doc_3 = new Document();
-    doc_3.number = {};
-    doc_3.number.primary = await getNextPrimaryNumber(doc_1._id);
-    doc_3.title = "tui mahnung - antwort";
-    doc_3.note = "mein antwort-brief zur mahnung, warte auf antwort...";
-    doc_3.fileExtension = "png";
-    doc_3.user_R = user_brother;
-    doc_3.tags_R = new Array();
-    doc_3.tags_R.push(tagTUI, tagWarning, tagWaitForReponse);
-    doc_3.createdAt = new Date(2018, 7, 16);
-    await doc_3.save();
-    let doc_3_path = generateFilePath(doc_3);
-    fs.copyFileSync("./_dummyFiles/3.png", doc_3_path);
 
     console.log("all dummy-entries inserted");
 }
