@@ -4,9 +4,14 @@ import { Tag } from "./models/tag/tag.model";
 import { User } from "./models/user/user.model";
 import { Document } from "./models/document/document.model";
 import { generateFilePath } from "./lib/generateFilePath";
-import { Schema_DocumentNumber } from "./models/document/document.schema";
+import { connection } from "mongoose";
 
 export async function insertDummyData() {
+    // Reset database first
+    console.log("\t-> Reset database ...")
+    await connection.db.dropDatabase();
+    await connection.useDb('DocSort');
+
     // Create tags -----------------------------
     let tag_rechnung = new Tag();
     tag_rechnung.name = "rechnung";

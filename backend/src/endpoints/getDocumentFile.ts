@@ -11,7 +11,7 @@ export default async function getDocumentFile(req: any, res: any) {
         return;
     }
 
-    const doc: IDocument = await Document.findOne({ id: documentId });
+    const doc: IDocument = await Document.findOne({ id: documentId }).select('user_R number');
     const filepath = generateFilePath(doc);
     const docFile = fs.readFileSync(filepath);
     res.status(200).send(docFile);

@@ -7,5 +7,5 @@ export interface IConfig {
 export const config: IConfig = {
     secretJWT: "superSecretLOL",
     serverPort: 9090,
-    mongodb: "mongodb://localhost:27017/docSort"
+    mongodb: "mongodb://localhost:27017/DocSort"
 }
