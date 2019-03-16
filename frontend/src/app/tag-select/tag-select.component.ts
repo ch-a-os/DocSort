@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { ApiService } from '../api.service';
-import { TagComponent } from '../tag/tag.component';
 
 @Component({
   selector: 'app-tag-select',
@@ -67,9 +66,12 @@ export class TagSelectComponent implements OnInit {
 }
 
 class Tag {
-  id?: number;
+  id?: string;
   name: string;
-  logo: string;
-  colorBackground: string;
-  colorForeground: string;
+  style: {
+    logo: string;
+    colorBackground: string;
+    colorForeground: string;
+  }
+ 
 }

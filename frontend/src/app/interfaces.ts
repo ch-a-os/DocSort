@@ -1,9 +1,11 @@
 export interface ITag {
-  id?: number;
+  id?: string;
   name: string;
-  logo: string;
-  colorBackground: string;
-  colorForeground: string;
+  style: {
+    logo: string;
+    colorBackground: string;
+    colorForeground: string;
+  }
 }
 
 export interface IDecodedJwt {

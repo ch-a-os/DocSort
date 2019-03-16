@@ -11,7 +11,7 @@ export class PageUploadSingleFileComponent implements OnInit {
   selectedFile: File;
   uploadTitle: string;
   note: string;
-  tags: Array<ITag|number>;
+  tags: Array<ITag|string>;
 
   constructor(private api: ApiService) { }
 

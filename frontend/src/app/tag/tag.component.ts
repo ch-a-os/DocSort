@@ -19,13 +19,13 @@ export class TagComponent implements OnInit {
     console.log("child: toggle was called: " + this.tagData.name);
     this.toggleSelect.emit(this.tagData);
   }
-
 }
-
 interface ITagData {
   id?: number;
   name: string;
-  logo: string;
-  colorBackground: string;
-  colorForeground: string;
+  style: {
+    logo: string;
+    colorBackground: string;
+    colorForeground: string;
+  }   
 }

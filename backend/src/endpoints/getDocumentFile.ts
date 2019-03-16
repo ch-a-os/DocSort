@@ -10,7 +10,7 @@ export default async function getDocumentFile(req: any, res: any) {
     }
 
     const doc: IDocument = await Document.findOne({ id: documentId }, 'title fileExtension user_R number');
-    console.log("Selected fields:", doc.toString())
+    console.log("Selected fields:", doc.toString());
     const filepath = generateFilePath(doc);
     res.download(filepath, `${doc.title}.${doc.fileExtension}`);
 }

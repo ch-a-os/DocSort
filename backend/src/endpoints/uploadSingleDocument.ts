@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import * as mongoose from 'mongoose';
 import { Request, Response } from "express";
 import { Document } from "../models/document/document.model";
 import { User } from "../models/user/user.model";
@@ -11,6 +12,10 @@ import { IDocument } from "../models/document/document.interface";
 
 interface IRequestTag {
     name: string;
+    style: IStyle;
+}
+
+interface IStyle {
     logo?: string;
     colorForeground?: string;
     colorBackground?: string;
@@ -37,38 +42,44 @@ export default async function uploadSingleDocument(req: Request, res: Response) 
         const file: Express.Multer.File = req.file;
 
         const document: IDocument = new Document();
+        document.number = {};
         document.number.primary = nextPrimaryNumber;
 
         document.title = requestBody.title;
         document.note = requestBody.note;
         document.user_R = user;
         document.mimeType = file.mimetype;
+        document.textRecognition = {};
         document.textRecognition.enabled = false;
         document.textRecognition.finished = false;
         document.fileExtension = extractFileExtension(req.file.originalname);
 
         // Setting up TAGs
-        const givenTags: Array<IRequestTag|number> = JSON.parse(requestBody.tags);
+        const givenTags: Array<IRequestTag|string> = JSON.parse(requestBody.tags);
+        console.log("Tag:", givenTags)
         if(givenTags != null) {
             document.tags_R = new Array();
             for (const tag of givenTags) {
-                if(typeof tag == "number") {
-                    let existingTag = await Tag.findOne({ id: tag });
+                if(typeof tag == "string") {
+                    // Add existing tag to array
+                    let existingTag = await Tag.findOne({ _id: mongoose.Types.ObjectId(tag) });
                     if(existingTag != null) {
                         document.tags_R.push(existingTag);
                     }
                 } else {
+                    // Create a new tag If it's not existing (because it's not a number)
                     let newTag = new Tag();
                     console.log("debug-tag=" + JSON.stringify(tag));
                     newTag.name = tag.name;
-                    if(tag.logo != null) {
-                        newTag.style.logo = tag.logo;
+                    newTag.style = {};
+                    if(tag.style.logo != null) {
+                        newTag.style.logo = tag.style.logo;
                     }
-                    if(tag.colorBackground != null) {
-                        newTag.style.colorBackground = tag.colorBackground;
+                    if(tag.style.colorBackground != null) {
+                        newTag.style.colorBackground = tag.style.colorBackground;
                     }
-                    if(tag.colorForeground != null) {
-                        newTag.style.colorForeground = tag.colorForeground;
+                    if(tag.style.colorForeground != null) {
+                        newTag.style.colorForeground = tag.style.colorForeground;
                     }
                     user.tags_R.push(newTag);
                     //newTag.user_R = user;

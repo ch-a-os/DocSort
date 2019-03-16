@@ -78,7 +78,7 @@ export class ApiService {
     let formData: FormData = new FormData();  
     formData.append('singleDocument',uploadData.singleDocument); 
     formData.append('note',uploadData.note);
-    formData.append('tags', "[" + uploadData.tags.toString() + "]");
+    formData.append('tags', JSON.stringify(uploadData.tags));
     formData.append('title',uploadData.title);
     let response = null;
     let toast: SnotifyToast = null;
