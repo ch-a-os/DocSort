@@ -18,7 +18,6 @@ export class ApiService {
     this.serverString = "http://localhost:9090";
     this.isLoggedIn = false;
     this.decodedJwt = null;
-    //this.login("spYro", "PASS");
   }
 
   /**
@@ -146,6 +145,22 @@ export class ApiService {
       console.log("error in getAllDocumentsMeta: " + error);
     }
     return response.body;
+  }
+
+  async getLatestDocuments(): Promise<Array<IDocument>> {
+    let response = null;
+    try {
+      response = await this.http.get(`${this.serverString}/searchDocuments`, {
+        reportProgress: true,
+        observe: 'response',
+        headers: new HttpHeaders().set('token', this.jwt)
+                .set('option-take', '5')
+                .set('option-order-order', 'DESC')
+      }).toPromise();
+    } catch (error) {
+      console.log("error in getAllDocumentsMeta: " + error);
+    }
+    return response.body.documents;
   }
 
   async downloadDocument(docID): Promise<HttpResponse<Object>> {
