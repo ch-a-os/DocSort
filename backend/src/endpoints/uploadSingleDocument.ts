@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { Document } from "../models/document/document.model";
 import { User } from "../models/user/user.model";
 import { Tag } from "../models/tag/tag.model";
-import { getNewPrimaryNumber } from "../lib/getNewPrimaryNumber";
+import { getNextPrimaryNumber } from "../lib/getNextPrimaryNumber";
 import { getUserIDFromJWT } from "../lib/getUserIDFromJWT";
 import { generateFilePath } from "../lib/generateFilePath";
 import extractFileExtension from "../lib/extractFileExtension";
@@ -31,7 +31,7 @@ export default async function uploadSingleDocument(req: Request, res: Response) 
 
         const userId = getUserIDFromJWT(req.header("token"));
         const user = await User.findOne({ id: userId }).populate("tags_R").exec();
-        const nextPrimaryNumber = await getNewPrimaryNumber(userId);
+        const nextPrimaryNumber = await getNextPrimaryNumber(userId);
 
         const requestBody: IRequestBody = req.body;
         const file: Express.Multer.File = req.file;

@@ -5,6 +5,7 @@ import { User } from "./models/user/user.model";
 import { Document } from "./models/document/document.model";
 import { generateFilePath } from "./lib/generateFilePath";
 import { connection } from "mongoose";
+import { getNextPrimaryNumber } from "./lib/getNextPrimaryNumber";
 
 export async function insertDummyData() {
     // Reset database first
@@ -50,7 +51,7 @@ export async function insertDummyData() {
     // Create doc_1
     let doc_1 = new Document();
     doc_1.number = {};
-    doc_1.number.primary = 1;
+    doc_1.number.primary = await getNextPrimaryNumber(doc_1._id);
     doc_1.title = "tui rechnung";
     doc_1.note = "die rechnung zu tui";
     doc_1.fileExtension = "pdf";
@@ -65,7 +66,7 @@ export async function insertDummyData() {
     // Create doc_2
     let doc_2 = new Document();
     doc_2.number = {};
-    doc_2.number.primary = 2;
+    doc_2.number.primary = await getNextPrimaryNumber(doc_1._id);
     doc_2.title = "tui mahnung";
     doc_2.note = "leider ne mahnung bekommen...";
     doc_2.fileExtension = "pdf";
@@ -80,7 +81,7 @@ export async function insertDummyData() {
     // Create doc_3
     let doc_3 = new Document();
     doc_3.number = {};
-    doc_3.number.primary = 3;
+    doc_3.number.primary = await getNextPrimaryNumber(doc_1._id);
     doc_3.title = "tui mahnung - antwort";
     doc_3.note = "mein antwort-brief zur mahnung, warte auf antwort...";
     doc_3.fileExtension = "png";
