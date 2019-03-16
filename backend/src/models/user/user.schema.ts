@@ -10,7 +10,7 @@ let Schema_User: mongoose.Schema = new mongoose.Schema({
     password: { type: String, required: true },
     salt: { type: String, required: false },
     tags_R: [{ type: mongoose.Schema.Types.ObjectId, required: false, ref: "Tag" }],
-    lastPrimaryNumber: { type: Number, required: false, default: 1 }
+    nextPrimaryNumber: { type: Number, required: false, default: 1 }
 }, {
     timestamps: true
 });

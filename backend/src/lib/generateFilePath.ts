@@ -5,7 +5,7 @@ export function generateFilePath(document: IDocument) {
     if(document.number.secondary != null) {
         numberSequence += `.${document.number.secondary}`;
     }
-    let userId = "";;
+    let userId = "";
     if(document.populated("user_R") == null) {
         userId = document.user_R.toString();
     } else {

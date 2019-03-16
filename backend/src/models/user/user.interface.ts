@@ -6,7 +6,7 @@ export interface IUser extends mongoose.Document {
     password: string;
     salt: string;
     tags_R: Array<ITag>;
-    lastPrimaryNumber: number;
+    nextPrimaryNumber: number;
 
     createdAt: Date;
     updatedAt: Date;
