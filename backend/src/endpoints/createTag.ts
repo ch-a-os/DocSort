@@ -27,14 +27,7 @@ export default async function createTag(req: any, res: any) {
     }
 
     // Create tag If not exist
-    const newTag = await Tag.create({
-        name: userTag.name,
-        style: {
-            colorBackground: userTag.style.colorBackground,
-            colorForeground: userTag.style.colorForeground,
-            logo: userTag.style.logo
-        }
-    });
+    const newTag = await Tag.create(userTag);
 
     // Give user that tag
     user.tags_R.push(newTag);
