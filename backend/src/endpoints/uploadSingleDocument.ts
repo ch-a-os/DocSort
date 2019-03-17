@@ -91,7 +91,6 @@ export default async function uploadSingleDocument(req: Request, res: Response) 
                         newTag.style.colorForeground = tag.style.colorForeground;
                     }
                     user.tags_R.push(newTag);
-                    //newTag.user_R = user;
                     await newTag.save();
                     await user.save();
                     document.tags_R.push(newTag);
