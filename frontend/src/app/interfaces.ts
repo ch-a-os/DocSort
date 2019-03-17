@@ -2,10 +2,10 @@ export interface ITag {
   _id?: string;
   name: string;
   style: {
-    logo: string;
-    colorBackground: string;
-    colorForeground: string;
-  }
+      colorBackground?: string;
+      colorForeground?: string;
+      logo?: string;
+  };
 }
 
 export interface IDecodedJwt {
@@ -16,25 +16,27 @@ export interface IDecodedJwt {
 }
 
 export interface IUploadFile {
-  singleDocument: File;
-  title: string;
-  note: string;
-  tags: Array<any>;
+  file: File;
+  document: IDocument;
 }
 
 export interface IDocument {
-  _id: string;
-  primaryNumber: number;
-  secondaryNumber?: number;
-  fileExtension: string;
+  _id?: string;
+  number?: {
+    primary?: number;
+    secondary?: number;
+  };
   title?: string;
   note?: string;
-  user?: any;
-  tags?: Array<any>;
+  fileExtension?: string;
+  user_R?: string;
+  tags_R?: Array<string>;
   mimeType?: string;
-  ocrEnabled?: boolean;
-  ocrFinished?: boolean;
-  ocrText?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  textRecognition?: {
+      enabled?: boolean;
+      finished?: boolean;
+      content?: string;
+  };
+  createdAt?: Date;
+  updatedAt?: Date;
 }

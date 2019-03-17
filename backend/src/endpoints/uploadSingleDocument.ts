@@ -10,27 +10,25 @@ import { generateFilePath } from "../lib/generateFilePath";
 import extractFileExtension from "../lib/extractFileExtension";
 import { IDocument } from "../models/document/document.interface";
 
-interface IRequestTag {
+/*interface IRequestTag {
     name: string;
-    style: IStyle;
-}
+    style?: {
+        logo?: string;
+        colorForeground?: string;
+        colorBackground?: string;
+    }
+}*/
 
-interface IStyle {
-    logo?: string;
-    colorForeground?: string;
-    colorBackground?: string;
-}
-
-interface IRequestBody {
+/*interface IRequestBody {
     title: string;
     note: string;
-    tags: string;
+    tags: Array<string>;
     textRecognition?: {
         enabled?: boolean;
         finished?: boolean;
         content?: string;
     }
-}
+}*/
 
 export default async function uploadSingleDocument(req: Request, res: Response) {
     try {
@@ -43,70 +41,46 @@ export default async function uploadSingleDocument(req: Request, res: Response) 
         const user = await User.findOne({ _id: userId }).populate("tags_R").exec();
         const nextPrimaryNumber = await getNextPrimaryNumber(userId);
 
-        const requestBody: IRequestBody = req.body;
-        const file: Express.Multer.File = req.file;
+        console.log("req.body=", req.body);
+        const uploadDocument: IUploadDocument = JSON.parse(req.body.document);
+        const uploadFile: Express.Multer.File = req.file;
 
-        const document: IDocument = new Document();
-        document.number = {};
-        document.number.primary = nextPrimaryNumber;
+        const newDocument: IDocument = new Document();
+        newDocument.number = {};
+        newDocument.number.primary = nextPrimaryNumber;
 
-        document.title = requestBody.title;
-        document.note = requestBody.note;
-        document.user_R = user;
-        document.mimeType = file.mimetype;
+        newDocument.title = uploadDocument.title;
+        newDocument.note = uploadDocument.note;
+        newDocument.user_R = user;
+        newDocument.mimeType = uploadFile.mimetype;
 
-        if(requestBody.textRecognition != null) {
-            document.textRecognition = {};
-            document.textRecognition.enabled = requestBody.textRecognition.enabled;
-            document.textRecognition.finished = requestBody.textRecognition.finished;
+        if(uploadDocument.textRecognition != null) {
+            newDocument.textRecognition = {};
+            newDocument.textRecognition.enabled = uploadDocument.textRecognition.enabled;
+            newDocument.textRecognition.finished = uploadDocument.textRecognition.finished;
         }
         
-        document.fileExtension = extractFileExtension(req.file.originalname);
+        newDocument.fileExtension = extractFileExtension(req.file.originalname);
 
         // Setting up TAGs
-        const givenTags: Array<IRequestTag|string> = JSON.parse(requestBody.tags);
+        const givenTags: Array<string> = uploadDocument.tags_R;
         console.log("Tag:", givenTags)
-        if(givenTags != null) {
-            document.tags_R = new Array();
+        if(uploadDocument.tags_R != null) {
+            newDocument.tags_R = new Array();
             for (const tag of givenTags) {
-                console.log("checking TAG:", tag);
-                if(typeof tag == "string") {
-                    // Add existing tag to array
-                    let existingTag = await Tag.findOne({ _id: mongoose.Types.ObjectId(tag) });
-                    if(existingTag != null) {
-                        document.tags_R.push(existingTag);
-                    }
-                } else {
-                    // Create a new tag If it's not existing (because it's not a number)
-                    let newTag = new Tag();
-                    newTag.name = tag.name;
-                    newTag.style = {};
-                    if(tag.style.logo != null) {
-                        newTag.style.logo = tag.style.logo;
-                    }
-                    if(tag.style.colorBackground != null) {
-                        newTag.style.colorBackground = tag.style.colorBackground;
-                    }
-                    if(tag.style.colorForeground != null) {
-                        newTag.style.colorForeground = tag.style.colorForeground;
-                    }
-                    user.tags_R.push(newTag);
-                    await newTag.save();
-                    await user.save();
-                    document.tags_R.push(newTag);
-                }
+                newDocument.tags_R.push(mongoose.Types.ObjectId(tag));
             }
         }
         
-        await document.save();
+        await newDocument.save();
 
-        const filePath = generateFilePath(document);
+        const filePath = generateFilePath(newDocument);
         fs.writeFileSync(filePath, req.file.buffer);
         
         console.log(`file written: ${filePath}`);
         await wait(4000);
         res.status(200).send({
-            newID: document.id
+            newID: newDocument.id
         });
     } catch(err) {
         res.status(500).send({message: "Please see console output for error message."});
@@ -118,4 +92,21 @@ async function wait(ms) {
     return new Promise(resolve => {
         setTimeout(resolve, ms);
     });
+}
+
+interface IUploadDocument {
+    number: {
+        primary?: number;
+        secondary?: number;
+    };
+    title?: string;
+    note?: string;
+    fileExtension?: string;
+    tags_R?: Array<string>;
+    mimeType?: string;
+    textRecognition?: {
+        enabled?: boolean;
+        finished?: boolean;
+        content?: string;
+    }
 }

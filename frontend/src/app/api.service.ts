@@ -73,13 +73,12 @@ export class ApiService {
 
   async uploadFile(uploadData: IUploadFile) {
     // Create JSON object for the tags
-    const tags: Array<any> = [];
+    //const tags: Array<any> = [];
 
     let formData: FormData = new FormData();  
-    formData.append('singleDocument',uploadData.singleDocument); 
-    formData.append('note',uploadData.note);
-    formData.append('tags', JSON.stringify(uploadData.tags));
-    formData.append('title',uploadData.title);
+    formData.append('file',uploadData.file); 
+    console.log("uploadData.document=", uploadData.document);
+    formData.append('document', JSON.stringify(uploadData.document));
     let response = null;
     let toast: SnotifyToast = null;
     try {

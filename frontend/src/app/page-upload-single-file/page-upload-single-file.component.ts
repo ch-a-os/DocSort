@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ITag } from '../interfaces';
+import { ITag, IDocument } from '../interfaces';
 import { ApiService } from '../api.service';
 
 @Component({
@@ -9,16 +9,18 @@ import { ApiService } from '../api.service';
 })
 export class PageUploadSingleFileComponent implements OnInit {
   selectedFile: File;
-  uploadTitle: string;
-  note: string;
-  tags: Array<ITag|string>;
+  document: IDocument;
 
   constructor(private api: ApiService) { }
 
   ngOnInit() {
-    this.uploadTitle = "";
-    this.note = "";
-    this.tags = new Array();
+    this.document = {};
+
+    this.document.title = "";
+    this.document.note = "";
+    this.document.tags_R = new Array();
+    this.document.number = {};
+    this.document.textRecognition = {};
   }
 
   onFileChanged(files: FileList) {
@@ -27,22 +29,15 @@ export class PageUploadSingleFileComponent implements OnInit {
 
   onUpload() {
     this.api.uploadFile({
-      singleDocument: this.selectedFile,
-      title: this.uploadTitle,
-      note: this.note,
-      tags: this.tags
+      file: this.selectedFile,
+      document: this.document
     });
   }
 
   tagsToSendList(tagList: Array<ITag>) {
-    this.tags = new Array();
-    for (const entry of tagList) {
-      if(entry._id != null) {
-        this.tags.push(entry._id);
-      } else {
-        this.tags.push(entry);
-      }
+    this.document.tags_R = new Array();
+    for (const tag of tagList) {
+      this.document.tags_R.push(tag._id);
     }
   }
-
 }

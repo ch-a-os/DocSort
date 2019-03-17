@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { ITag } from '../interfaces';
 
 @Component({
   selector: 'app-tag',
@@ -7,8 +8,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class TagComponent implements OnInit {
 
-  @Input() tagData: ITagData;
-  @Output() toggleSelect = new EventEmitter<ITagData>();
+  @Input() tagData: ITag;
+  @Output() toggleSelect = new EventEmitter<ITag>();
 
   constructor() { }
 
@@ -20,12 +21,12 @@ export class TagComponent implements OnInit {
     this.toggleSelect.emit(this.tagData);
   }
 }
-interface ITagData {
-  id?: number;
+/*export interface ITag {
+  id?: string;
   name: string;
   style: {
     logo: string;
     colorBackground: string;
     colorForeground: string;
   }   
-}
+}*/

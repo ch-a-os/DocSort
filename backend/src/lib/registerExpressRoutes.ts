@@ -1,7 +1,7 @@
 import login from "../endpoints/login";
 import uploadSingleDocument from "../endpoints/uploadSingleDocument";
 import getDocumentFile from "../endpoints/getDocumentFile";
-import validateJWT from "./validateJwt";
+import validateJWT from "./validateJWT";
 import getAllTags from "../endpoints/getAllTags";
 import getDocument from "../endpoints/getDocument";
 import { searchDocuments } from "../endpoints/searchDocuments";
@@ -16,5 +16,5 @@ export function registerExpressRoutes(app) {
     app.get('/getDocumentFile/:docID', validateJWT, getDocumentFile);
     app.get('/getAllTags', validateJWT, getAllTags);
 
-    app.post('/uploadSingleDocument', validateJWT, upload.single('singleDocument'), uploadSingleDocument);
+    app.post('/uploadSingleDocument', validateJWT, upload.single('file'), uploadSingleDocument);
 }

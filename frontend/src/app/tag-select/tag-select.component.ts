@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { ApiService } from '../api.service';
+import { ITag } from '../interfaces';
 
 @Component({
   selector: 'app-tag-select',
@@ -7,26 +8,26 @@ import { ApiService } from '../api.service';
   styleUrls: ['./tag-select.component.css']
 })
 export class TagSelectComponent implements OnInit {
-  @Output() tagsToSend = new EventEmitter<Array<Tag|number>>();
+  @Output() tagsToSend = new EventEmitter<Array<ITag>>();
 
-  tagsAvailable: Array<Tag>;
-  tagsSelected: Array<Tag>;
+  tagsAvailable: Array<ITag>;
+  tagsSelected: Array<ITag>;
 
   constructor(private api: ApiService, private cdr: ChangeDetectorRef) {
-    this.tagsAvailable = new Array<Tag>();
-    this.tagsSelected = new Array<Tag>();
+    this.tagsAvailable = new Array<ITag>();
+    this.tagsSelected = new Array<ITag>();
   }
 
   async ngOnInit() {
-    let temp = await this.api.getTags();
-    for(let entry of temp) {
-      this.tagsAvailable.push(entry);
+    let tagArray = await this.api.getTags();
+    for(let tag of tagArray) {
+      this.tagsAvailable.push(tag);
     }
     //this.tagsSelected = await this.api.getTags();
     console.log("loaded " + this.tagsAvailable.length + " tags");
   }
 
-  toggleSelect(tag: Tag) {
+  toggleSelect(tag: ITag) {
     console.log("parent called: " + tag.name);
     let foundEntryIndex = this.tagsSelected.indexOf(tag);
     if(foundEntryIndex == -1) {
@@ -65,7 +66,7 @@ export class TagSelectComponent implements OnInit {
 
 }
 
-class Tag {
+/*class Tag {
   id?: string;
   name: string;
   style: {
@@ -74,4 +75,4 @@ class Tag {
     colorForeground: string;
   }
  
-}
+}*/
