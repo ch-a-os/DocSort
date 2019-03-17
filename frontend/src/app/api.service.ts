@@ -160,7 +160,7 @@ export class ApiService {
     } catch (error) {
       console.log("error in getAllDocumentsMeta: " + error);
     }
-    return response.body.documents;
+    return response.body;
   }
 
   async downloadDocument(docID): Promise<HttpResponse<Object>> {
