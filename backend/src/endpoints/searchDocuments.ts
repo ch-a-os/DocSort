@@ -4,7 +4,7 @@ import { User } from "../models/user/user.model";
 import { Document } from "../models/document/document.model";
 import * as mongoose from "mongoose";
 
-export async function searchDocuments(req: Request, res: Response) {
+export default async function searchDocuments(req: Request, res: Response) {
     const userId = getUserIDFromJWT(req.headers.token.toString());
     const user = await User.findOne({ _id: userId });
     if(user == null) {
