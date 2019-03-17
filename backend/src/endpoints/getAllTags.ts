@@ -1,9 +1,9 @@
-import { ITag } from "../models/tag/tag.interface";
-import { Tag } from "../models/tag/tag.model";
+import { IUser } from "../models/user/user.interface";
+import { User } from "../models/user/user.model";
+import { getUserIDFromJWT } from "../lib/getUserIDFromJWT";
 
 export default async function getAllTags(req: any, res: any) {
-    
-    const tags: Array<ITag> = await Tag.find().sort({name: -1}).exec();
-    console.log(`getAllTags: found ${tags.length} Tags`);
-    res.status(200).send(tags);
+    const user: IUser = await User.findById(getUserIDFromJWT(req.headers.token)).populate('tags_R').exec();
+    console.log(`getAllTags: found ${user.tags_R} Tags`);
+    res.status(200).send(user.tags_R);
 }
