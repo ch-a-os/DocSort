@@ -25,6 +25,7 @@ export async function searchDocuments(req: Request, res: Response) {
     // order by
     const order = req.header("option-order-order");
     const field = req.header("option-order-field");
+    console.log("Order:", order)
     if(field != null && order != null && (order == "ASC" || order == "DESC")) {
         let orderSymbol = "";
         if(order == "DESC") {

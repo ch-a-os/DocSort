@@ -6,8 +6,8 @@
             <h4>{{doc.title}}</h4>
             <p>{{doc.note}}</p>
             <div id="properties">
-                <img *ngIf="doc.mimeType == 'image/png'" src="assets/filetype_png.svg">
-                <img *ngIf="doc.mimeType == 'application/pdf'" src="assets/filetype_pdf.svg">
+                <img *ngIf="doc.fileExtension == 'png'" src="assets/filetype_png.svg">
+                <img *ngIf="doc.fileExtension == 'pdf'" src="assets/filetype_pdf.svg">
                 <img src="assets/ocr_enabled.svg" title="OCR enabled on this document">
             </div>
             <br>

@@ -177,7 +177,7 @@ export async function insertDummyData() {
             fileExtension: 'pdf',
             user_R: user_brother,
             tags: [tagInvoice],
-            createdAt: new Date(2019, 3, 16)
+            createdAt: new Date(2019, 2, 6)
         },
         {
             title: "Sample document 14 - DigiDoc",
@@ -185,7 +185,7 @@ export async function insertDummyData() {
             fileExtension: 'pdf',
             user_R: user_brother,
             tags_R: [tagInvoice, tagWarning],
-            createdAt: new Date(2019, 3, 16)
+            createdAt: new Date(2019, 2, 7)
         },
         {
             title: "Sample document 15 - Rechnung $50.450!!",
@@ -193,7 +193,7 @@ export async function insertDummyData() {
             fileExtension: 'png',
             user_R: user_brother,
             tags_R: [tagInvoice, tagTUI],
-            createdAt: new Date(2019, 3, 16)
+            createdAt: new Date(2019, 2, 7)
         },
         {
             title: "Sample document 16 - Die hassen mich",
@@ -201,7 +201,7 @@ export async function insertDummyData() {
             fileExtension: 'png',
             user_R: user_brother,
             tags_R: [tagWarning, tagTUI],
-            createdAt: new Date(2019, 3, 16)
+            createdAt: new Date(2019, 2, 14)
         },
         {
             title: "Sample document 17 - Sind die blöd????",
@@ -209,7 +209,7 @@ export async function insertDummyData() {
             fileExtension: 'jpg',
             user_R: user_brother,
             tags_R: [tagWaitForReponse, tagTUI],
-            createdAt: new Date(2019, 3, 16)
+            createdAt: new Date(2019, 2, 16)
         }
     ]
 

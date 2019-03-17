@@ -20,7 +20,8 @@ export class PageHomeComponent implements OnInit {
   }
 
   async download(doc) {
-    this.api.prompDownloadDocument(doc.uid);
+    console.log(doc)
+    this.api.prompDownloadDocument(doc._id);
   }
 
 }

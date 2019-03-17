@@ -154,7 +154,7 @@ export class ApiService {
         reportProgress: true,
         observe: 'response',
         headers: new HttpHeaders().set('token', this.jwt)
-                .set('option-take', '5')
+                .set('option-limit', '5')
                 .set('option-order-order', 'DESC')
       }).toPromise();
     } catch (error) {
@@ -166,6 +166,7 @@ export class ApiService {
   async downloadDocument(docID): Promise<HttpResponse<Object>> {
     let response = null;
     try {
+      console.debug("Sending request:", `${this.serverString}/getDocumentFile/${docID}`)
       response = await this.http.get(`${this.serverString}/getDocumentFile/${docID}`, {
         reportProgress: true,
         observe: 'body',
