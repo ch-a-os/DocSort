@@ -14,7 +14,12 @@ export function registerExpressRoutes(app) {
     app.get('/searchDocuments', validateJWT, searchDocuments);
     app.get('/getDocument', validateJWT, getDocument);
     app.get('/getDocumentFile/:docID', validateJWT, getDocumentFile);
+    
+	/* TAG */
     app.get('/getAllTags', validateJWT, getAllTags);
+    app.post('/createTag', validateJWT, createTag);
+    app.patch('/updateTag', validateJWT, updateTag);
+    app.delete('/deleteTag', validateJWT, deleteTag);
 
     app.post('/uploadSingleDocument', validateJWT, upload.single('file'), uploadSingleDocument);
 }
