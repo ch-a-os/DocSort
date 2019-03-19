@@ -12,5 +12,5 @@ export let Schema_Tag: mongoose.Schema = new mongoose.Schema({
     // id
 
     name: { type: String, required: true },
-    style: { type: Schema_TagStyle, required: false }
+    style: { type: Schema_TagStyle, required: false, default: {}}
 });
