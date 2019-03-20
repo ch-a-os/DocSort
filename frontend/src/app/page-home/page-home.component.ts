@@ -10,6 +10,7 @@ import { IDocument } from '../interfaces';
 export class PageHomeComponent implements OnInit {
   title = 'docSort';
   allDocuments: Array<IDocument> = [];
+  downloadURL: string;
 
   constructor(private api: ApiService) {
   }
@@ -21,7 +22,9 @@ export class PageHomeComponent implements OnInit {
 
   async download(doc) {
     console.log(doc)
-    this.api.prompDownloadDocument(doc._id);
+    const downloadObject = await this.api.createDownloadObject(doc);
+    console.log(downloadObject);
+    downloadObject.click();
   }
 
 }

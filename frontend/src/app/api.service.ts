@@ -52,25 +52,6 @@ export class ApiService {
     return true;
   }
 
-  toastLoginError() {
-    this.snotifyService.error("Error on login", {
-      timeout: 2000,
-      showProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: true,
-      position: SnotifyPosition.rightBottom
-    });
-  }
-
-  toastLoginSuccessfull() {
-    this.snotifyService.success("Login ok", {
-      timeout: 2000,
-      showProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: true
-    });
-  }
-
   async uploadFile(uploadData: IUploadFile) {
     // Create JSON object for the tags
     //const tags: Array<any> = [];
@@ -163,7 +144,7 @@ export class ApiService {
     return response.body;
   }
 
-  async downloadDocument(docID): Promise<HttpResponse<Object>> {
+  async downloadDocument(docID): Promise<HttpResponse<Blob>> {
     let response = null;
     try {
       console.debug("Sending request:", `${this.serverString}/getDocumentFile/${docID}`)
@@ -179,9 +160,24 @@ export class ApiService {
     return response;
   }
 
-  prompDownloadDocument(docID): void {
-    window.open(`${this.serverString}/getDocumentFile/${docID}?token=${this.jwt}`, "Download document")
-    return;
+  async createDownloadObject(doc): Promise<HTMLAnchorElement> {
+    return new Promise<HTMLAnchorElement>(async (resolve, reject) => {
+      const blob: any = (await this.downloadDocument(doc._id));
+      const data = window.URL.createObjectURL(blob);
+      console.log("Type of", blob.type, " and data url", data);
+  
+      // Just a little JavaScript workaround. Create a 'a' object and click it.
+      let link = document.createElement('a');
+      link.href = data;
+      link.download = doc.title;
+      link.id = "abc";
+  
+      setTimeout(() => {
+        window.URL.revokeObjectURL(data)
+      }, 1000);
+      
+      resolve(link);  
+    })
   }
 
   getToken() {
@@ -204,8 +200,29 @@ export class ApiService {
     }
   }
   
-}
+/**
+ * Toast methods
+ */
+  toastLoginError() {
+    this.snotifyService.error("Error on login", {
+      timeout: 2000,
+      showProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      position: SnotifyPosition.rightBottom
+    });
+  }
 
+  toastLoginSuccessfull() {
+    this.snotifyService.success("Login ok", {
+      timeout: 2000,
+      showProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true
+    });
+  }
+}
+ 
 async function wait(ms) {
   return new Promise(resolve => {
       setTimeout(resolve, ms);
