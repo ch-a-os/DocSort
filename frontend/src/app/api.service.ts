@@ -179,6 +179,24 @@ export class ApiService {
     return response;
   }
 
+  async deleteDocument(docID): Promise<HttpResponse<Object>> {
+    let response = null;
+    try {
+      response = await this.http.delete(`${this.serverString}/deleteDocument`, {
+        reportProgress: true,
+        observe: 'body',
+        headers: new HttpHeaders().set('token', this.jwt).set('Content-Type', 'application/json'),
+        //@ts-ignore: It works, just not for TS
+        body: {
+          id: docID
+        }
+      }).toPromise();
+    } catch(error) {
+      console.error("error in deleteDocument:", error);
+    }
+    return response; 
+  }
+
   prompDownloadDocument(docID): void {
     window.open(`${this.serverString}/getDocumentFile/${docID}?token=${this.jwt}`, "Download document")
     return;

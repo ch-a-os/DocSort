@@ -24,4 +24,9 @@ export class PageHomeComponent implements OnInit {
     this.api.prompDownloadDocument(doc._id);
   }
 
+  async delete(doc) {
+    this.api.deleteDocument(doc._id);
+    this.allDocuments.splice(this.allDocuments.indexOf(doc), 1)
+  }
+
 }
