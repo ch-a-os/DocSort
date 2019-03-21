@@ -2,7 +2,7 @@ import * as jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
 import { config } from '../config';
 
-export default function validateJWT(req: Request, res: Response, next: Function): boolean | void {
+export function validateJWT(req: Request, res: Response, next: Function): boolean | void {
     let token = "";
 
     if(req.headers.token == null && req.query.token == null) {

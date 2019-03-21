@@ -1,10 +1,14 @@
 import login from "../endpoints/login";
 import uploadSingleDocument from "../endpoints/uploadSingleDocument";
 import getDocumentFile from "../endpoints/getDocumentFile";
-import validateJWT from "./validateJWT";
 import getAllTags from "../endpoints/getAllTags";
 import getDocument from "../endpoints/getDocument";
-import { searchDocuments } from "../endpoints/searchDocuments";
+import searchDocuments from "../endpoints/searchDocuments";
+import createTag from "../endpoints/createTag";
+import updateTag from "../endpoints/updateTag";
+import deleteTag from "../endpoints/deleteTag";
+import { validateJWT } from "./validateJWT";
+
 const multer = require('multer');
 const upload = multer({ storage: multer.memoryStorage() });
 
