@@ -146,14 +146,14 @@ export class ApiService {
     return response.body;
   }
 
-  async getLatestDocuments(): Promise<Array<IDocument>> {
+  async getLatestDocuments(amout: number): Promise<Array<IDocument>> {
     let response = null;
     try {
       response = await this.http.get(`${this.serverString}/searchDocuments`, {
         reportProgress: true,
         observe: 'response',
         headers: new HttpHeaders().set('token', this.jwt)
-                .set('option-limit', '5')
+                .set('option-limit', amout.toString())
                 .set('option-order-field', 'createdAt')
                 .set('option-order-order', 'DESC')
       }).toPromise();
