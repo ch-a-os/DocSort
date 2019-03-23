@@ -1,0 +1,10 @@
+<h1>Search</h1>
+<input type="text" [(ngModel)]="title">
+
+<div *ngFor="let doc of foundDocuments" id="document">
+  <h4>{{doc.title}}</h4>
+  <p>{{doc.note}}</p>
+  <br>
+  <button (click)="download(doc)">Download</button>
+  <button (click)="delete(doc)">Delete</button>
+</div>

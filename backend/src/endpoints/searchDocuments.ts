@@ -5,6 +5,27 @@ import { Document } from "../models/document/document.model";
 import * as mongoose from "mongoose";
 
 export default async function searchDocuments(req: Request, res: Response) {
+    /**
+     * A list of possible search querys:
+     *  - option-order-order
+     *  - option-order-field
+     *  - option-start-at
+     *  - option-limit
+     *  - option-where-number-primary
+     *  - option-where-number-secondary
+     *  - option-where-fileextension
+     *  - option-where-title (default)
+     *  - option-where-note
+     *  - option-where-mimetype
+     *  - option-where-textRecognition-enabled
+     *  - option-where-textRecognition-finished
+     *  - option-where-textRecognition-content
+     *  - option-where-created-from
+     *  - option-where-created-to
+     *  - option-where-updated-from
+     *  - option-where-updated-to
+     *  - option-where-tags
+     */
     const userId = getUserIDFromJWT(req.headers.token.toString());
     const user = await User.findOne({ _id: userId });
     if(user == null) {
@@ -13,6 +34,13 @@ export default async function searchDocuments(req: Request, res: Response) {
         return;
     }
     let query = Document.where("user_R").equals(userId);
+
+    // start at
+    let start_at = parseInt(req.header("option-start-at"), 10);
+    if(start_at == null) {
+        start_at = 25;
+    }
+    query.skip(start_at);   // Skips the first n entries
 
     // take
     const limit = parseInt(req.header("option-limit"), 10);
