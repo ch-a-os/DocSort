@@ -1,6 +1,6 @@
 <h1>Search</h1>
 <div id="searchHeader">
-  <input type="text" [(ngModel)]="title">
+  <input type="text" [(ngModel)]="title" (input)="doSearch()">
 </div>
 
 <div *ngFor="let doc of foundDocuments" id="document">
@@ -10,3 +10,4 @@
   <button (click)="download(doc)">Download</button>
   <button (click)="delete(doc)">Delete</button>
 </div>
+<p *ngIf="foundDocuments.length == 0">nothing found ¯\_(ツ)_/¯</p>

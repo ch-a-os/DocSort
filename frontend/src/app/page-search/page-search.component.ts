@@ -10,25 +10,28 @@ import { IDocument } from '../interfaces';
 export class PageSearchComponent implements OnInit {
 
   title: string;
-  lastTitle: string;
-
   foundDocuments: Array<IDocument>;
 
   constructor(private api: ApiService) {
     this.title = "";
+    this.foundDocuments = [];
   }
 
   ngOnInit() {
     this.doSearch()
   }
 
-  doSearch() {
-    (setTimeout(async () => {
-      if(this.title != this.lastTitle) {
-        this.foundDocuments = await this.api.searchDocumentsByTitle(this.title); 
-        this.lastTitle = this.title;
-      }
-      this.doSearch();
-    }, 250));
+  async doSearch() {
+    this.foundDocuments = await this.api.searchDocumentsByTitle(this.title); 
+  }
+
+  async download(doc) {
+    console.log(doc)
+    this.api.prompDownloadDocument(doc._id);
+  }
+
+  async delete(doc) {
+    await this.api.deleteDocument(doc._id);
+    this.foundDocuments = await this.api.searchDocumentsByTitle(this.title);
   }
 }
