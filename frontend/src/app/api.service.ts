@@ -146,14 +146,14 @@ export class ApiService {
     return response.body;
   }
 
-  async getLatestDocuments(): Promise<Array<IDocument>> {
+  async getLatestDocuments(amout: number): Promise<Array<IDocument>> {
     let response = null;
     try {
       response = await this.http.get(`${this.serverString}/searchDocuments`, {
         reportProgress: true,
         observe: 'response',
         headers: new HttpHeaders().set('token', this.jwt)
-                .set('option-limit', '5')
+                .set('option-limit', amout.toString())
                 .set('option-order-field', 'createdAt')
                 .set('option-order-order', 'DESC')
       }).toPromise();
@@ -177,6 +177,24 @@ export class ApiService {
       console.error("error in downloadDocument:", error);
     }
     return response;
+  }
+
+  async deleteDocument(docID): Promise<HttpResponse<Object>> {
+    let response = null;
+    try {
+      response = await this.http.delete(`${this.serverString}/deleteDocument`, {
+        reportProgress: true,
+        observe: 'body',
+        headers: new HttpHeaders().set('token', this.jwt).set('Content-Type', 'application/json'),
+        //@ts-ignore: It works, just not for TS
+        body: {
+          id: docID
+        }
+      }).toPromise();
+    } catch(error) {
+      console.error("error in deleteDocument:", error);
+    }
+    return response; 
   }
 
   prompDownloadDocument(docID): void {

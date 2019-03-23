@@ -2,7 +2,6 @@ import { IUser } from "../models/user/user.interface";
 import { User } from "../models/user/user.model";
 import { getUserIDFromJWT } from "../lib/getUserIDFromJWT";
 import { Tag } from "../models/tag/tag.model";
-import * as mongoose from 'mongoose';
 import { ITag } from "../models/tag/tag.interface";
 
 export default async function updateTag(req, res) {

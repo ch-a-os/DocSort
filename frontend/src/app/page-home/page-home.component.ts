@@ -15,13 +15,19 @@ export class PageHomeComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.allDocuments = await this.api.getLatestDocuments();
+    this.allDocuments = await this.api.getLatestDocuments(5);
     console.log(this.allDocuments);
   }
 
   async download(doc) {
     console.log(doc)
     this.api.prompDownloadDocument(doc._id);
+  }
+
+  async delete(doc) {
+    await this.api.deleteDocument(doc._id);
+    this.allDocuments = await this.api.getLatestDocuments(6);
+    this.allDocuments.splice(this.allDocuments.indexOf(doc), 1);
   }
 
 }
