@@ -12,13 +12,10 @@ export class PageSearchComponent implements OnInit {
   title: string;
   lastTitle: string;
 
-  index: number;
-  next: number;
   foundDocuments: Array<IDocument>;
 
   constructor(private api: ApiService) {
-    this.index = 0;
-    this.next = 25;
+    this.title = "";
   }
 
   ngOnInit() {
@@ -27,11 +24,11 @@ export class PageSearchComponent implements OnInit {
 
   doSearch() {
     (setTimeout(async () => {
-      if(this.title != null && this.title != this.lastTitle) {
-        this.foundDocuments = await this.api.searchDocumentsByTitle(this.title, 0, 25); 
-        this.lastTitle = this.title; 
+      if(this.title != this.lastTitle) {
+        this.foundDocuments = await this.api.searchDocumentsByTitle(this.title); 
+        this.lastTitle = this.title;
       }
       this.doSearch();
-    }, 500));
+    }, 250));
   }
 }

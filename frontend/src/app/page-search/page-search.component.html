@@ -1,5 +1,7 @@
 <h1>Search</h1>
-<input type="text" [(ngModel)]="title">
+<div id="searchHeader">
+  <input type="text" [(ngModel)]="title">
+</div>
 
 <div *ngFor="let doc of foundDocuments" id="document">
   <h4>{{doc.title}}</h4>

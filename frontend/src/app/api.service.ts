@@ -183,15 +183,13 @@ export class ApiService {
    * @param startAt Position you want to start to search
    * @param limit Amount of items you want to have
    */
-  async searchDocumentsByTitle(title: string, startAt: number, limit: number): Promise<Array<IDocument>> {
+  async searchDocumentsByTitle(title: string): Promise<Array<IDocument>> {
     let response = null;
     try {
       response = await this.http.get(`${this.serverString}/searchDocuments`, {
         reportProgress: true,
         observe: 'events',
         headers: new HttpHeaders().set('token', this.jwt).set('option-where-title', title)
-          .set('option-start-at', startAt.toString())
-          .set('option-limit', limit.toString())
       }).toPromise()
     } catch (error) {
       console.log("error in searchDocumentsByTitle: " + error);

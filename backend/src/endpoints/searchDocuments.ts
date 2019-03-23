@@ -9,7 +9,6 @@ export default async function searchDocuments(req: Request, res: Response) {
      * A list of possible search querys:
      *  - option-order-order
      *  - option-order-field
-     *  - option-start-at
      *  - option-limit
      *  - option-where-number-primary
      *  - option-where-number-secondary
@@ -35,19 +34,12 @@ export default async function searchDocuments(req: Request, res: Response) {
     }
     let query = Document.where("user_R").equals(userId);
 
-    // start at
-    let start_at = parseInt(req.header("option-start-at"), 10);
-    if(start_at == null) {
-        start_at = 25;
-    }
-    query.skip(start_at);   // Skips the first n entries
-
     // take
     const limit = parseInt(req.header("option-limit"), 10);
     if(isNaN(limit) == false) {
         query.limit(limit);
     } else {
-        query.limit(10);
+        query.limit(50);
     }
 
     // order by
