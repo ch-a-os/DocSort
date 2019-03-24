@@ -9,11 +9,13 @@ import { IDocument } from '../interfaces';
 })
 export class PageSearchComponent implements OnInit {
 
-  title: string;
+  search: string;
+  searchBy: string;
   foundDocuments: Array<IDocument>;
 
   constructor(private api: ApiService) {
-    this.title = "";
+    this.search = "";
+    this.searchBy = "Title";
     this.foundDocuments = [];
   }
 
@@ -22,7 +24,8 @@ export class PageSearchComponent implements OnInit {
   }
 
   async doSearch() {
-    this.foundDocuments = await this.api.searchDocumentsByTitle(this.title); 
+    if(this.searchBy == "Title") this.foundDocuments = await this.api.searchDocumentsByTitle(this.search);
+    if(this.searchBy == "Note") this.foundDocuments = await this.api.searchDocumentsByNote(this.search);
   }
 
   async download(doc) {
@@ -32,6 +35,6 @@ export class PageSearchComponent implements OnInit {
 
   async delete(doc) {
     await this.api.deleteDocument(doc._id);
-    this.foundDocuments = await this.api.searchDocumentsByTitle(this.title);
+    await this.doSearch();
   }
 }

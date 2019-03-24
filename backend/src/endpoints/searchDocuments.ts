@@ -74,15 +74,18 @@ export default async function searchDocuments(req: Request, res: Response) {
     }
 
     // title
-    const title = req.header("option-where-title");
+    let title = req.header("option-where-title");
     if(title != null) {
-        query.where("title").regex(new RegExp(`${title}`));
+        title = title.replace(/([.*+?=^!:${}()|[\]\/\\])/g, '\\$1');
+        console.log("Title;", title)
+        query.where("title").regex(new RegExp(`${title}`, 'i'));  // Ignoring upper and lower case
     }
 
     // note
-    const note = req.header("option-where-note");
+    let note = req.header("option-where-note");
     if(note != null) {
-        query.where("note").regex(new RegExp(`${note}`));
+        note = note.replace(/([.*+?=^!:${}()|[\]\/\\])/g, '\\$1');
+        query.where("note").regex(new RegExp(`${note}`, 'i'));  // Ignoring upper and lower case    
     }
 
     // mimeType

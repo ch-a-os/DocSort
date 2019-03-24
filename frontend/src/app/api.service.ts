@@ -178,10 +178,8 @@ export class ApiService {
   }
 
   /**
-   * Searches documents based on their name
-   * @param title Complete or part of the title you want to search
-   * @param startAt Position you want to start to search
-   * @param limit Amount of items you want to have
+   * Searches documents based on their title and note
+   * @param title Complete or part of the title
    */
   async searchDocumentsByTitle(title: string): Promise<Array<IDocument>> {
     let response = null;
@@ -189,12 +187,54 @@ export class ApiService {
       response = await this.http.get(`${this.serverString}/searchDocuments`, {
         reportProgress: true,
         observe: 'events',
-        headers: new HttpHeaders().set('token', this.jwt).set('option-where-title', title)
+        headers: new HttpHeaders().set('token', this.jwt)
+          .set('option-where-title', title)
       }).toPromise()
     } catch (error) {
       console.log("error in searchDocumentsByTitle: " + error);
     }
     console.log(response.body);
+    return response.body;
+  }
+
+  /**
+   * Searches documents based on their title and note
+   * @param note Complete or part of the note
+   */
+  async searchDocumentsByNote(note: string): Promise<Array<IDocument>> {
+    let response = null;
+    try {
+      response = await this.http.get(`${this.serverString}/searchDocuments`, {
+        reportProgress: true,
+        observe: 'events',
+        headers: new HttpHeaders().set('token', this.jwt)
+          .set('option-where-note', note)
+      }).toPromise()
+    } catch (error) {
+      console.log("error in searchDocumentsByNote: " + error);
+    }
+    console.log("Note:", response.body);
+    return response.body;
+  }
+
+  /**
+   * Searches documents based on their title and note
+   * @param search Text that could be title and or the note
+   */
+  async searchDocumentsByTitleAndNote(search: string): Promise<Array<IDocument>> {
+    console.log("Search for", search)
+    let response = null;
+    try {
+      response = await this.http.get(`${this.serverString}/searchDocuments`, {
+        reportProgress: true,
+        observe: 'events',
+        headers: new HttpHeaders().set('token', this.jwt)
+          .set('option-where-title', search)
+      }).toPromise()
+    } catch (error) {
+      console.log("error in searchDocumentsByNote: " + error);
+    }
+    console.log("Note:", response.body);
     return response.body;
   }
 

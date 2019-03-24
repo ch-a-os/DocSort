@@ -1,6 +1,10 @@
 <h1>Search</h1>
 <div id="searchHeader">
-  <input type="text" [(ngModel)]="title" (input)="doSearch()">
+  <select [(ngModel)]="searchBy" (change)="doSearch()">
+    <option>Title</option>
+    <option>Note</option>
+  </select>
+  <input type="text" [(ngModel)]="search" (input)="doSearch()">
 </div>
 
 <div *ngFor="let doc of foundDocuments" id="document">
