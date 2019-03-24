@@ -16,6 +16,7 @@ import { PageUploadSingleFileComponent } from './page-upload-single-file/page-up
 import { MenuComponent } from './menu/menu.component';
 import { SnotifyModule, ToastDefaults, SnotifyService } from 'ng-snotify';
 import { PageShowTagsComponent } from './page-show-tags/page-show-tags.component';
+import { PageSearchComponent } from './page-search/page-search.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { PageShowTagsComponent } from './page-show-tags/page-show-tags.component
     TagComponent,
     PageUploadSingleFileComponent,
     MenuComponent,
-    PageShowTagsComponent
+    PageShowTagsComponent,
+    PageSearchComponent
   ],
   imports: [
     BrowserModule,

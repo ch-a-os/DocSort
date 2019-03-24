@@ -26,8 +26,7 @@ export class PageHomeComponent implements OnInit {
 
   async delete(doc) {
     await this.api.deleteDocument(doc._id);
-    this.allDocuments = await this.api.getLatestDocuments(6);
-    this.allDocuments.splice(this.allDocuments.indexOf(doc), 1);
+    this.allDocuments = await this.api.getLatestDocuments(5);
   }
 
 }

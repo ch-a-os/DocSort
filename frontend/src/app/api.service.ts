@@ -20,6 +20,10 @@ export class ApiService {
     this.decodedJwt = null;
   }
 
+  getToken() {
+    return this.jwt;
+  }
+
   /**
    * This function performs a login and sets isLoggedIn to true if successful.
    */
@@ -52,24 +56,9 @@ export class ApiService {
     return true;
   }
 
-  toastLoginError() {
-    this.snotifyService.error("Error on login", {
-      timeout: 2000,
-      showProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: true,
-      position: SnotifyPosition.rightBottom
-    });
-  }
-
-  toastLoginSuccessfull() {
-    this.snotifyService.success("Login ok", {
-      timeout: 2000,
-      showProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: true
-    });
-  }
+  /**
+   * ========= DOCUMENTS =========
+   */
 
   async uploadFile(uploadData: IUploadFile) {
     // Create JSON object for the tags
@@ -116,20 +105,6 @@ export class ApiService {
       });
     }
 
-  }
-
-  async getTags(): Promise<Array<ITag>> {
-    let response = null;
-    try {
-      response = await this.http.get(`${this.serverString}/getAllTags`, {
-        reportProgress: true,
-        observe: 'events',
-        headers: new HttpHeaders().set('token', this.jwt)
-      }).toPromise()
-    } catch (error) {
-      console.log("error in getTags: " + error);
-    }
-    return response.body;
   }
 
   async getAllDocumentsMeta(): Promise<Array<IDocument>> {
@@ -202,9 +177,85 @@ export class ApiService {
     return;
   }
 
-  getToken() {
-    return this.jwt;
+  /**
+   * Searches documents based on their title and note
+   * @param title Complete or part of the title
+   */
+  async searchDocumentsByTitle(title: string): Promise<Array<IDocument>> {
+    let response = null;
+    try {
+      response = await this.http.get(`${this.serverString}/searchDocuments`, {
+        reportProgress: true,
+        observe: 'events',
+        headers: new HttpHeaders().set('token', this.jwt)
+          .set('option-where-title', title)
+      }).toPromise()
+    } catch (error) {
+      console.log("error in searchDocumentsByTitle: " + error);
+    }
+    console.log(response.body);
+    return response.body;
   }
+
+  /**
+   * Searches documents based on their title and note
+   * @param note Complete or part of the note
+   */
+  async searchDocumentsByNote(note: string): Promise<Array<IDocument>> {
+    let response = null;
+    try {
+      response = await this.http.get(`${this.serverString}/searchDocuments`, {
+        reportProgress: true,
+        observe: 'events',
+        headers: new HttpHeaders().set('token', this.jwt)
+          .set('option-where-note', note)
+      }).toPromise()
+    } catch (error) {
+      console.log("error in searchDocumentsByNote: " + error);
+    }
+    console.log("Note:", response.body);
+    return response.body;
+  }
+
+  /**
+   * Searches documents based on their title and note
+   * @param search Text that could be title and or the note
+   */
+  async searchDocumentsByTitleAndNote(search: string): Promise<Array<IDocument>> {
+    console.log("Search for", search)
+    let response = null;
+    try {
+      response = await this.http.get(`${this.serverString}/searchDocuments`, {
+        reportProgress: true,
+        observe: 'events',
+        headers: new HttpHeaders().set('token', this.jwt)
+          .set('option-where-title', search)
+      }).toPromise()
+    } catch (error) {
+      console.log("error in searchDocumentsByNote: " + error);
+    }
+    console.log("Note:", response.body);
+    return response.body;
+  }
+
+  /**
+   * ========= TAGS =========
+   */
+
+  async getTags(): Promise<Array<ITag>> {
+    let response = null;
+    try {
+      response = await this.http.get(`${this.serverString}/getAllTags`, {
+        reportProgress: true,
+        observe: 'events',
+        headers: new HttpHeaders().set('token', this.jwt)
+      }).toPromise()
+    } catch (error) {
+      console.log("error in getTags: " + error);
+    }
+    return response.body;
+  }
+
 
   async getAllTags() {
     let response = null;
@@ -221,11 +272,28 @@ export class ApiService {
       return new Array();
     }
   }
-  
-}
 
-async function wait(ms) {
-  return new Promise(resolve => {
-      setTimeout(resolve, ms);
-  });
+  /**
+   * TOAST
+   */
+
+  toastLoginError() {
+    this.snotifyService.error("Error on login", {
+      timeout: 2000,
+      showProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      position: SnotifyPosition.rightBottom
+    });
+  }
+  
+  toastLoginSuccessfull() {
+    this.snotifyService.success("Login ok", {
+      timeout: 2000,
+      showProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true
+    });
+  }
+  
 }

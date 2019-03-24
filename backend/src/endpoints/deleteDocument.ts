@@ -17,13 +17,14 @@ export default async function deleteDocument(req, res) {
 
     // Check If user was found
     if(user == null) {
-        res.status(401).send();
+        res.status(400).send();
         return;
     }
 
     const doc = await Document.findById(toDelete);
-    if(doc.user_R != user._id) {
+    if(doc.user_R.toString() != user._id.toString()) {
         res.status(401).send();
+        return;
     }
     
     // Delete file from disk

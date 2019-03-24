@@ -22,6 +22,7 @@ export interface IUploadFile {
 
 export interface IDocument {
   _id?: string;
+  index?: number;
   number?: {
     primary?: number;
     secondary?: number;

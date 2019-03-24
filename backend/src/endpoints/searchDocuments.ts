@@ -5,6 +5,26 @@ import { Document } from "../models/document/document.model";
 import * as mongoose from "mongoose";
 
 export default async function searchDocuments(req: Request, res: Response) {
+    /**
+     * A list of possible search querys:
+     *  - option-order-order
+     *  - option-order-field
+     *  - option-limit
+     *  - option-where-number-primary
+     *  - option-where-number-secondary
+     *  - option-where-fileextension
+     *  - option-where-title (default)
+     *  - option-where-note
+     *  - option-where-mimetype
+     *  - option-where-textRecognition-enabled
+     *  - option-where-textRecognition-finished
+     *  - option-where-textRecognition-content
+     *  - option-where-created-from
+     *  - option-where-created-to
+     *  - option-where-updated-from
+     *  - option-where-updated-to
+     *  - option-where-tags
+     */
     const userId = getUserIDFromJWT(req.headers.token.toString());
     const user = await User.findOne({ _id: userId });
     if(user == null) {
@@ -19,13 +39,12 @@ export default async function searchDocuments(req: Request, res: Response) {
     if(isNaN(limit) == false) {
         query.limit(limit);
     } else {
-        query.limit(10);
+        query.limit(50);
     }
 
     // order by
     const order = req.header("option-order-order");
     const field = req.header("option-order-field");
-    console.log("Order:", order)
     if(field != null && order != null && (order == "ASC" || order == "DESC")) {
         let orderSymbol = "";
         if(order == "DESC") {
@@ -55,15 +74,18 @@ export default async function searchDocuments(req: Request, res: Response) {
     }
 
     // title
-    const title = req.header("option-where-title");
+    let title = req.header("option-where-title");
     if(title != null) {
-        query.where("title").regex(new RegExp(`${title}`));
+        title = title.replace(/([.*+?=^!:${}()|[\]\/\\])/g, '\\$1');
+        console.log("Title;", title)
+        query.where("title").regex(new RegExp(`${title}`, 'i'));  // Ignoring upper and lower case
     }
 
     // note
-    const note = req.header("option-where-note");
+    let note = req.header("option-where-note");
     if(note != null) {
-        query.where("note").regex(new RegExp(`${note}`));
+        note = note.replace(/([.*+?=^!:${}()|[\]\/\\])/g, '\\$1');
+        query.where("note").regex(new RegExp(`${note}`, 'i'));  // Ignoring upper and lower case    
     }
 
     // mimeType
