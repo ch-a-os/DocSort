@@ -1,0 +1,6 @@
+#tag-select-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 300px;
+    grid-auto-flow: column;
+}

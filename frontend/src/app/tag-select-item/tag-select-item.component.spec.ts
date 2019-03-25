@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TagSelectComponent } from './tag-select.component';
+import { TagSelectItemComponent } from './tag-select-item.component';
 
-describe('TagSelectComponent', () => {
-  let component: TagSelectComponent;
-  let fixture: ComponentFixture<TagSelectComponent>;
+describe('TagSelectItemComponent', () => {
+  let component: TagSelectItemComponent;
+  let fixture: ComponentFixture<TagSelectItemComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TagSelectComponent ]
+      declarations: [ TagSelectItemComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TagSelectComponent);
+    fixture = TestBed.createComponent(TagSelectItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
