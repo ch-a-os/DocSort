@@ -7,25 +7,27 @@ import { Component, OnInit, ViewEncapsulation, HostBinding } from '@angular/core
   encapsulation: ViewEncapsulation.None
 })
 export class TagSelectItemComponent implements OnInit {
-  @HostBinding('class.griditem1') griditem1: boolean = false;
-  @HostBinding('class.griditem2') griditem2: boolean = false;
+  @HostBinding('class') state = 'available';
+  //@HostBinding('class.selected') selected: boolean = false;
   number: number;
 
   constructor() {
 
     //let random = Math.floor(Math.random() * (+max - +min)) + +min; 
-    let random = Math.floor(Math.random() * (+3 - +1)) +1;
+    let random = Math.floor(Math.random() * (+50 - +1)) +1;
     //this.myClass = "griditem" + random;
     console.log("randomed with " + random);
-    if(random == 1) {
-      this.griditem1 = true;
-    }
-    if(random == 2) {
-      this.griditem2 = true;
-    }
-    this.number = random;
+    this.number = random;    
+  }
 
-    
+  select() {
+    this.state = "selected";
+    console.log("selected");
+  }
+
+  deselect() {
+    this.state = "available";
+    console.log("deselected");
   }
 
   ngOnInit() {

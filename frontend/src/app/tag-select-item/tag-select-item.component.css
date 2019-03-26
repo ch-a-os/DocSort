@@ -1,7 +1,11 @@
-.griditem1 {
+:host() {
+    /*display: contents;*/
+}
+
+.selected {
     grid-column: 1;
 }
 
-.griditem2 {
+.available {
     grid-column: 2;
 }
