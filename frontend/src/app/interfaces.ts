@@ -1,3 +1,8 @@
+export interface ITagSelectItemStateChange {
+  tagId: string;
+  state: "selected" | "available";
+}
+
 export interface ITag {
   _id?: string;
   name: string;
