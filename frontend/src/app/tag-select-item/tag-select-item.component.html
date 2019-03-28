@@ -1,3 +1,5 @@
-test{{number}}
-<span (click)="select()" *ngIf="state == 'available'"><==</span>
-<span (click)="available()" *ngIf="state == 'selected'">==></span>
+<li
+    (click)="toggleState()"
+    [style.background-color]="data.style.colorBackground"
+    [style.color]="data.style.colorForeground"
+    >{{data.name}}</li>

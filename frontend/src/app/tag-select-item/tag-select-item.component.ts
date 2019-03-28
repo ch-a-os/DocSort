@@ -16,34 +16,18 @@ import { ITagSelectItemStateChange, ITag } from '../interfaces';
   encapsulation: ViewEncapsulation.None
 })
 export class TagSelectItemComponent implements OnInit {
-  
-  @HostBinding('class')
-  state: string;
 
   @Input()
   data: ITag;
 
   @Output()
-  tagHasChangedState = new EventEmitter<ITagSelectItemStateChange>();
+  stateToggled = new EventEmitter<ITag>();
 
-  constructor() {
-    this.state = "available";   
-  }
+  constructor() {}
 
-  select() {
-    this.state = "selected";
-    this.tagHasChangedState.emit({
-      state: "selected",
-      tagId: this.data._id
-    })
-  }
-
-  available() {
-    this.state = "available";
-    this.tagHasChangedState.emit({
-      state: "available",
-      tagId: this.data._id
-    })
+  toggleState() {
+    console.log("toggle was called");
+    this.stateToggled.emit(this.data);
   }
 
   ngOnInit() {

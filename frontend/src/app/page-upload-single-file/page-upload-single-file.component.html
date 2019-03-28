@@ -3,8 +3,6 @@
   <span>Title: </span><input id="title" type="text" [(ngModel)]="document.title"><br>
   <span>Note: </span><input id="note" type="text" [(ngModel)]="document.note"><br>
 
-  <p>Tags: </p>
-  <br>
-  <app-tag-select-container></app-tag-select-container>
+  <app-tag-select-container (tagsToSend)="tagsToSendList($event)"></app-tag-select-container>
   <button (click)="onUpload()">Upload!</button>
 </div>
