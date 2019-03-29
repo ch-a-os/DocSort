@@ -253,6 +253,12 @@ export class ApiService {
     } catch (error) {
       console.log("error in getTags: " + error);
     }
+    if(response == null) {
+      return new Array<ITag>();
+    }
+    if(response.body == null) {
+      return new Array<ITag>();
+    }
     return response.body;
   }
 

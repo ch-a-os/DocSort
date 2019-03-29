@@ -10,25 +10,25 @@ import { PageHomeComponent } from './page-home/page-home.component';
 import { GuardService } from './guard.service';
 import { RouterModule } from '@angular/router';
 import { routes } from './routes';
-import { TagSelectComponent } from './tag-select/tag-select.component';
-import { TagComponent } from './tag/tag.component';
 import { PageUploadSingleFileComponent } from './page-upload-single-file/page-upload-single-file.component';
 import { MenuComponent } from './menu/menu.component';
 import { SnotifyModule, ToastDefaults, SnotifyService } from 'ng-snotify';
 import { PageShowTagsComponent } from './page-show-tags/page-show-tags.component';
 import { PageSearchComponent } from './page-search/page-search.component';
+import { TagSelectContainerComponent } from './tag-select-container/tag-select-container.component';
+import { TagSelectItemComponent } from './tag-select-item/tag-select-item.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     PageHomeComponent,
-    TagSelectComponent,
-    TagComponent,
     PageUploadSingleFileComponent,
     MenuComponent,
     PageShowTagsComponent,
-    PageSearchComponent
+    PageSearchComponent,
+    TagSelectContainerComponent,
+    TagSelectItemComponent
   ],
   imports: [
     BrowserModule,

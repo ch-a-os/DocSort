@@ -34,10 +34,10 @@ export class PageUploadSingleFileComponent implements OnInit {
     });
   }
 
-  tagsToSendList(tagList: Array<ITag>) {
+  tagsToSendList(idList: Array<string>) {
     this.document.tags_R = new Array();
-    for (const tag of tagList) {
-      this.document.tags_R.push(tag._id);
+    for (const id of idList) {
+      this.document.tags_R.push(id);
     }
   }
 }

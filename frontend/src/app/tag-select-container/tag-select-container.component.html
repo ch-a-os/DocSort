@@ -1,0 +1,14 @@
+<div id="tag-select-container">
+    <span class="headerSelected">Selected tags</span>
+    <span class="headerAvailable">Available tags</span>
+    <ul class="selected">
+        <ng-container *ngFor="let tag of tagsSelected">
+          <app-tag-select-item [data]="tag" (stateToggled)="stateToggled($event)"></app-tag-select-item>
+        </ng-container>
+    </ul>
+    <ul class="available">
+        <ng-container *ngFor="let tag of tagsAvailable">
+          <app-tag-select-item [data]="tag" (stateToggled)="stateToggled($event)"></app-tag-select-item>
+        </ng-container>
+    </ul>
+</div>
