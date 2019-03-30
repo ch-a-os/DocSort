@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { getUserIDFromJWT } from "../lib/getUserIDFromJWT";
 import { User } from "../models/user/user.model";
 import { Document } from "../models/document/document.model";
 import * as mongoose from "mongoose";
+import { getUserIDFromJWT } from "../lib/jwt";
 
 export default async function searchDocuments(req: Request, res: Response) {
     /**

@@ -3,9 +3,9 @@ import * as fs from "fs";
 import { Tag } from "./models/tag/tag.model";
 import { User } from "./models/user/user.model";
 import { Document } from "./models/document/document.model";
-import { generateFilePath } from "./lib/generateFilePath";
 import { connection } from "mongoose";
-import { getNextPrimaryNumber } from "./lib/getNextPrimaryNumber";
+import { generateFilePath } from "./lib/documentOperations";
+import { getNextPrimaryNumber } from "./lib/userUtils";
 
 export async function insertDummyData() {
     // Reset database first

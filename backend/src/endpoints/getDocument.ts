@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import * as mongoose from "mongoose";
 import { User } from "../models/user/user.model";
 import { Document } from "../models/document/document.model";
-import { getUserIDFromJWT } from "../lib/getUserIDFromJWT";
+import { getUserIDFromJWT } from "../lib/jwt";
 
 export default async function getDocument(req: Request, res: Response) {
     try {

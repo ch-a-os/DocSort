@@ -1,7 +1,7 @@
 import { Document } from "../models/document/document.model";
 import { IDocument } from "../models/document/document.interface";
-import { generateFilePath } from '../lib/generateFilePath';
 import * as mongoose from 'mongoose';
+import { generateFilePath } from "../lib/documentOperations";
 
 export default async function getDocumentFile(req: any, res: any) {
     const documentId: mongoose.Types.ObjectId = req.params.docID;

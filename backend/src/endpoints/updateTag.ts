@@ -1,8 +1,8 @@
 import { IUser } from "../models/user/user.interface";
 import { User } from "../models/user/user.model";
-import { getUserIDFromJWT } from "../lib/getUserIDFromJWT";
 import { Tag } from "../models/tag/tag.model";
 import { ITag } from "../models/tag/tag.interface";
+import { getUserIDFromJWT } from "../lib/jwt";
 
 export default async function updateTag(req, res) {
     const user: IUser = await User.findById(getUserIDFromJWT(req.headers.token)).populate('tags_R').exec();

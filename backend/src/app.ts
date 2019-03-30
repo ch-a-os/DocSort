@@ -1,12 +1,9 @@
 import * as fs from 'fs';
 import { Mongoose } from "mongoose";
-//import { insertDummyData } from './dummyData';
-import { registerExpressRoutes } from './lib/registerExpressRoutes';
 import { config } from './config';
-import { User } from './models/user/user.model';
 import { insertDummyData } from './insertDummyData';
 import * as del from "del";
-import { createExpressServer } from './lib/createExpressServer';
+import { createExpressServer, registerExpressRoutes } from './lib/express';
 
 const mongoose: Mongoose = require("mongoose");
 

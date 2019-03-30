@@ -1,3 +1,7 @@
+/**
+ * Calculates new random string
+ * @param length Length of random string
+ */
 export function createRandomString(length: number): string {
     let salt = "";
     const possibleChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

@@ -1,8 +1,8 @@
 import { IUser } from "../models/user/user.interface";
 import { User } from "../models/user/user.model";
-import { getUserIDFromJWT } from "../lib/getUserIDFromJWT";
 import { IDocument } from "../models/document/document.interface";
 import { Document } from "../models/document/document.model";
+import { getUserIDFromJWT } from "../lib/jwt";
 
 export default async function updateDocument(req, res) {
     const user: IUser = await User.findById(getUserIDFromJWT(req.headers.token)).exec();

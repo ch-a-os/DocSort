@@ -3,11 +3,10 @@ import * as mongoose from 'mongoose';
 import { Request, Response } from "express";
 import { Document } from "../models/document/document.model";
 import { User } from "../models/user/user.model";
-import { getNextPrimaryNumber } from "../lib/getNextPrimaryNumber";
-import { getUserIDFromJWT } from "../lib/getUserIDFromJWT";
-import { generateFilePath } from "../lib/generateFilePath";
 import { IDocument } from "../models/document/document.interface";
-import { extractFileExtension } from "../lib/extractFileExtension";
+import { getUserIDFromJWT } from "../lib/jwt";
+import { extractFileExtension, generateFilePath } from "../lib/documentOperations";
+import { getNextPrimaryNumber } from "../lib/userUtils";
 
 /*interface IRequestTag {
     name: string;
