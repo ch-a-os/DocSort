@@ -2,11 +2,10 @@ import * as fs from 'fs';
 import { IUser } from "../models/user/user.interface";
 import { User } from "../models/user/user.model";
 import { Document } from "../models/document/document.model";
-import { getUserIDFromJWT } from '../lib/jwt';
 import { generateFilePath } from '../lib/documentOperations';
+import { CustomRequest } from '../lib/jwt';
 
-export default async function deleteDocument(req, res) {
-    const user: IUser = await User.findById(getUserIDFromJWT(req.headers.token)).exec();
+export default async function deleteDocument(req: CustomRequest, res) {
     const toDelete: string = req.body.id;
     
     // Check If body exist
@@ -16,13 +15,13 @@ export default async function deleteDocument(req, res) {
     }
 
     // Check If user was found
-    if(user == null) {
+    if(req.user == null) {
         res.status(400).send();
         return;
     }
 
     const doc = await Document.findById(toDelete);
-    if(doc.user_R.toString() != user._id.toString()) {
+    if(doc.user_R.toString() != req.user._id.toString()) {
         res.status(401).send();
         return;
     }
