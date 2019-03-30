@@ -2,8 +2,8 @@ import * as jwt from 'jsonwebtoken';
 import { Request, Response } from "express";
 import { IUser } from '../models/user/user.interface';
 import { User } from '../models/user/user.model';
-import { createPasswordHash } from '../lib/createPasswordHash';
 import { config } from '../config';
+import { createPasswordHash } from '../lib/security';
 
 export default async function login(req: Request, res: Response) {
     const username = req.header("username");

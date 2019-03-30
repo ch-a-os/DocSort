@@ -1,3 +1,4 @@
+/* Required for routing */
 import login from "../endpoints/login";
 import uploadSingleDocument from "../endpoints/uploadSingleDocument";
 import getDocumentFile from "../endpoints/getDocumentFile";
@@ -7,14 +8,36 @@ import searchDocuments from "../endpoints/searchDocuments";
 import createTag from "../endpoints/createTag";
 import updateTag from "../endpoints/updateTag";
 import deleteTag from "../endpoints/deleteTag";
-import { validateJWT } from "./validateJWT";
 import updateDocument from "../endpoints/updateDocument";
 import deleteDocument from "../endpoints/deleteDocument";
 
 const multer = require('multer');
 const upload = multer({ storage: multer.memoryStorage() });
 
-export function registerExpressRoutes(app) {
+/* To create Express server */
+import * as cors from 'cors';
+import * as bodyParser from 'body-parser';
+import * as express from 'express';
+import * as http from 'http';
+import { validateJWT } from "./jwt";
+
+/**
+ * Inits the http server with Express.
+ * @returns The Express application and the http server.
+ */
+export function createExpressServer(): { app: express.Application, server: http.Server } {
+    const app = express();
+    const server = http.createServer(app);
+    app.use(bodyParser.json());
+    app.use(cors());
+    return { app, server };
+}
+
+/**
+ * Sets all the http routes.
+ * @param app Express application
+ */
+export function registerExpressRoutes(app: express.Application) {
     app.get('/login', login);
     
     /* DOCUMENT */

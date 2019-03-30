@@ -1,7 +1,7 @@
 import * as mongoose from "mongoose";
-import { createRandomString } from "../../lib/createRandomString";
-import { createPasswordHash } from "../../lib/createPasswordHash";
 import { IUser } from "./user.interface";
+import { createPasswordHash } from "../../lib/security";
+import { createRandomString } from "../../lib/stringUtil";
 
 let Schema_User: mongoose.Schema = new mongoose.Schema({
     username: { type: String, required: true },
@@ -20,7 +20,5 @@ Schema_User.pre("save", async function(this, next) {
     (this as IUser).salt = salt;
     next();
 });
-
-
 
 export { Schema_User };
