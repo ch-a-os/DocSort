@@ -19,10 +19,17 @@ export async function convert(req: CustomRequest, res: Response, next: Function)
             const decoded = jwt.decode(req.header("token"), {complete: true, json: true});
             const id = mongoose.Types.ObjectId(decoded['payload'].id);
             const dbRef: IUser = await User.findById(id).select('username _id').exec();
+
+            if(dbRef == null || dbRef == undefined) {
+                res.status(401).send();
+                reject("User does not longer exist in database!");
+                return false;
+            }
+
             req.userID = id;
             req.user = dbRef;
-            next();
             resolve();
+            next();
         } catch(err) {
             reject(err);
         }        
