@@ -4,6 +4,8 @@ import { Router } from "@angular/router";
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { SnotifyService, SnotifyPosition, SnotifyToastConfig, SnotifyToast } from 'ng-snotify';
 import { IDocument, IDecodedJwt, IUploadFile, ITag } from './interfaces';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import * as filesaver from 'file-saver';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +16,12 @@ export class ApiService {
   public isLoggedIn: boolean;
   public decodedJwt: IDecodedJwt;
 
-  constructor(private http: HttpClient, private router: Router, private snotifyService: SnotifyService) {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private snotifyService: SnotifyService,
+    private sanitizer: DomSanitizer
+  ) {
     this.serverString = "http://localhost:9090";
     this.isLoggedIn = false;
     this.decodedJwt = null;
@@ -172,9 +179,24 @@ export class ApiService {
     return response; 
   }
 
-  prompDownloadDocument(docID): void {
-    window.open(`${this.serverString}/getDocumentFile/${docID}?token=${this.jwt}`, "Download document")
-    return;
+  async prompDownloadDocument(doc: IDocument): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      let response = null;
+      let saveURL: SafeResourceUrl = null;
+      try {
+        response = await this.http.get(`${this.serverString}/getDocumentFile/${doc._id}`, {
+          reportProgress: true,
+          observe: 'body',
+          headers: new HttpHeaders().set('token', this.jwt),
+          responseType: 'blob'
+        }).toPromise();
+        const blob = new Blob([response], { type: doc.fileExtension });
+        filesaver.saveAs(blob, doc.title + "." + doc.fileExtension);
+        resolve();
+      } catch(error) {
+        console.error("error in prompDownloadDocument:", error);
+      }
+    })
   }
 
   /**
