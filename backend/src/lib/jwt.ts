@@ -2,38 +2,16 @@ import * as mongoose from "mongoose";
 import * as jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
 import { config } from '../config';
-import { IUser } from "../models/user/user.interface";
-import { User } from "../models/user/user.model";
-
-export interface CustomRequest extends Request {
-    userID?: mongoose.Types.ObjectId;
-    user?: IUser
-}
 
 /**
- * We are injecting the users ID and database reference into the request for later use.
+ * Extracts the user ID out of the JWT
+ * @param jsonwebtoken JWT of user
+ * @returns ObjectID of user
  */
-export async function convert(req: CustomRequest, res: Response, next: Function): Promise<boolean | void> {
-    return new Promise<boolean | void>(async (resolve, reject) => {
-        try {
-            const decoded = jwt.decode(req.header("token"), {complete: true, json: true});
-            const id = mongoose.Types.ObjectId(decoded['payload'].id);
-            const dbRef: IUser = await User.findById(id).select('username _id').exec();
-
-            if(dbRef == null || dbRef == undefined) {
-                res.status(401).send();
-                reject("User does not longer exist in database!");
-                return false;
-            }
-
-            req.userID = id;
-            req.user = dbRef;
-            resolve();
-            next();
-        } catch(err) {
-            reject(err);
-        }        
-    })
+export function getUserIDFromJWT(jsonwebtoken: string): mongoose.Types.ObjectId {
+    const decoded = jwt.decode(jsonwebtoken, {complete: true, json: true});
+    const id = mongoose.Types.ObjectId(decoded['payload'].id);
+    return id;
 }
 
 /**

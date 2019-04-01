@@ -2,11 +2,12 @@ import { Request, Response } from "express";
 import * as mongoose from "mongoose";
 import { User } from "../models/user/user.model";
 import { Document } from "../models/document/document.model";
-import { CustomRequest } from "../lib/jwt";
+import { getUserIDFromJWT } from "../lib/jwt";
 
-export default async function getDocument(req: CustomRequest, res: Response) {
+export default async function getDocument(req: Request, res: Response) {
     try {
-        const user = await User.findOne({ id: req.userID });
+        const userId = getUserIDFromJWT(req.header("token"));
+        const user = await User.findOne({ id: userId });
         const documentId = req.header("documentId");
         const document = await Document.findOne({ _id: mongoose.Types.ObjectId(documentId), user: user }).exec();
         res.status(200).send({

@@ -4,9 +4,9 @@ import { Request, Response } from "express";
 import { Document } from "../models/document/document.model";
 import { User } from "../models/user/user.model";
 import { IDocument } from "../models/document/document.interface";
+import { getUserIDFromJWT } from "../lib/jwt";
 import { extractFileExtension, generateFilePath } from "../lib/documentOperations";
 import { getNextPrimaryNumber } from "../lib/userUtils";
-import { CustomRequest } from "../lib/jwt";
 
 /*interface IRequestTag {
     name: string;
@@ -28,15 +28,16 @@ import { CustomRequest } from "../lib/jwt";
     }
 }*/
 
-export default async function uploadSingleDocument(req: CustomRequest, res: Response) {
+export default async function uploadSingleDocument(req: Request, res: Response) {
     try {
         console.log("uploadDocument wurde aufgerufen");
         if (!fs.existsSync("./uploads")) {
             fs.mkdirSync("./uploads");
         }
 
-        const user = await User.findOne({ _id: req.userID }).populate("tags_R").exec();
-        const nextPrimaryNumber = await getNextPrimaryNumber(req.userID);
+        const userId = getUserIDFromJWT(req.header("token"));
+        const user = await User.findOne({ _id: userId }).populate("tags_R").exec();
+        const nextPrimaryNumber = await getNextPrimaryNumber(userId);
 
         console.log("req.body=", req.body);
         const uploadDocument: IUploadDocument = JSON.parse(req.body.document);
