@@ -6,29 +6,9 @@ import { User } from "../models/user/user.model";
 import { IDocument } from "../models/document/document.interface";
 import { extractFileExtension, generateFilePath } from "../lib/documentOperations";
 import { getNextPrimaryNumber } from "../lib/userUtils";
-import { CustomRequest } from "../lib/jwt";
+import { ModifiedRequest } from "../lib/jwt";
 
-/*interface IRequestTag {
-    name: string;
-    style?: {
-        logo?: string;
-        colorForeground?: string;
-        colorBackground?: string;
-    }
-}*/
-
-/*interface IRequestBody {
-    title: string;
-    note: string;
-    tags: Array<string>;
-    textRecognition?: {
-        enabled?: boolean;
-        finished?: boolean;
-        content?: string;
-    }
-}*/
-
-export default async function uploadSingleDocument(req: CustomRequest, res: Response) {
+export default async function uploadSingleDocument(req: ModifiedRequest, res: Response) {
     try {
         console.log("uploadDocument wurde aufgerufen");
         if (!fs.existsSync("./uploads")) {

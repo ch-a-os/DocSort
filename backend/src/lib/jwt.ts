@@ -5,7 +5,7 @@ import { config } from '../config';
 import { IUser } from "../models/user/user.interface";
 import { User } from "../models/user/user.model";
 
-export interface CustomRequest extends Request {
+export interface ModifiedRequest extends Request {
     userID?: mongoose.Types.ObjectId;
     user?: IUser
 }
@@ -13,27 +13,23 @@ export interface CustomRequest extends Request {
 /**
  * We are injecting the users ID and database reference into the request for later use.
  */
-export async function convert(req: CustomRequest, res: Response, next: Function): Promise<boolean | void> {
-    return new Promise<boolean | void>(async (resolve, reject) => {
-        try {
-            const decoded = jwt.decode(req.header("token"), {complete: true, json: true});
-            const id = mongoose.Types.ObjectId(decoded['payload'].id);
-            const dbRef: IUser = await User.findById(id).select('username _id').exec();
+export async function addUserToRequest(req: ModifiedRequest, res: Response, next: Function): Promise<void> {
+    try {
+        const decoded = jwt.decode(req.header("token"), {complete: true, json: true});
+        const id = mongoose.Types.ObjectId(decoded['payload'].id);
+        const dbRef: IUser = await User.findById(id).select('username _id').exec();
 
-            if(dbRef == null || dbRef == undefined) {
-                res.status(401).send();
-                reject("User does not longer exist in database!");
-                return false;
-            }
+        if(dbRef == null || dbRef == undefined) {
+            res.status(401).send();
+            throw new Error("User does not longer exist in database!");
+        }
 
-            req.userID = id;
-            req.user = dbRef;
-            resolve();
-            next();
-        } catch(err) {
-            reject(err);
-        }        
-    })
+        req.userID = id;
+        req.user = dbRef;
+        next();
+    } catch (error) {
+        throw new Error(error);
+    }
 }
 
 /**
@@ -43,7 +39,7 @@ export function validateJWT(req: Request, res: Response, next: Function): boolea
     let token = "";
 
     if(req.headers.token == null && req.query.token == null) {
-        res.status(401).send({error: "Sorry, but you forgot to give me your token."});
+        res.status(401).send({error: "No token in request"});
         return false;
     }
     token = req.headers.token != null? req.headers.token : req.query.token;
@@ -53,6 +49,6 @@ export function validateJWT(req: Request, res: Response, next: Function): boolea
         next();
     } catch(err) {
         if(err) console.error(err);
-        res.status(401).send({error: "Sorry, but that token you gave me is not vaild."})
+        res.status(401).send({error: "Invalid token in request."})
     }
 }

@@ -1,11 +1,9 @@
 import * as fs from 'fs';
-import { IUser } from "../models/user/user.interface";
-import { User } from "../models/user/user.model";
 import { Document } from "../models/document/document.model";
 import { generateFilePath } from '../lib/documentOperations';
-import { CustomRequest } from '../lib/jwt';
+import { ModifiedRequest } from '../lib/jwt';
 
-export default async function deleteDocument(req: CustomRequest, res) {
+export default async function deleteDocument(req: ModifiedRequest, res) {
     const toDelete: string = req.body.id;
     
     // Check If body exist

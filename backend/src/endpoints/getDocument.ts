@@ -2,9 +2,9 @@ import { Request, Response } from "express";
 import * as mongoose from "mongoose";
 import { User } from "../models/user/user.model";
 import { Document } from "../models/document/document.model";
-import { CustomRequest } from "../lib/jwt";
+import { ModifiedRequest } from "../lib/jwt";
 
-export default async function getDocument(req: CustomRequest, res: Response) {
+export default async function getDocument(req: ModifiedRequest, res: Response) {
     try {
         const user = await User.findOne({ id: req.userID });
         const documentId = req.header("documentId");

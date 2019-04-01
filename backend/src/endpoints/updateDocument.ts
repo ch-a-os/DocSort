@@ -2,9 +2,9 @@ import { IUser } from "../models/user/user.interface";
 import { User } from "../models/user/user.model";
 import { IDocument } from "../models/document/document.interface";
 import { Document } from "../models/document/document.model";
-import { CustomRequest } from "../lib/jwt";
+import { ModifiedRequest } from "../lib/jwt";
 
-export default async function updateDocument(req: CustomRequest, res) {
+export default async function updateDocument(req: ModifiedRequest, res) {
     const changedDoc: IDocument = req.body;
     const user: IUser = await User.findById(req.userID);
     
