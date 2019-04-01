@@ -2,10 +2,10 @@ import { ITag } from "../models/tag/tag.interface";
 import { Tag } from "../models/tag/tag.model";
 import { IUser } from "../models/user/user.interface";
 import { User } from "../models/user/user.model";
-import { CustomRequest } from "../lib/jwt";
-export default async function createTag(req: CustomRequest, res: any) {
+import { getUserIDFromJWT } from "../lib/jwt";
+export default async function createTag(req: any, res: any) {
     const userTag: ITag = req.body;
-    const user: IUser = await User.findById(req.userID).populate('tags_R').exec();
+    const user: IUser = await User.findById(getUserIDFromJWT(req.headers.token)).populate('tags_R').exec();
 
     // Check If body exist
     if(req.body == null) {
