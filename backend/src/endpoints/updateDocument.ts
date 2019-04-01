@@ -2,11 +2,11 @@ import { IUser } from "../models/user/user.interface";
 import { User } from "../models/user/user.model";
 import { IDocument } from "../models/document/document.interface";
 import { Document } from "../models/document/document.model";
-import { getUserIDFromJWT } from "../lib/jwt";
+import { CustomRequest } from "../lib/jwt";
 
-export default async function updateDocument(req, res) {
-    const user: IUser = await User.findById(getUserIDFromJWT(req.headers.token)).exec();
+export default async function updateDocument(req: CustomRequest, res) {
     const changedDoc: IDocument = req.body;
+    const user: IUser = await User.findById(req.userID);
     
     // Check If body exist
     if(changedDoc == null) {
@@ -15,7 +15,7 @@ export default async function updateDocument(req, res) {
     }
 
     // Check If user was found
-    if(user == null) {
+    if(req.user == null) {
         res.status(401).send();
         return;
     }

@@ -2,9 +2,9 @@ import { Request, Response } from "express";
 import { User } from "../models/user/user.model";
 import { Document } from "../models/document/document.model";
 import * as mongoose from "mongoose";
-import { getUserIDFromJWT } from "../lib/jwt";
+import { CustomRequest } from "../lib/jwt";
 
-export default async function searchDocuments(req: Request, res: Response) {
+export default async function searchDocuments(req: CustomRequest, res: Response) {
     /**
      * A list of possible search querys:
      *  - option-order-order
@@ -25,14 +25,13 @@ export default async function searchDocuments(req: Request, res: Response) {
      *  - option-where-updated-to
      *  - option-where-tags
      */
-    const userId = getUserIDFromJWT(req.headers.token.toString());
-    const user = await User.findOne({ _id: userId });
+    const user = await User.findOne({ _id: req.userID });
     if(user == null) {
-        console.log(`User with ID ${userId} does not exist in the database`);
+        console.log(`User with ID ${req.userID} does not exist in the database`);
         res.status(500).send();
         return;
     }
-    let query = Document.where("user_R").equals(userId);
+    let query = Document.where("user_R").equals(req.userID);
 
     // take
     const limit = parseInt(req.header("option-limit"), 10);
