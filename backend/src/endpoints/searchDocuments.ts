@@ -2,9 +2,9 @@ import { Request, Response } from "express";
 import { User } from "../models/user/user.model";
 import { Document } from "../models/document/document.model";
 import * as mongoose from "mongoose";
-import { getUserIDFromJWT } from "../lib/jwt";
+import { ModifiedRequest } from "../lib/jwt";
 
-export default async function searchDocuments(req: Request, res: Response) {
+export default async function searchDocuments(req: ModifiedRequest, res: Response) {
     /**
      * A list of possible search querys:
      *  - option-order-order

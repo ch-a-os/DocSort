@@ -2,16 +2,36 @@ import * as mongoose from "mongoose";
 import * as jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
 import { config } from '../config';
+import { IUser } from "../models/user/user.interface";
+import { User } from "../models/user/user.model";
+
+export interface ModifiedRequest extends Request {
+    userID?: mongoose.Types.ObjectId;
+    user?: IUser
+}
 
 /**
  * Extracts the user ID out of the JWT
  * @param jsonwebtoken JWT of user
  * @returns ObjectID of user
  */
-export function getUserIDFromJWT(jsonwebtoken: string): mongoose.Types.ObjectId {
-    const decoded = jwt.decode(jsonwebtoken, {complete: true, json: true});
-    const id = mongoose.Types.ObjectId(decoded['payload'].id);
-    return id;
+export async function addUserToRequest(req: ModifiedRequest, res: Response, next: Function): Promise<void> {
+    try {
+        const decoded = jwt.decode(req.header("token"), {complete: true, json: true});
+        const id = mongoose.Types.ObjectId(decoded['payload'].id);
+        const dbRef: IUser = await User.findById(id).select('username _id').exec();
+
+        if(dbRef == null || dbRef == undefined) {
+            res.status(401).send();
+            throw new Error("User does not longer exist in database!");
+        }
+
+        req.userID = id;
+        req.user = dbRef;
+        next();
+    } catch (error) {
+        throw new Error(error);
+    }
 }
 
 /**
@@ -21,7 +41,7 @@ export function validateJWT(req: Request, res: Response, next: Function): boolea
     let token = "";
 
     if(req.headers.token == null && req.query.token == null) {
-        res.status(401).send({error: "Sorry, but you forgot to give me your token."});
+        res.status(401).send({error: "No token in request"});
         return false;
     }
     token = req.headers.token != null? req.headers.token : req.query.token;
@@ -31,6 +51,6 @@ export function validateJWT(req: Request, res: Response, next: Function): boolea
         next();
     } catch(err) {
         if(err) console.error(err);
-        res.status(401).send({error: "Sorry, but that token you gave me is not vaild."})
+        res.status(401).send({error: "Invalid token in request."})
     }
 }

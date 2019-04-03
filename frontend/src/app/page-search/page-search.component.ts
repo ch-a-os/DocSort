@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
 import { IDocument } from '../interfaces';
+import { SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-page-search',
@@ -11,6 +12,7 @@ export class PageSearchComponent implements OnInit {
 
   search: string;
   searchBy: string;
+  docURL: SafeResourceUrl;
   foundDocuments: Array<IDocument>;
 
   constructor(private api: ApiService) {
@@ -21,6 +23,7 @@ export class PageSearchComponent implements OnInit {
 
   ngOnInit() {
     this.doSearch()
+    this.docURL = "alkalökl"
   }
 
   async doSearch() {
@@ -29,8 +32,7 @@ export class PageSearchComponent implements OnInit {
   }
 
   async download(doc) {
-    console.log(doc)
-    this.api.prompDownloadDocument(doc._id);
+    await this.api.prompDownloadDocument(doc);
   }
 
   async delete(doc) {

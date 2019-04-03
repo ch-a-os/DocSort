@@ -19,7 +19,7 @@ import * as cors from 'cors';
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as http from 'http';
-import { validateJWT } from "./jwt";
+import { validateJWT, addUserToRequest } from "./jwt";
 
 /**
  * Inits the http server with Express.
@@ -41,17 +41,17 @@ export function registerExpressRoutes(app: express.Application) {
     app.get('/login', login);
     
     /* DOCUMENT */
-    app.get('/searchDocuments', validateJWT, searchDocuments);
-    app.get('/getDocument', validateJWT, getDocument);
-    app.get('/getDocumentFile/:docID', validateJWT, getDocumentFile);   // To get the binary file
-    app.patch('/updateDocument', validateJWT, updateDocument);
-    app.delete('/deleteDocument', validateJWT, deleteDocument);
+    app.get('/searchDocuments', addUserToRequest, validateJWT, searchDocuments);
+    app.get('/getDocument', addUserToRequest, validateJWT, getDocument);
+    app.get('/getDocumentFile/:docID', addUserToRequest, validateJWT, getDocumentFile);   // To get the binary file
+    app.patch('/updateDocument', addUserToRequest, validateJWT, updateDocument);
+    app.delete('/deleteDocument', addUserToRequest, validateJWT, deleteDocument);
     
 	/* TAG */
-    app.get('/getAllTags', validateJWT, getAllTags);
-    app.post('/createTag', validateJWT, createTag);
-    app.patch('/updateTag', validateJWT, updateTag);
-    app.delete('/deleteTag', validateJWT, deleteTag);
+    app.get('/getAllTags', addUserToRequest, validateJWT, getAllTags);
+    app.post('/createTag', addUserToRequest, validateJWT, createTag);
+    app.patch('/updateTag', addUserToRequest, validateJWT, updateTag);
+    app.delete('/deleteTag', addUserToRequest, validateJWT, deleteTag);
 
-    app.post('/uploadSingleDocument', validateJWT, upload.single('file'), uploadSingleDocument);
+    app.post('/uploadSingleDocument', addUserToRequest, validateJWT, upload.single('file'), uploadSingleDocument);
 }

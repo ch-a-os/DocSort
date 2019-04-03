@@ -1,12 +1,10 @@
 import * as fs from 'fs';
-import { IUser } from "../models/user/user.interface";
-import { User } from "../models/user/user.model";
 import { Document } from "../models/document/document.model";
 import { getUserIDFromJWT } from '../lib/jwt';
 import { generateFilePath } from '../lib/documentOperations';
+import { ModifiedRequest } from '../lib/jwt';
 
-export default async function deleteDocument(req, res) {
-    const user: IUser = await User.findById(getUserIDFromJWT(req.headers.token)).exec();
+export default async function deleteDocument(req: ModifiedRequest, res) {
     const toDelete: string = req.body.id;
     
     // Check If body exist

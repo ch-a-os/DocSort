@@ -1,6 +1,7 @@
 import { Component, OnInit} from '@angular/core';
 import { ApiService } from '../api.service';
 import { IDocument } from '../interfaces';
+import { SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-page-home',
@@ -20,8 +21,7 @@ export class PageHomeComponent implements OnInit {
   }
 
   async download(doc) {
-    console.log(doc)
-    this.api.prompDownloadDocument(doc._id);
+    this.api.prompDownloadDocument(doc);
   }
 
   async delete(doc) {
