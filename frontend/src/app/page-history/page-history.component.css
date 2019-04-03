@@ -1,0 +1,11 @@
+:host() {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-flow: row;
+}
+
+.document {
+    height: 25px;
+    background-color: grey;
+    margin: 2px;
+}

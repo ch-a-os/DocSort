@@ -17,6 +17,7 @@ import { PageShowTagsComponent } from './page-show-tags/page-show-tags.component
 import { PageSearchComponent } from './page-search/page-search.component';
 import { TagSelectContainerComponent } from './tag-select-container/tag-select-container.component';
 import { TagSelectItemComponent } from './tag-select-item/tag-select-item.component';
+import { PageHistoryComponent } from './page-history/page-history.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { TagSelectItemComponent } from './tag-select-item/tag-select-item.compon
     PageShowTagsComponent,
     PageSearchComponent,
     TagSelectContainerComponent,
-    TagSelectItemComponent
+    TagSelectItemComponent,
+    PageHistoryComponent
   ],
   imports: [
     BrowserModule,

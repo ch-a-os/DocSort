@@ -25,7 +25,7 @@ export default async function searchDocuments(req: ModifiedRequest, res: Respons
      *  - option-where-updated-to
      *  - option-where-tags
      */
-    const userId = getUserIDFromJWT(req.headers.token.toString());
+    const userId = req.userID;
     const user = await User.findOne({ _id: userId });
     if(user == null) {
         console.log(`User with ID ${userId} does not exist in the database`);

@@ -1,9 +1,17 @@
-<div *ngIf="this.api.isLoggedIn == false">
+<ng-container *ngIf="this.api.isLoggedIn == false">
     <h1>first, please login</h1>
     <app-login></app-login>
-</div>
-<div *ngIf="this.api.isLoggedIn == true">
-    <app-menu></app-menu>
-    <router-outlet></router-outlet>
-</div>
-<ng-snotify class="material"></ng-snotify>
+</ng-container>
+
+<ng-container *ngIf="this.api.isLoggedIn == true">
+    <div id="spaceLeft"></div>
+    <div id="sidemenu">
+            <app-menu></app-menu>
+            <ng-snotify class="material"></ng-snotify>
+    </div>
+    <div id="shadow"></div>
+    <div id="content">
+            <router-outlet></router-outlet>
+    </div>
+    <div id="spaceRight"></div>
+</ng-container>

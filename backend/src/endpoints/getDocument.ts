@@ -6,7 +6,7 @@ import { ModifiedRequest } from "../lib/jwt";
 
 export default async function getDocument(req: ModifiedRequest, res: Response) {
     try {
-        const userId = getUserIDFromJWT(req.header("token"));
+        const userId = req.userID;
         const user = await User.findOne({ id: userId });
         const documentId = req.header("documentId");
         const document = await Document.findOne({ _id: mongoose.Types.ObjectId(documentId), user: user }).exec();
