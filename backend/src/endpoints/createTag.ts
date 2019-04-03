@@ -6,7 +6,7 @@ import { ModifiedRequest } from "../lib/jwt";
 
 export default async function createTag(req: ModifiedRequest, res: any) {
     const userTag: ITag = req.body;
-    const user: IUser = await User.findById(req.userID).populate('tags_R').exec();
+    const user: IUser = await User.findById(getUserIDFromJWT(req.headers.token)).populate('tags_R').exec();
 
     // Check If body exist
     if(req.body == null) {

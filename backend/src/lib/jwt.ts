@@ -11,7 +11,9 @@ export interface ModifiedRequest extends Request {
 }
 
 /**
- * We are injecting the users ID and database reference into the request for later use.
+ * Extracts the user ID out of the JWT
+ * @param jsonwebtoken JWT of user
+ * @returns ObjectID of user
  */
 export async function addUserToRequest(req: ModifiedRequest, res: Response, next: Function): Promise<void> {
     try {

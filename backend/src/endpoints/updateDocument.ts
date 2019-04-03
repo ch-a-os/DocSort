@@ -6,7 +6,6 @@ import { ModifiedRequest } from "../lib/jwt";
 
 export default async function updateDocument(req: ModifiedRequest, res) {
     const changedDoc: IDocument = req.body;
-    const user: IUser = await User.findById(req.userID);
     
     // Check If body exist
     if(changedDoc == null) {
@@ -15,7 +14,7 @@ export default async function updateDocument(req: ModifiedRequest, res) {
     }
 
     // Check If user was found
-    if(req.user == null) {
+    if(user == null) {
         res.status(401).send();
         return;
     }

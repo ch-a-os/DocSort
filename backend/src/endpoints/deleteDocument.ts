@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import { Document } from "../models/document/document.model";
+import { getUserIDFromJWT } from '../lib/jwt';
 import { generateFilePath } from '../lib/documentOperations';
 import { ModifiedRequest } from '../lib/jwt';
 
@@ -13,13 +14,13 @@ export default async function deleteDocument(req: ModifiedRequest, res) {
     }
 
     // Check If user was found
-    if(req.user == null) {
+    if(user == null) {
         res.status(400).send();
         return;
     }
 
     const doc = await Document.findById(toDelete);
-    if(doc.user_R.toString() != req.user._id.toString()) {
+    if(doc.user_R.toString() != user._id.toString()) {
         res.status(401).send();
         return;
     }

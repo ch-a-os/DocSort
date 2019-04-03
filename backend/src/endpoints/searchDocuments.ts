@@ -25,13 +25,14 @@ export default async function searchDocuments(req: ModifiedRequest, res: Respons
      *  - option-where-updated-to
      *  - option-where-tags
      */
-    const user = await User.findOne({ _id: req.userID });
+    const userId = getUserIDFromJWT(req.headers.token.toString());
+    const user = await User.findOne({ _id: userId });
     if(user == null) {
-        console.log(`User with ID ${req.userID} does not exist in the database`);
+        console.log(`User with ID ${userId} does not exist in the database`);
         res.status(500).send();
         return;
     }
-    let query = Document.where("user_R").equals(req.userID);
+    let query = Document.where("user_R").equals(userId);
 
     // take
     const limit = parseInt(req.header("option-limit"), 10);
