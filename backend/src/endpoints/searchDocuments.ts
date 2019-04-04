@@ -76,7 +76,8 @@ export default async function searchDocuments(req: ModifiedRequest, res: Respons
     // title
     let title = req.header("option-where-title");
     if(title != null) {
-        title = title.replace(/([.*+?=^!:${}()|[\]\/\\])/g, '\\$1');
+        title = title.replace(/([.+?=^!:${}()|[\]\/\\])/g, '\\$1');
+        title = title.replace("*", ".*");
         console.log("Title;", title)
         query.where("title").regex(new RegExp(`${title}`, 'i'));  // Ignoring upper and lower case
     }
@@ -84,7 +85,8 @@ export default async function searchDocuments(req: ModifiedRequest, res: Respons
     // note
     let note = req.header("option-where-note");
     if(note != null) {
-        note = note.replace(/([.*+?=^!:${}()|[\]\/\\])/g, '\\$1');
+        note = note.replace(/([.+?=^!:${}()|[\]\/\\])/g, '\\$1');
+        note = note.replace("*", ".*");
         query.where("note").regex(new RegExp(`${note}`, 'i'));  // Ignoring upper and lower case    
     }
 
