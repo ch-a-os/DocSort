@@ -1,7 +1,33 @@
-<div class="main">
-  <a routerLink="/home" routerLinkActive="active">Home</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a routerLink="/search" routerLinkActive="active">Search</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a routerLink="/uploadSingleDocument" routerLinkActive="active">Upload Single Document</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a routerLink="/showTags" routerLinkActive="active">Show Tags</a>
-  <span class="username">{{api.decodedJwt.username}}</span>
+<div id="user">
+    username: {{api.decodedJwt.username}}
+</div>
+
+<div id="home">
+    <a routerLink="/home" routerLinkActive="active">
+      <span>Home</span>
+    </a>
+</div>
+
+<div id="upload">
+    <a routerLink="/uploadSingleDocument" routerLinkActive="active">
+      <span>Upload Document</span>
+    </a>
+</div>
+
+<div id="search">
+    <a routerLink="/search" routerLinkActive="active">
+      <span>Search</span>
+    </a>
+</div>
+
+<div id="tags">
+    <a routerLink="/showTags" routerLinkActive="active">
+      <span>Show Tags</span>
+    </a>
+</div>
+
+<div id="history">
+  <a routerLink="/history" routerLinkActive="active">
+    <span>History [coming soon]</span>
+  </a>
 </div>

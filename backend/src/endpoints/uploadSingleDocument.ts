@@ -4,7 +4,6 @@ import { Request, Response } from "express";
 import { Document } from "../models/document/document.model";
 import { User } from "../models/user/user.model";
 import { IDocument } from "../models/document/document.interface";
-import { getUserIDFromJWT } from "../lib/jwt";
 import { extractFileExtension, generateFilePath } from "../lib/documentOperations";
 import { getNextPrimaryNumber } from "../lib/userUtils";
 import { ModifiedRequest } from "../lib/jwt";
@@ -16,7 +15,8 @@ export default async function uploadSingleDocument(req: ModifiedRequest, res: Re
             fs.mkdirSync("./uploads");
         }
 
-        const userId = getUserIDFromJWT(req.header("token"));
+        //const userId = getUserIDFromJWT(req.header("token"));
+        const userId = req.userID;
         const user = await User.findOne({ _id: userId }).populate("tags_R").exec();
         const nextPrimaryNumber = await getNextPrimaryNumber(userId);
 

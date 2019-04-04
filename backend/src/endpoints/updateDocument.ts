@@ -6,6 +6,7 @@ import { ModifiedRequest } from "../lib/jwt";
 
 export default async function updateDocument(req: ModifiedRequest, res) {
     const changedDoc: IDocument = req.body;
+    const user = req.user;
     
     // Check If body exist
     if(changedDoc == null) {
