@@ -3,7 +3,6 @@ import { IUser } from "../user/user.interface";
 import { ITag } from "../tag/tag.interface";
 
 export interface IDocument extends mongoose.Document {
-    index?: number;
     number: {
         primary?: number;
         secondary?: number;

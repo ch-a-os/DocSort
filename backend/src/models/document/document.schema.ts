@@ -18,7 +18,6 @@ export let Schema_DocumentNumber: mongoose.Schema = new mongoose.Schema({
 });
 
 export let Schema_Document: mongoose.Schema = new mongoose.Schema({
-    index: { type: Number, required: false },
     number: { type: Schema_DocumentNumber, required: false },
     title: { type: String, required: false },
     note: { type: String, required: false },
@@ -32,7 +31,3 @@ export let Schema_Document: mongoose.Schema = new mongoose.Schema({
 }, {
     timestamps: true
 });
-
-Schema_Document.pre("save", async function(this, next) {
-    (this as IDocument).index = await Document.count({});
-})
