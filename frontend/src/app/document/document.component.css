@@ -1,0 +1,29 @@
+.page-history {
+    display: grid;
+    /*height: 50px;*/
+    grid-template-columns: max-content auto 130px;
+    /*grid-template-rows: 50px 100px 100px;*/
+    grid-template-areas: "title note createdAt";
+}
+
+.grid-item {
+    height: auto;
+    padding: 4px;
+    margin: 2px;
+}
+
+.title {
+    
+    grid-area: title;
+    background-color: blue;
+}
+
+.note {
+    grid-area: note;
+    background-color: yellow;
+}
+
+.createdAt {
+    grid-area: createdAt;
+    background-color: purple;
+}
