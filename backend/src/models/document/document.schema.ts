@@ -36,3 +36,9 @@ export let Schema_Document: mongoose.Schema = new mongoose.Schema({
 Schema_Document.pre("save", async function(this, next) {
     (this as IDocument).index = await Document.count({});
 })
+Schema_Document.post("find", function(result: any) {
+    // If the secondary number is undefined, set it to zero
+    for(let i = 0; i < result.length; i++) {
+        if(result[i].number.secondary == undefined) result[i].number.secondary = 0;
+    }
+})

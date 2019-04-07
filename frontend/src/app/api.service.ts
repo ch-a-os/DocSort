@@ -186,7 +186,8 @@ export class ApiService {
         responseType: 'blob'
       }).toPromise();
       const blob = new Blob([response], { type: doc.fileExtension });
-      filesaver.saveAs(blob, doc.title + "." + doc.fileExtension);
+      console.log(doc);
+      filesaver.saveAs(blob, `${doc.number.primary}.${doc.number.secondary}_${doc.title}.${doc.fileExtension}`);
     } catch(error) {
       console.error("error in prompDownloadDocument:", error);
     }

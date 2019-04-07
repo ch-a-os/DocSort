@@ -12,5 +12,5 @@ export default async function getDocumentFile(req: any, res: any) {
 
     const doc: IDocument = await Document.findById(documentId, 'title fileExtension user_R number');
     const filepath = generateFilePath(doc);
-    res.download(filepath, `${doc.title}.${doc.fileExtension}`);
+    res.download(filepath, `${doc.number.primary}.${doc.number.secondary}_${doc.title}.${doc.fileExtension}`);
 }

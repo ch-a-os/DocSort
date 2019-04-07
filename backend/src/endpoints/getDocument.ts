@@ -10,6 +10,7 @@ export default async function getDocument(req: ModifiedRequest, res: Response) {
         const user = await User.findOne({ id: userId });
         const documentId = req.header("documentId");
         const document = await Document.findOne({ _id: mongoose.Types.ObjectId(documentId), user: user }).exec();
+
         res.status(200).send({
             document: document
         });
