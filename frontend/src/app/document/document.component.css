@@ -1,29 +1,28 @@
 .page-history {
     display: grid;
     /*height: 50px;*/
-    grid-template-columns: max-content auto 130px;
+    grid-template-columns: 1fr 130px;
     /*grid-template-rows: 50px 100px 100px;*/
-    grid-template-areas: "title note createdAt";
+    grid-template-areas: "titleNote createdAt";
 }
 
 .grid-item {
     height: auto;
     padding: 4px;
-    margin: 2px;
 }
 
-.title {
-    
-    grid-area: title;
-    background-color: blue;
+.grid-item b {
+    font-size: 14pt;
 }
 
-.note {
-    grid-area: note;
-    background-color: yellow;
+.grid-item i {
+    font-size: 12pt;
+}
+
+.titleNote {
+    grid-area: titleNote;
 }
 
 .createdAt {
     grid-area: createdAt;
-    background-color: purple;
 }

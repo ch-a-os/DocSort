@@ -2,8 +2,7 @@
 
     <ng-container *ngSwitchCase="'page-history'">
         <div class="page-history">
-            <div class="grid-item title">{{data.title}}</div>
-            <div class="grid-item note">{{data.note}}</div>
+            <div class="grid-item titleNote"><b>{{data.title}}&nbsp;•&nbsp;</b><i>{{data.note}}</i></div>
             <div class="grid-item createdAt">{{data.createdAt | date:'MM-dd-yyyy HH:mm'}}</div>
         </div>
     </ng-container>
