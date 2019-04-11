@@ -1,8 +1,6 @@
-import { IUser } from "../models/user/user.interface";
-import { User } from "../models/user/user.model";
-import { IDocument } from "../models/document/document.interface";
-import { Document } from "../models/document/document.model";
-import { ModifiedRequest } from "../lib/jwt";
+import { ModifiedRequest } from '../lib/jwt';
+import { IDocument } from '../models/document/document.interface';
+import { Document } from '../models/document/document.model';
 
 export default async function updateDocument(req: ModifiedRequest, res) {
     const changedDoc: IDocument = req.body;
