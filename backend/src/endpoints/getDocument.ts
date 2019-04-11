@@ -1,8 +1,9 @@
-import { Request, Response } from "express";
-import * as mongoose from "mongoose";
-import { User } from "../models/user/user.model";
-import { Document } from "../models/document/document.model";
-import { ModifiedRequest } from "../lib/jwt";
+import { Response } from 'express';
+import * as mongoose from 'mongoose';
+
+import { ModifiedRequest } from '../lib/jwt';
+import { Document } from '../models/document/document.model';
+import { User } from '../models/user/user.model';
 
 export default async function getDocument(req: ModifiedRequest, res: Response) {
     try {
