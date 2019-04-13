@@ -25,6 +25,10 @@ export interface ITag {
   };
 }
 
+export interface ITagCount extends ITag {
+  counts: number;
+}
+
 export interface IUser {
   username: string;
   tags_R: Array<string|ITag>;
