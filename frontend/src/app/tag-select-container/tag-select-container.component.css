@@ -6,7 +6,6 @@
     grid-template-areas:
     "titleSelected titleAvailable"
     "selected available";
-    border: 5px dashed rgb(47, 189, 255);
 }
 
 #tag-select-container .headerSelected {
@@ -34,12 +33,12 @@
 }
 
 #tag-select-container .available li:hover {
-    transform: translateX(-40px);
+    transform: translateX(-15px);
     transition: all 0.2s;
 }
 
 #tag-select-container .selected li:hover {
-    transform: translateX(40px);
+    transform: translateX(15px);
     transition: all 0.2s;
 }
 

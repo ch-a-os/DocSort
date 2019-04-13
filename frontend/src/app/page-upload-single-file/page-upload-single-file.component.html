@@ -1,8 +1,39 @@
-<div id="pageUploadSingleFile">
-  <input type="file" id="singleDocument" class="fileUpload" (change)="onFileChanged($event.target.files)"><br>
-  <span>Title: </span><input id="title" type="text" [(ngModel)]="document.title"><br>
-  <span>Note: </span><input id="note" type="text" [(ngModel)]="document.note"><br>
+<div class="gridItem headline">
+  <h1>Here you can upload a new document</h1>
+</div>
 
+<div class="gridItem title">
+  <span>
+    Title:
+  </span>
+  <input type="text" [(ngModel)]="document.title">
+</div>
+
+<div class="gridItem note">
+    <span>
+      Note:
+    </span>
+    <input type="text" [(ngModel)]="document.note"><br>
+</div>
+
+<div class="gridItem textRecognition">
+  <input type="checkbox" disabled>
+  <span>Allow Text-Recognition on document-content</span>
+</div>
+
+<div class="gridItem tagSelector">
   <app-tag-select-container (tagsToSend)="tagsToSendList($event)"></app-tag-select-container>
-  <button (click)="onUpload()">Upload!</button>
+</div>
+
+<div class="gridItem selectFile">
+  <div class="clickDragDrop" (click)="fileSelectInput.click()">
+    <span>
+      SELECT FILE FOR UPLOAD
+    </span>
+  </div>
+  <input #fileSelectInput type="file" class="selectFile" (change)="onFileChanged($event.target.files)"><br>
+</div>
+
+<div class="gridItem upload">
+  <span (click)="onUpload()">UPLOAD</span>
 </div>
