@@ -1,11 +1,12 @@
+import data from '../config.json';
+
 export interface IConfig {
     secretJWT: string;
     serverPort: number;
-    mongodb: string;
+    mongodb: {
+        url: string;
+        eraseOnStartup: boolean
+    };
 }
 
-export const config: IConfig = {
-    secretJWT: "superSecretLOL",
-    serverPort: 9090,
-    mongodb: "mongodb://localhost:27017/DocSort"
-}
+export const config: IConfig = data;
