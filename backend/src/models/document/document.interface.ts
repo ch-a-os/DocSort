@@ -1,4 +1,4 @@
-import * as mongoose from "mongoose";
+import mongoose from "mongoose";
 import { IUser } from "../user/user.interface";
 import { ITag } from "../tag/tag.interface";
 

@@ -1,4 +1,4 @@
-import * as mongoose from "mongoose";
+import mongoose from "mongoose";
 import { IUser } from "./user.interface";
 import { createPasswordHash } from "../../lib/security";
 import { createRandomString } from "../../lib/stringUtil";
