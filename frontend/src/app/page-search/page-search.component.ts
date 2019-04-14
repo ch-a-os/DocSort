@@ -10,14 +10,17 @@ import { SafeResourceUrl } from '@angular/platform-browser';
 })
 export class PageSearchComponent implements OnInit {
 
-  search: string;
-  searchBy: string;
+  searchData: ISearchData;
+
+  //search: string;
+  //searchBy: string;
   docURL: SafeResourceUrl;
   foundDocuments: Array<IDocument>;
 
   constructor(private api: ApiService) {
-    this.search = "";
-    this.searchBy = "Title";
+    this.searchData = {};
+    //this.search = "";
+    //this.searchBy = "Title";
     this.foundDocuments = [];
   }
 
@@ -27,8 +30,8 @@ export class PageSearchComponent implements OnInit {
   }
 
   async doSearch() {
-    if(this.searchBy == "Title") this.foundDocuments = await this.api.searchDocumentsByTitle(this.search);
-    if(this.searchBy == "Note") this.foundDocuments = await this.api.searchDocumentsByNote(this.search);
+    //if(this.searchBy == "Title") this.foundDocuments = await this.api.searchDocumentsByTitle(this.search);
+    //if(this.searchBy == "Note") this.foundDocuments = await this.api.searchDocumentsByNote(this.search);
   }
 
   async download(doc) {
@@ -39,4 +42,28 @@ export class PageSearchComponent implements OnInit {
     await this.api.deleteDocument(doc._id);
     await this.doSearch();
   }
+
+  async test() {
+    console.log(JSON.stringify(this.searchData));
+    this.foundDocuments = await this.api.searchDocumentsByTitle(this.searchData.title);
+  }
+
+  tagsToSendList(idList: Array<string>) {
+    this.searchData.tags = new Array();
+    for (const id of idList) {
+      this.searchData.tags.push(id);
+    }
+  }
+}
+
+interface ISearchData {
+  title?: string;
+  note?: string;
+  primaryNumber?: string;
+  secondaryNumber?: string;
+  textRecognitionEnabled?: boolean;
+  isInGroup?: boolean;
+  dateFrom?: Date;
+  dateTo?: Date;
+  tags?: Array<string>;
 }

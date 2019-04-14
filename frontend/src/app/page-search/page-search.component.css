@@ -1,0 +1,110 @@
+:host() {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(6, auto);
+    grid-template-areas:
+    "headline headline"
+    "title textRecognitionEnabled"
+    "note isInGroup"
+    "numbers date"
+    "tagSelector tagSelector"
+    "results results";
+    font-size: 18pt;
+}
+
+.headline {
+    grid-area: headline;
+    text-align: center;
+}
+
+input {
+    color: blue;
+    font-size: 16pt;
+}
+
+.title {
+    grid-area: title;
+}
+
+.title input {
+    width: 150px
+}
+
+.textRecognitionEnabled {
+    grid-area: textRecognitionEnabled;
+}
+
+.note {
+    grid-area: note;
+}
+
+.note input {
+    width: 150px
+}
+
+.isInGroup {
+    grid-area: isInGroup;
+}
+
+.numbers {
+    grid-area: numbers;
+}
+
+.numbers input {
+    width: 50px;
+}
+
+.numbers .primary {
+    margin-right: 10px;
+}
+
+.date {
+    grid-area: date;
+}
+
+.date .dateFrom, .date .dateTo {
+    width: 200px;
+}
+
+.tagSelector {
+    grid-area: tagSelector;
+}
+
+.results {
+    grid-area: results;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-flow: row;
+    padding: 8px;
+}
+
+.results .result {
+    display: grid;
+    grid-template-columns: 80px auto 100px;
+    grid-template-areas:
+    "thumbnail titleNote date"
+}
+
+.results .noResults {
+    font-size: 32pt;
+}
+
+.results .thumbnail {
+    background-color: grey;
+    height: 110px;
+}
+
+.results .titleNote .title,
+.results .titleNote .dot {
+    font-size: 14pt;
+    font-weight: bold;
+}
+
+.results .titleNote .note {
+    font-size: 12pt;
+    font-style: italic;
+}
+
+.results .date {
+    font-size: 16pt;
+}
