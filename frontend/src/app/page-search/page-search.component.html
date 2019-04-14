@@ -3,30 +3,41 @@
 </div>
 
 <div class="title">
-  <input type="text" [(ngModel)]="searchData.title">title
+  <input placeholder="Search for title..." type="text" [(ngModel)]="searchData.title">
 </div>
 
 <div class="textRecognitionEnabled">
-  <input type="checkbox" [(ngModel)]="searchData.textRecognitionEnabled">txtRec
+  <input type="checkbox" [(ngModel)]="stateCheckBox.textRecognition">
+  <span [className]="stateCheckBox.textRecognition ? 'active' : 'inactive'">
+    Text-Recognition: 
+    <input type="checkbox" [(ngModel)]="searchData.textRecognitionEnabled">
+  </span>
 </div>
 
 <div class="note">
-  <input type="text" [(ngModel)]="searchData.note">note
+  <input placeholder="Search for note..." type="text" [(ngModel)]="searchData.note">
 </div>
 
 <div class="isInGroup">
-  <input type="checkbox" [(ngModel)]="searchData.isInGroup">isInGroup
+    <input type="checkbox" [(ngModel)]="stateCheckBox.isInGroup">
+    <span [className]="stateCheckBox.isInGroup ? 'active' : 'inactive'">
+      Is in group: 
+    <input type="checkbox" [(ngModel)]="searchData.isInGroup">
+    </span>
 </div>
 
 <div class="numbers">
-  <input class="primary" type="text" [(ngModel)]="searchData.primaryNumber">
-  <input class="secondary" type="text" [(ngModel)]="searchData.secondaryNumber">
+  <input placeholder="#1" class="primary" type="text" [(ngModel)]="searchData.primaryNumber">
+  <input placeholder="#2" class="secondary" type="text" [(ngModel)]="searchData.secondaryNumber">
 </div>
 
 <div class="date">
-  <input type="checkbox">date?<br>
-  <input class="dateFrom" type="date" [(ngModel)]="searchData.dateFrom"><br>
-  <input class="dateTo" type="date" [(ngModel)]="searchData.dateTo">
+    <input type="checkbox" [(ngModel)]="stateCheckBox.date">
+    <span [className]="stateCheckBox.date ? 'active' : 'inactive'">
+      Date: 
+      <input class="dateFrom" type="date" [(ngModel)]="searchData.dateFrom"><br>
+      <input class="dateTo" type="date" [(ngModel)]="searchData.dateTo">
+    </span>
 </div>
 
 <div class="tagSelector">

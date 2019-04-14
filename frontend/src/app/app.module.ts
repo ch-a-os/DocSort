@@ -43,7 +43,6 @@ import { DocumentComponent } from './document/document.component';
     SnotifyModule
   ],
   providers: [
-    GuardService,
     { provide: 'SnotifyToastConfig', useValue: ToastDefaults},
     SnotifyService
   ],

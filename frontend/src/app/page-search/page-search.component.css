@@ -10,6 +10,8 @@
     "tagSelector tagSelector"
     "results results";
     font-size: 18pt;
+    padding: 4px;
+    gap: 8px;
 }
 
 .headline {
@@ -27,11 +29,24 @@ input {
 }
 
 .title input {
-    width: 150px
+    padding: 2px;
+    width: 250px
 }
 
 .textRecognitionEnabled {
     grid-area: textRecognitionEnabled;
+}
+
+.textRecognitionEnabled .active {
+    color: green;
+}
+
+.textRecognitionEnabled .inactive {
+    color: yellow;
+}
+
+.textRecognitionEnabled .inactive input {
+    display: none;
 }
 
 .note {
@@ -39,11 +54,24 @@ input {
 }
 
 .note input {
-    width: 150px
+    padding: 2px;
+    width: 250px
 }
 
 .isInGroup {
     grid-area: isInGroup;
+}
+
+.isInGroup .active {
+    color: green;
+}
+
+.isInGroup .inactive {
+    color: yellow;
+}
+
+.isInGroup .inactive input {
+    display: none;
 }
 
 .numbers {
@@ -51,6 +79,8 @@ input {
 }
 
 .numbers input {
+    margin-top: 1px;
+    padding: 2px;
     width: 50px;
 }
 
@@ -62,8 +92,21 @@ input {
     grid-area: date;
 }
 
+.date .active {
+    color: green;
+}
+
+.date .inactive {
+    color: yellow;
+}
+
+.date .inactive input {
+    display: none;
+}
+
 .date .dateFrom, .date .dateTo {
     width: 200px;
+    display: block;
 }
 
 .tagSelector {
