@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule} from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,6 +18,7 @@ import { PageSearchComponent } from './page-search/page-search.component';
 import { TagSelectContainerComponent } from './tag-select-container/tag-select-container.component';
 import { TagSelectItemComponent } from './tag-select-item/tag-select-item.component';
 import { PageHistoryComponent } from './page-history/page-history.component';
+import { TokenInterceptor } from './httpInterceptor';
 
 @NgModule({
   declarations: [
@@ -41,8 +42,15 @@ import { PageHistoryComponent } from './page-history/page-history.component';
     SnotifyModule
   ],
   providers: [
+    {
+      provide: 'SnotifyToastConfig', useValue: ToastDefaults
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    },
     GuardService,
-    { provide: 'SnotifyToastConfig', useValue: ToastDefaults},
     SnotifyService
   ],
   bootstrap: [AppComponent]
