@@ -15,9 +15,9 @@ const multer = require('multer');
 const upload = multer({ storage: multer.memoryStorage() });
 
 /* To create Express server */
-import * as cors from 'cors';
+import cors from 'cors';
 import * as bodyParser from 'body-parser';
-import * as express from 'express';
+import express from 'express';
 import * as http from 'http';
 import { validateJWT, addUserToRequest } from "./jwt";
 

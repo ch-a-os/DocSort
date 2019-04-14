@@ -23,12 +23,26 @@ export class TagSelectContainerComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.tagsAvailable = await this.api.getTags();
-    console.log("init: got tags:", this.tagsAvailable);
+  }
+
+  sortTags(array: Array<ITag>) {
+    array.sort((a, b) => {
+      if(a.name.toLocaleLowerCase() < b.name.toLocaleLowerCase()) {
+        return -1;
+      }
+      if(a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase()) {
+        return 1;
+      }
+      return 0;
+    });
   }
 
   stateToggled(tag: ITag) {
     console.log("parent called: " + tag.name);
     let foundEntryIndex = this.tagsSelected.indexOf(tag);
+
+    // This pushes a tag to the selected ones If it isn't already in there.
+    // If it's in selected tags, it get moved into available tags.
     if(foundEntryIndex == -1) {
       console.log("tag " + tag.name + " not found, pushing");
       this.tagsSelected.push(tag);
@@ -48,24 +62,7 @@ export class TagSelectContainerComponent implements OnInit {
     console.log("emitted:", newIdList);
 
     // sorting both lists alphabetical
-    this.tagsAvailable.sort((a, b) => {
-      if(a.name.toLocaleLowerCase() < b.name.toLocaleLowerCase()) {
-        return -1;
-      }
-      if(a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase()) {
-        return 1;
-      }
-      return 0;
-    });
-    this.tagsSelected.sort((a, b) => {
-      if(a.name.toLocaleLowerCase() < b.name.toLocaleLowerCase()) {
-        return -1;
-      }
-      if(a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase()) {
-        return 1;
-      }
-      return 0;
-    });
+    this.sortTags(this.tagsAvailable);
+    this.sortTags(this.tagsSelected);
   }
-
 }

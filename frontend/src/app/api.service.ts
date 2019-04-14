@@ -77,7 +77,6 @@ export class ApiService {
       response = this.http.post(`${this.serverString}/uploadSingleDocument`, formData, {
         reportProgress: true,
         observe: 'events',
-        headers: new HttpHeaders().set('token', this.jwt)
       }).toPromise();
       toast = this.snotifyService.async("Document is uploading ...", response, {
         showProgressBar: false,
@@ -116,7 +115,6 @@ export class ApiService {
       response = await this.http.get(`${this.serverString}/getAllDocuments`, {
         reportProgress: true,
         observe: 'response',
-        headers: new HttpHeaders().set('token', this.jwt)
       }).toPromise();
     } catch (error) {
       console.log("error in getAllDocumentsMeta: " + error);
@@ -130,8 +128,7 @@ export class ApiService {
       response = await this.http.get(`${this.serverString}/searchDocuments`, {
         reportProgress: true,
         observe: 'response',
-        headers: new HttpHeaders().set('token', this.jwt)
-                .set('option-limit', amout.toString())
+        headers: new HttpHeaders().set('option-limit', amout.toString())
                 .set('option-order-field', 'createdAt')
                 .set('option-order-order', 'DESC')
       }).toPromise();
@@ -148,7 +145,6 @@ export class ApiService {
       response = await this.http.get(`${this.serverString}/getDocumentFile/${docID}`, {
         reportProgress: true,
         observe: 'body',
-        headers: new HttpHeaders().set('token', this.jwt),
         responseType: "blob"
       }).toPromise();
     } catch(error) {
@@ -163,7 +159,7 @@ export class ApiService {
       response = await this.http.delete(`${this.serverString}/deleteDocument`, {
         reportProgress: true,
         observe: 'body',
-        headers: new HttpHeaders().set('token', this.jwt).set('Content-Type', 'application/json'),
+        headers: new HttpHeaders().set('Content-Type', 'application/json'),
         //@ts-ignore: Body is not implemented in the TS-definition of a HTTP-DELETE request
         body: {
           id: docID
@@ -181,7 +177,6 @@ export class ApiService {
       response = await this.http.get(`${this.serverString}/getDocumentFile/${doc._id}`, {
         reportProgress: true,
         observe: 'body',
-        headers: new HttpHeaders().set('token', this.jwt),
         responseType: 'blob'
       }).toPromise();
       const blob = new Blob([response], { type: doc.fileExtension });
@@ -205,8 +200,7 @@ export class ApiService {
       response = await this.http.get(`${this.serverString}/searchDocuments`, {
         reportProgress: true,
         observe: 'events',
-        headers: new HttpHeaders().set('token', this.jwt)
-          .set('option-where-title', title)
+        headers: new HttpHeaders().set('option-where-title', title)
       }).toPromise()
     } catch (error) {
       console.log("error in searchDocumentsByTitle: " + error);
@@ -225,8 +219,7 @@ export class ApiService {
       response = await this.http.get(`${this.serverString}/searchDocuments`, {
         reportProgress: true,
         observe: 'events',
-        headers: new HttpHeaders().set('token', this.jwt)
-          .set('option-where-note', note)
+        headers: new HttpHeaders().set('option-where-note', note)
       }).toPromise()
     } catch (error) {
       console.log("error in searchDocumentsByNote: " + error);
@@ -246,8 +239,7 @@ export class ApiService {
       response = await this.http.get(`${this.serverString}/searchDocuments`, {
         reportProgress: true,
         observe: 'events',
-        headers: new HttpHeaders().set('token', this.jwt)
-          .set('option-where-title', search)
+        headers: new HttpHeaders().set('option-where-title', search)
       }).toPromise()
     } catch (error) {
       console.log("error in searchDocumentsByNote: " + error);
@@ -266,7 +258,6 @@ export class ApiService {
       response = await this.http.get(`${this.serverString}/getAllTags`, {
         reportProgress: true,
         observe: 'events',
-        headers: new HttpHeaders().set('token', this.jwt)
       }).toPromise()
     } catch (error) {
       console.log("error in getTags: " + error);
@@ -286,8 +277,7 @@ export class ApiService {
     try {
       response = await this.http.get(`${this.serverString}/getAllTags`, {
         reportProgress: true,
-        observe: 'response',
-        headers: new HttpHeaders().set('token', this.jwt)
+        observe: 'response'
       }).toPromise();
       console.log(`getAllTags responsed with ${response.body.length} entries`);
       return response.body;

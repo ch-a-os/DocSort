@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { Request, Response } from "express";
 import { Document } from "../models/document/document.model";
 import { User } from "../models/user/user.model";
@@ -42,14 +42,7 @@ export default async function uploadSingleDocument(req: ModifiedRequest, res: Re
         newDocument.fileExtension = extractFileExtension(req.file.originalname);
 
         // Setting up TAGs
-        const givenTags: Array<string> = uploadDocument.tags_R;
-        console.log("Tag:", givenTags)
-        if(uploadDocument.tags_R != null) {
-            newDocument.tags_R = new Array();
-            for (const tag of givenTags) {
-                newDocument.tags_R.push(mongoose.Types.ObjectId(tag));
-            }
-        }
+        newDocument.tags_R = uploadDocument.tags_R.map(entry => mongoose.Types.ObjectId(entry));
         
         await newDocument.save();
 

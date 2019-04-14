@@ -26,7 +26,7 @@ async function run() {
         mongoose.set("useFindAndModify", false);
         mongoose.set("useCreateIndex", true);
         console.log("connect to db");
-        await mongoose.connect(config.mongodb);
+        await mongoose.connect(config.mongodb.url);
         console.log("connected to db");
     } catch (error) {
         console.log("There is an error while connection to the database:", error);
@@ -45,9 +45,11 @@ async function run() {
     server.listen(9090, () => {
         console.log("- Server started on port 9090!");
         console.log("DocSort is ready to use");
-        insertDummyData().then(() => {
-            console.log("insertDummyData finished");
-        });
+        if(config.mongodb.eraseOnStartup) {
+            insertDummyData().then(() => {
+                console.log("insertDummyData finished");
+            });
+        }
     });  
 }
 
