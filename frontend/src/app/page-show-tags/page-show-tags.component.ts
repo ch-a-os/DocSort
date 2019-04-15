@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ITag } from '../interfaces';
+import { ITag, ITagCount } from '../interfaces';
 import { ApiService } from '../api.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { ApiService } from '../api.service';
 })
 export class PageShowTagsComponent implements OnInit {
 
-  allTags: Array<ITag> = null;
+  allTags: Array<ITagCount> = null;
 
   constructor(private api: ApiService) { }
 
@@ -19,6 +19,13 @@ export class PageShowTagsComponent implements OnInit {
 
   async getAllTags() {
     this.allTags = await this.api.getAllTags();
+
+    // mapping random int to all entries as long as the endpoint isn't finished
+    this.allTags.map(entry => entry.counts = Math.floor(Math.random() * 100));
+
+    this.allTags.sort((a, b) => {
+      return b.counts - a.counts;
+    });
   }
 
 }

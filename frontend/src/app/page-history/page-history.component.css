@@ -2,10 +2,24 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-auto-flow: row;
+    padding: 8px;
 }
 
-.document {
-    height: 25px;
-    background-color: grey;
-    margin: 2px;
+.gridHeader {
+    display: grid;
+    grid-template-columns: 1fr 130px;
+    grid-auto-flow: column;
+    margin-bottom: 10px;
+}
+
+.gridHeader div {
+    padding: 4px;
+}
+
+app-document {
+    border-bottom: 1px solid rgba(197, 197, 197, 0.15);
+}
+
+app-document:last-of-type {
+    border-bottom: none;
 }

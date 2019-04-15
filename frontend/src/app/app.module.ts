@@ -18,7 +18,9 @@ import { PageSearchComponent } from './page-search/page-search.component';
 import { TagSelectContainerComponent } from './tag-select-container/tag-select-container.component';
 import { TagSelectItemComponent } from './tag-select-item/tag-select-item.component';
 import { PageHistoryComponent } from './page-history/page-history.component';
+import { DocumentComponent } from './document/document.component';
 import { TokenInterceptor } from './httpInterceptor';
+
 
 @NgModule({
   declarations: [
@@ -31,7 +33,8 @@ import { TokenInterceptor } from './httpInterceptor';
     PageSearchComponent,
     TagSelectContainerComponent,
     TagSelectItemComponent,
-    PageHistoryComponent
+    PageHistoryComponent,
+    DocumentComponent
   ],
   imports: [
     BrowserModule,
@@ -50,7 +53,6 @@ import { TokenInterceptor } from './httpInterceptor';
       useClass: TokenInterceptor,
       multi: true
     },
-    GuardService,
     SnotifyService
   ],
   bootstrap: [AppComponent]

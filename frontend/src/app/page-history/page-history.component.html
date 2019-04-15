@@ -1,3 +1,7 @@
-<div class="document" *ngFor="let document of documents">
-  test: {{document.title}} - {{document.note}}
+<div class="gridHeader">
+  <h2>Title/Note</h2>
+  <h2>Created at</h2>
 </div>
+<ng-container *ngFor="let document of documents">
+  <app-document [data]="document" [displayType]="'page-history'"></app-document>
+</ng-container>

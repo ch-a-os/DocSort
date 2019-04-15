@@ -1,8 +1,10 @@
-<div *ngFor="let tag of allTags">
-  <span
-    id="tag-{{tag.id}}"
-    [style.background-color]="tag.style.colorBackground"
-    [style.color]="tag.style.colorForeground">
-    Name: {{tag.name}} 
-  </span>
+<div>
+  <ng-container *ngFor="let tag of allTags">
+    <span
+      id="tag-{{tag.id}}"
+      [style.background-color]="tag.style.colorBackground"
+      [style.color]="tag.style.colorForeground">
+      {{tag.name}} ({{tag.counts}} documents)
+    </span>
+  </ng-container>
 </div>
