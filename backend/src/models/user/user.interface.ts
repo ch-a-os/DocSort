@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import * as mongoose from "mongoose";
 import { ITag } from "../tag/tag.interface";
 
 export interface IUser extends mongoose.Document {

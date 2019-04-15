@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import mongoose from 'mongoose';
+import * as mongoose from 'mongoose';
 
 import { ModifiedRequest } from '../lib/jwt';
 import { Document } from '../models/document/document.model';

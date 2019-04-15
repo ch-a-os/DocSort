@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { User } from "../models/user/user.model";
 import { Document } from "../models/document/document.model";
-import mongoose from "mongoose";
+import * as mongoose from "mongoose";
 import { ModifiedRequest } from "../lib/jwt";
 
 export default async function searchDocuments(req: ModifiedRequest, res: Response) {

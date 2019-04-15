@@ -1,9 +1,9 @@
-import mongoose from "mongoose";
+import * as mongoose from "mongoose";
 import * as jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
-import { config } from '../config';
 import { IUser } from "../models/user/user.interface";
 import { User } from "../models/user/user.model";
+import { configManager } from "../app";
 
 export interface ModifiedRequest extends Request {
     userID?: mongoose.Types.ObjectId;
@@ -48,7 +48,7 @@ export function validateJWT(req: Request, res: Response, next: Function): boolea
     token = req.headers.token != null? req.headers.token : req.query.token;
     
     try {
-        jwt.verify(token, config.secretJWT);
+        jwt.verify(token, configManager.config.secretJWT);
         next();
     } catch(err) {
         if(err) console.error(err);

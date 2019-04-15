@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import * as mongoose from "mongoose";
 
 export let Schema_TagStyle: mongoose.Schema = new mongoose.Schema({
     colorBackground: { type: String, required: false, default: "#000000" },
