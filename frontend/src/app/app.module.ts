@@ -52,7 +52,7 @@ import { TokenInterceptor } from './httpInterceptor';
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
-    }
+    },
     SnotifyService
   ],
   bootstrap: [AppComponent]
