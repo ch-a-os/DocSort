@@ -1,0 +1,14 @@
+<ng-container [ngSwitch]="displayType">
+
+    <ng-container *ngSwitchCase="'page-history'">
+        <div class="page-history">
+            <div class="grid-item titleNote"><b>{{data.title}}&nbsp;•&nbsp;</b><i>{{data.note}}</i></div>
+            <div class="grid-item createdAt">{{data.createdAt | date:'MM-dd-yyyy HH:mm'}}</div>
+        </div>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'page-home'">
+        456
+    </ng-container>
+
+</ng-container>

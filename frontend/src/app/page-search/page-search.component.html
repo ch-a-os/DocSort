@@ -1,4 +1,76 @@
-<h1>Search</h1>
+<div class="headline">
+  <h1 (click)="test()">Search</h1>
+</div>
+
+<div class="title">
+  <input placeholder="Search for title..." type="text" [(ngModel)]="searchData.title">
+</div>
+
+<div class="textRecognitionEnabled">
+  <input type="checkbox" [(ngModel)]="stateCheckBox.textRecognition">
+  <span [className]="stateCheckBox.textRecognition ? 'active' : 'inactive'">
+    Text-Recognition: 
+    <input type="checkbox" [(ngModel)]="searchData.textRecognitionEnabled">
+  </span>
+</div>
+
+<div class="note">
+  <input placeholder="Search for note..." type="text" [(ngModel)]="searchData.note">
+</div>
+
+<div class="isInGroup">
+    <input type="checkbox" [(ngModel)]="stateCheckBox.isInGroup">
+    <span [className]="stateCheckBox.isInGroup ? 'active' : 'inactive'">
+      Is in group: 
+    <input type="checkbox" [(ngModel)]="searchData.isInGroup">
+    </span>
+</div>
+
+<div class="numbers">
+  <input placeholder="#1" class="primary" type="text" [(ngModel)]="searchData.primaryNumber">
+  <input placeholder="#2" class="secondary" type="text" [(ngModel)]="searchData.secondaryNumber">
+</div>
+
+<div class="date">
+    <input type="checkbox" [(ngModel)]="stateCheckBox.date">
+    <span [className]="stateCheckBox.date ? 'active' : 'inactive'">
+      Date: 
+      <input class="dateFrom" type="date" [(ngModel)]="searchData.dateFrom"><br>
+      <input class="dateTo" type="date" [(ngModel)]="searchData.dateTo">
+    </span>
+</div>
+
+<div class="tagSelector">
+  <app-tag-select-container (tagsToSend)="tagsToSendList($event)"></app-tag-select-container>
+</div>
+
+<div class="results">
+  <div *ngFor="let doc of foundDocuments" class="result">
+    
+    <div class="thumbnail">
+      THMB
+    </div>
+
+    <div class="titleNote">
+      <span class="title">{{doc.title}}</span>
+      <span class="dot"> • </span>
+      <span class="note">{{doc.note}}</span>
+        
+    </div>
+
+    <div class="date">
+        {{doc.createdAt | date:'MM-dd-yyyy'}}
+    </div>
+
+  </div>
+  <div *ngIf="foundDocuments.length == 0" class="noResult">nothing found ¯\_(ツ)_/¯</div>
+</div>
+
+
+
+
+
+<!--
 <div id="searchHeader">
   <select [(ngModel)]="searchBy" (change)="doSearch()">
     <option>Title</option>
@@ -14,4 +86,4 @@
   <button (click)="download(doc)">Download</button>
   <button (click)="delete(doc)">Delete</button>
 </div>
-<p *ngIf="foundDocuments.length == 0">nothing found ¯\_(ツ)_/¯</p>
+<p *ngIf="foundDocuments.length == 0">nothing found ¯\_(ツ)_/¯</p>-->

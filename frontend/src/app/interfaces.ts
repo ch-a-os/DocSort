@@ -3,16 +3,6 @@ export interface ITagSelectItemStateChange {
   state: "selected" | "available";
 }
 
-export interface ITag {
-  _id?: string;
-  name: string;
-  style: {
-      colorBackground?: string;
-      colorForeground?: string;
-      logo?: string;
-  };
-}
-
 export interface IDecodedJwt {
   id: number;
   username: string;
@@ -25,6 +15,27 @@ export interface IUploadFile {
   document: IDocument;
 }
 
+export interface ITag {
+  _id?: string;
+  name: string;
+  style: {
+      colorBackground?: string;
+      colorForeground?: string;
+      logo?: string;
+  };
+}
+
+export interface ITagCount extends ITag {
+  counts: number;
+}
+
+export interface IUser {
+  username: string;
+  tags_R: Array<string|ITag>;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface IDocument {
   _id?: string;
   index?: number;
@@ -35,8 +46,8 @@ export interface IDocument {
   title?: string;
   note?: string;
   fileExtension?: string;
-  user_R?: string;
-  tags_R?: Array<string>;
+  user_R?: string|IUser;
+  tags_R?: Array<string|ITag>;
   mimeType?: string;
   textRecognition?: {
       enabled?: boolean;

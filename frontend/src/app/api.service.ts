@@ -58,7 +58,6 @@ export class ApiService {
     this.isLoggedIn = true;
     const helper = new JwtHelperService();
     this.decodedJwt = helper.decodeToken(this.jwt);
-    this.router.navigate(['/home']);
     this.toastLoginSuccessfull();
     return true;
   }
