@@ -1,16 +1,16 @@
 import * as fs from 'fs';
 import { Mongoose } from "mongoose";
-import { config, readConfig } from './config';
 import { insertDummyData } from './insertDummyData';
 import * as del from "del";
 import { createExpressServer, registerExpressRoutes } from './lib/express';
+import { Config } from './config';
 
 const mongoose: Mongoose = require("mongoose");
 
-async function run() {
-    // Config stuff
-    await readConfig()
+export const configManager: Config = new Config(null);
 
+async function run() {
+    await configManager.readConfig();
     console.log("DocSort is starting, please stand by ...");
 
     // todo: clean db
@@ -29,7 +29,7 @@ async function run() {
         mongoose.set("useFindAndModify", false);
         mongoose.set("useCreateIndex", true);
         console.log("connect to db");
-        await mongoose.connect(config.mongodb.url);
+        await mongoose.connect(configManager.config.mongodb.url);
         console.log("connected to db");
     } catch (error) {
         console.log("There is an error while connection to the database:", error);
@@ -45,10 +45,10 @@ async function run() {
     console.log("- routes registered");
 
     // Start server
-    server.listen(config.serverPort, () => {
-        console.log("- Server started on port " + config.serverPort + "!");
+    server.listen(configManager.config.serverPort, () => {
+        console.log("- Server started on port " + configManager.config.serverPort + "!");
         console.log("DocSort is ready to use");
-        if(config.mongodb.eraseOnStartup) {
+        if(configManager.config.mongodb.eraseOnStartup) {
             insertDummyData().then(() => {
                 console.log("insertDummyData finished");
             });
