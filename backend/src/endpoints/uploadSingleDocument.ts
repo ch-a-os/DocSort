@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import mongoose from 'mongoose';
+import * as mongoose from 'mongoose';
 import { Request, Response } from "express";
 import { Document } from "../models/document/document.model";
 import { User } from "../models/user/user.model";

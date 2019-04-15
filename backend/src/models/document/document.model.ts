@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import * as mongoose from "mongoose";
 import { Schema_Document } from "./document.schema";
 import { IDocument } from "./document.interface";
 

@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import { Mongoose } from "mongoose";
-import { config } from './config';
+import { config, readConfig } from './config';
 import { insertDummyData } from './insertDummyData';
 import * as del from "del";
 import { createExpressServer, registerExpressRoutes } from './lib/express';
@@ -8,6 +8,9 @@ import { createExpressServer, registerExpressRoutes } from './lib/express';
 const mongoose: Mongoose = require("mongoose");
 
 async function run() {
+    // Config stuff
+    await readConfig()
+
     console.log("DocSort is starting, please stand by ...");
 
     // todo: clean db
@@ -42,8 +45,8 @@ async function run() {
     console.log("- routes registered");
 
     // Start server
-    server.listen(9090, () => {
-        console.log("- Server started on port 9090!");
+    server.listen(config.serverPort, () => {
+        console.log("- Server started on port " + config.serverPort + "!");
         console.log("DocSort is ready to use");
         if(config.mongodb.eraseOnStartup) {
             insertDummyData().then(() => {

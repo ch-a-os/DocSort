@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import * as mongoose from "mongoose";
 export let Schema_DocumentTextRecognition: mongoose.Schema = new mongoose.Schema({
     enabled: { type: Boolean, required: false },
     finished: { type: Boolean, required: false },

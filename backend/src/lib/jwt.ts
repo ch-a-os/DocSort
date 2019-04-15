@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import * as mongoose from "mongoose";
 import * as jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
 import { config } from '../config';

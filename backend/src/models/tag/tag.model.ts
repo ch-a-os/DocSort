@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import * as mongoose from "mongoose";
 import { ITag } from "./tag.interface";
 import { Schema_Tag } from "./tag.schema";
 
