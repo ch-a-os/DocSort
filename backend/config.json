@@ -1,8 +1,0 @@
-{
-    "secretJWT": "MLDgwmlGXJMcDKmOJTOqI9nypbkVu1nI",
-    "serverPort": 9090,
-    "mongodb": {
-        "url": "mongodb://localhost:27017/DocSort",
-        "eraseOnStartup": true
-    }
-}
