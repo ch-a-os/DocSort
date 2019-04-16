@@ -9,8 +9,6 @@ export let Schema_TagStyle: mongoose.Schema = new mongoose.Schema({
 });
 
 export let Schema_Tag: mongoose.Schema = new mongoose.Schema({
-    // id
-
     name: { type: String, required: true },
     style: { type: Schema_TagStyle, required: false, default: {}}
 });

@@ -18,7 +18,6 @@ export interface ModifiedRequest extends Request {
 export async function addUserToRequest(req: ModifiedRequest, res: Response, next: Function): Promise<void> {
     try {
         const decoded = jwt.decode(req.header("token"), {complete: true, json: true});
-        console.log("Decoded:", decoded)
         const id = mongoose.Types.ObjectId(decoded['payload'].id);
         const dbRef: IUser = await User.findById(id).select('username _id').exec();
 
