@@ -1,0 +1,25 @@
+# Changelog
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [alpha-v0.2] - 2019-04-17
+### Added 
+- New search with filters
+- Wildcard search with *
+- New `config.json`
+
+### Changed
+- Rewrote of our frontend using CSS-Grid
+- Code refactoring to improve performance and code readablity
+- Download of documents is now smoother
+
+## [alpha-v0.1] - 2019-03-30
+### Added
+- Simple login system
+- Way to see your recent documents
+- Way to see all of your documents
+- Documents can be searched by title and note
+- Documents can be deleted/uploaded and are tagable
+- Tags can be created/deleted/modified
