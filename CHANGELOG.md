@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New search with filters
 - Wildcard search with *
 - New `config.json`
+- This `CHANGELOG.md` to keep track of changes
 
 ### Changed
 - Rewrote of our frontend using CSS-Grid
