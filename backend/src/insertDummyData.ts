@@ -6,12 +6,13 @@ import { Document } from "./models/document/document.model";
 import { connection } from "mongoose";
 import { generateFilePath } from "./lib/documentOperations";
 import { getNextPrimaryNumber } from "./lib/userUtils";
+import { log } from "./lib/logging";
 
 export async function insertDummyData() {
-    // Reset database first
-    console.log("\t-> Reset database ...")
+
     await connection.db.dropDatabase();
     await connection.useDb('DocSort');
+    log.info("Database was resetted");
 
     // Create tags -----------------------------
     let tagInvoice = await Tag.create({
@@ -213,7 +214,7 @@ export async function insertDummyData() {
         }
     ]
 
-    console.log("Begin to save all dummy documents ...")
+    log.info("Saving dummy documents...")
     for(let i = 0; i < documents.length; i++) {
         const document = documents[i];
         document.number = {};
@@ -224,8 +225,8 @@ export async function insertDummyData() {
         const docPath = generateFilePath(db);
         fs.copyFileSync(`./_dummyFiles/${i+1}.${document.fileExtension}`, docPath);
 
-        console.log(`Document ${i} of ${documents.length} has been saved (primary: ${document.number.primary}).\n`)
+        log.info(`\tDocument ${i} of ${documents.length} has been saved (primary: ${document.number.primary}, userId: ${document.user_R._id})`)
     }
 
-    console.log("all dummy-entries inserted");
+    log.success("All dummy-entries inserted");
 }
