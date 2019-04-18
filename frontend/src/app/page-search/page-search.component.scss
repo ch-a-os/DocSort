@@ -1,0 +1,154 @@
+:host() {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(6, auto);
+    grid-template-areas:
+    "headline headline"
+    "title textRecognitionEnabled"
+    "note isInGroup"
+    "numbers date"
+    "tagSelector tagSelector"
+    "results results";
+    font-size: 18pt;
+    padding: 4px;
+    gap: 8px;
+}
+
+.headline {
+    grid-area: headline;
+    text-align: center;
+}
+
+input {
+    color: blue;
+    font-size: 16pt;
+}
+
+.title {
+    grid-area: title;
+
+    input {
+        padding: 2px;
+        width: 250px
+    }
+}
+
+.textRecognitionEnabled {
+    grid-area: textRecognitionEnabled;
+
+    .active {
+        color: green;
+    }
+
+    .inactive {
+        color: yellow;
+
+        input {
+            display: none;
+        }
+    }
+}
+
+.note {
+    grid-area: note;
+
+    input {
+        padding: 2px;
+        width: 250px
+    }
+}
+
+.isInGroup {
+    grid-area: isInGroup;
+
+    .active {
+        color: green;
+    }
+
+    .inactive {
+        color: yellow;
+
+        input {
+            display: none;
+        }
+    }
+}
+
+.numbers {
+    grid-area: numbers;
+
+    input {
+        margin-top: 1px;
+        padding: 2px;
+        width: 50px;
+    }
+
+    .primary {
+        margin-right: 10px;
+    }
+}
+
+.date {
+    grid-area: date;
+
+    .active {
+        color: green;
+    }
+
+    .inactive {
+        color: yellow;
+
+        input {
+            display: none;
+        }
+    }
+
+    .dateFrom,.dateTo {
+        width: 200px;
+        display: block;
+    }
+}
+
+.tagSelector {
+    grid-area: tagSelector;
+}
+
+.results {
+    grid-area: results;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-flow: row;
+    padding: 8px;
+
+    .result {
+        display: grid;
+        grid-template-columns: 80px auto 100px;
+        grid-template-areas:
+        "thumbnail titleNote date"
+    }
+
+    .noResults {
+        font-size: 32pt;
+    }
+
+    .thumbnail {
+        background-color: grey;
+        height: 110px;
+    }
+
+    .titleNote {
+        .title,.dot {
+            font-size: 14pt;
+            font-weight: bold;
+        }
+
+        .note {
+            font-size: 12pt;
+            font-style: italic;
+        }
+    }
+
+    .date {
+        font-size: 16pt;
+    }
+}

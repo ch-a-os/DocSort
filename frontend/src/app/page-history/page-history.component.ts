@@ -5,7 +5,7 @@ import { IDocument } from '../interfaces';
 @Component({
   selector: 'app-page-history',
   templateUrl: './page-history.component.html',
-  styleUrls: ['./page-history.component.css']
+  styleUrls: ['./page-history.component.scss']
 })
 export class PageHistoryComponent implements OnInit {
   documents: Array<IDocument>;
