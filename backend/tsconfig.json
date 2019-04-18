@@ -1,6 +1,15 @@
 {
     "compilerOptions": {
+        "module": "commonjs",
         "emitDecoratorMetadata": true,
-        "experimentalDecorators": true
-    }
+        "experimentalDecorators": true,
+        "outDir": "dist"
+    },
+    "include": [
+        "src/**/*.ts",
+        "test/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules/"
+    ]
 }
