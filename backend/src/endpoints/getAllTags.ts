@@ -6,22 +6,18 @@ import { Document } from "../models/document/document.model";
 import { ITag } from '../models/tag/tag.interface';
 
 export default async function getAllTags(req: ModifiedRequest, res: any) {
-    // Get all tags that, that one user has
+    // Get all tags for the user
     const user: IUser = await User.findById(req.userID).populate('tags_R').exec();
     let newTagObj: Array<TagCount> = new Array<TagCount>();
 
-    // Now, get all documents with that tag
+    // Get the document-count for that tag
     for(let i = 0; i < user.tags_R.length; i++) {
-        const currentTag: ITagCount = <ITag>user.tags_R[i];
+        const currentTag = user.tags_R[i] as ITag;
         const docCount: number = await Document.countDocuments({tags_R: {$elemMatch: {$eq: mongoose.Types.ObjectId(currentTag._id)}}});
         const tagCount: TagCount = new TagCount(currentTag, docCount);
         newTagObj.push(tagCount);
     }
     res.status(200).send(newTagObj);
-}
-
-interface ITagCount extends ITag {
-    count?: number;
 }
 
 class TagCount {
