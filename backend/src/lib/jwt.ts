@@ -23,7 +23,9 @@ export async function addUserToRequest(req: ModifiedRequest, res: Response, next
 
         if(dbRef == null || dbRef == undefined) {
             res.status(401).send();
-            throw new Error("User does not longer exist in database!");
+            console.log("error: User does not longer exist in database!");
+            return;
+            //throw new Error("User does not longer exist in database!");
         }
 
         req.userID = id;
