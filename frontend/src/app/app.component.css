@@ -5,11 +5,7 @@
     display: grid;
     /*grid-template-columns: 1fr 300px 100px 700px 1fr;*/
     grid-template-columns: 1fr 300px 5px 700px 1fr;
-    grid-template-areas: "spaceLeft sidemenu shadow content spaceRight";
-}
-
-#spaceLeft {
-    grid-area: spaceLeft;
+    grid-template-areas: ". sidemenu shadow content .";
 }
 
 #sidemenu {
@@ -23,7 +19,7 @@
     /*background-color: #1c1c1c;;
     -webkit-box-shadow: inset 71px 2px 40px -40px rgba(0,0,0,0.7);
     -moz-box-shadow: inset 71px 2px 40px -40px rgba(0,0,0,0.7);
-    box-shadow: inset 71px 2px 40px -40px rgba(0,0,0,0.7);*/
+    box-shadow: insetcd 71px 2px 40px -40px rgba(0,0,0,0.7);*/
 }
 
 #content {
