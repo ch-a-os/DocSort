@@ -16,10 +16,6 @@
 #shadow {
     grid-area: shadow;
     background-color: #242222;
-    /*background-color: #1c1c1c;;
-    -webkit-box-shadow: inset 71px 2px 40px -40px rgba(0,0,0,0.7);
-    -moz-box-shadow: inset 71px 2px 40px -40px rgba(0,0,0,0.7);
-    box-shadow: insetcd 71px 2px 40px -40px rgba(0,0,0,0.7);*/
 }
 
 #content {
