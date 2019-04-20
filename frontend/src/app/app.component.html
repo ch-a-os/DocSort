@@ -4,7 +4,6 @@
 </ng-container>
 
 <ng-container *ngIf="this.api.isLoggedIn == true">
-    <div id="spaceLeft"></div>
     <div id="sidemenu">
             <app-menu></app-menu>
             <ng-snotify class="material"></ng-snotify>
@@ -13,5 +12,4 @@
     <div id="content">
             <router-outlet></router-outlet>
     </div>
-    <div id="spaceRight"></div>
 </ng-container>
