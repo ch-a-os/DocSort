@@ -3,6 +3,7 @@ import { User } from "../models/user/user.model";
 import { Document } from "../models/document/document.model";
 import * as mongoose from "mongoose";
 import { ModifiedRequest } from "../lib/jwt";
+import { log } from "../lib/logging";
 
 export default async function searchDocuments(req: ModifiedRequest, res: Response) {
     /**
@@ -28,7 +29,7 @@ export default async function searchDocuments(req: ModifiedRequest, res: Respons
     const userId = req.userID;
     const user = await User.findOne({ _id: userId });
     if(user == null) {
-        console.log(`User with ID ${userId} does not exist in the database`);
+        log.warn(`User with ID ${userId} does not exist in the database`);
         res.status(500).send();
         return;
     }
@@ -77,8 +78,7 @@ export default async function searchDocuments(req: ModifiedRequest, res: Respons
     let title = req.header("option-where-title");
     if(title != null) {
         title = title.replace(/([.+?=^!:${}()|[\]\/\\])/g, '\\$1');
-        title = title.replace("*", ".*");
-        console.log("Title;", title)
+        title = title.replace(/\*{2,}|\*/g, ".*");
         query.where("title").regex(new RegExp(`${title}`, 'i'));  // Ignoring upper and lower case
     }
 
@@ -86,7 +86,7 @@ export default async function searchDocuments(req: ModifiedRequest, res: Respons
     let note = req.header("option-where-note");
     if(note != null) {
         note = note.replace(/([.+?=^!:${}()|[\]\/\\])/g, '\\$1');
-        note = note.replace("*", ".*");
+        note = note.replace(/\*{2,}|\*/g, ".*");
         query.where("note").regex(new RegExp(`${note}`, 'i'));  // Ignoring upper and lower case    
     }
 
@@ -145,7 +145,7 @@ export default async function searchDocuments(req: ModifiedRequest, res: Respons
             // @ts-ignore: Bug in mongoose (https://github.com/Automattic/mongoose/issues/7612)
             query.where("tags_R").all(objectIds);
         } catch (error) {
-            console.log("searchDocuments: error while parsing/searching tags: " + error);
+            log.error("searchDocuments: error while parsing/searching tags: " + error);
         }
     }
 

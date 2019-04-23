@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 import { IUser } from "../models/user/user.interface";
 import { User } from "../models/user/user.model";
 import { configManager } from "../app";
+import { log } from "./logging";
 
 export interface ModifiedRequest extends Request {
     userID?: mongoose.Types.ObjectId;
@@ -23,7 +24,9 @@ export async function addUserToRequest(req: ModifiedRequest, res: Response, next
 
         if(dbRef == null || dbRef == undefined) {
             res.status(401).send();
-            throw new Error("User does not longer exist in database!");
+            log.error("User does not longer exist in database!");
+            return;
+            //throw new Error("User does not longer exist in database!");
         }
 
         req.userID = id;
@@ -50,7 +53,9 @@ export function validateJWT(req: Request, res: Response, next: Function): boolea
         jwt.verify(token, configManager.config.secretJWT);
         next();
     } catch(err) {
-        if(err) console.error(err);
+        if(err) {
+            log.error(JSON.stringify(err));
+        }
         res.status(401).send({error: "Invalid token in request."})
     }
 }

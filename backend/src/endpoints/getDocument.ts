@@ -4,6 +4,7 @@ import * as mongoose from 'mongoose';
 import { ModifiedRequest } from '../lib/jwt';
 import { Document } from '../models/document/document.model';
 import { User } from '../models/user/user.model';
+import { log } from '../lib/logging';
 
 export default async function getDocument(req: ModifiedRequest, res: Response) {
     try {
@@ -15,10 +16,9 @@ export default async function getDocument(req: ModifiedRequest, res: Response) {
         res.status(200).send({
             document: document
         });
-        console.log(`getDocument: returning document -${document.title}-`);
         return true;
     } catch(err) {
-        console.error(err);
+        log.error(err);
         res.status(500).send({error: "Please see console output for error message."})
     }
 }

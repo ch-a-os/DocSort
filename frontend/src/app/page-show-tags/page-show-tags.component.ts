@@ -5,7 +5,7 @@ import { ApiService } from '../api.service';
 @Component({
   selector: 'app-page-show-tags',
   templateUrl: './page-show-tags.component.html',
-  styleUrls: ['./page-show-tags.component.css']
+  styleUrls: ['./page-show-tags.component.scss']
 })
 export class PageShowTagsComponent implements OnInit {
 

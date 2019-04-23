@@ -39,14 +39,14 @@ a {
     font-size: 18pt;
     transition: border 0.2s;
     border-left: 0px solid transparent;
+
+    span {
+        display: inline-block;
+        padding-top: 7px;
+    }
 }
 
 #home a:hover, #upload a:hover, #search a:hover, #tags a:hover, #history a:hover {
     transition: border 0.2s;
     border-left: 10px solid orangered;
-}
-
-a span {
-    display: inline-block;
-    padding-top: 7px;
 }

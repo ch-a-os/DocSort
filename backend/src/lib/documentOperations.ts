@@ -14,7 +14,6 @@ export function generateFilePath(document: IDocument) {
     } else {
         userId = (document.user_R as IUser)._id;
     }
-    console.log("generateFilePath -> userId = " + userId);
     const filePath = `./uploads/${userId}/${numberSequence}(${document.id}).${document.fileExtension}`;
     return filePath;
 }

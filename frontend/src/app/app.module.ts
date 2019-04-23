@@ -7,7 +7,6 @@ import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 import { PageHomeComponent } from './page-home/page-home.component';
-import { GuardService } from './guard.service';
 import { RouterModule } from '@angular/router';
 import { routes } from './routes';
 import { PageUploadSingleFileComponent } from './page-upload-single-file/page-upload-single-file.component';
