@@ -5,7 +5,7 @@ import { ApiService } from '../api.service';
 @Component({
   selector: 'app-page-upload-single-file',
   templateUrl: './page-upload-single-file.component.html',
-  styleUrls: ['./page-upload-single-file.component.css']
+  styleUrls: ['./page-upload-single-file.component.scss']
 })
 export class PageUploadSingleFileComponent implements OnInit {
   selectedFile: File;

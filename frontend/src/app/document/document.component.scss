@@ -1,22 +1,20 @@
 .page-history {
     display: grid;
-    /*height: 50px;*/
     grid-template-columns: 1fr 130px;
-    /*grid-template-rows: 50px 100px 100px;*/
     grid-template-areas: "titleNote createdAt";
 }
 
 .grid-item {
     height: auto;
     padding: 4px;
-}
 
-.grid-item b {
-    font-size: 14pt;
-}
+    b {
+        font-size: 14pt;
+    }
 
-.grid-item i {
-    font-size: 12pt;
+    i {
+        font-size: 12pt;
+    }
 }
 
 .titleNote {

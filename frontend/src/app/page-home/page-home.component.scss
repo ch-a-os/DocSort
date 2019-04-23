@@ -6,24 +6,28 @@
 #document {
     list-style: none;
     margin-left: 15px;
-}
-#document h4 {
-    margin-bottom: 5px;
-}
-#document p {
-    margin-top: 0;
-    margin-bottom: 8px;
-}
-#document img {
-    width: 32px;
-    height: 32px;
+
+    h4 {
+        margin-bottom: 5px;
+    }
+
+    p {
+        margin-top: 0;
+        margin-bottom: 8px;
+    }
+
+    img {
+        width: 32px;
+        height: 32px;
+    }
 }
 
 #properties {
     display: inline;
-}
-#properties img {
-    padding-right: 10px;
+
+    img {
+        padding-right: 10px;
+    }
 }
 
 button {

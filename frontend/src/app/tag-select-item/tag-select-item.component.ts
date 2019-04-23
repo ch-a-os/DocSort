@@ -12,7 +12,7 @@ import { ITagSelectItemStateChange, ITag } from '../interfaces';
 @Component({
   selector: 'app-tag-select-item',
   templateUrl: './tag-select-item.component.html',
-  styleUrls: ['./tag-select-item.component.css'],
+  styleUrls: ['./tag-select-item.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class TagSelectItemComponent implements OnInit {
