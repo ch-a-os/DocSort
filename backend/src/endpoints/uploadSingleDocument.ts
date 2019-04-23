@@ -7,10 +7,11 @@ import { IDocument } from "../models/document/document.interface";
 import { extractFileExtension, generateFilePath } from "../lib/documentOperations";
 import { getNextPrimaryNumber } from "../lib/userUtils";
 import { ModifiedRequest } from "../lib/jwt";
+import { log } from "../lib/logging";
 
 export default async function uploadSingleDocument(req: ModifiedRequest, res: Response) {
     try {
-        console.log("uploadDocument wurde aufgerufen");
+        log.info("uploadDocument was called");
         if (!fs.existsSync("./uploads")) {
             fs.mkdirSync("./uploads");
         }
@@ -20,7 +21,7 @@ export default async function uploadSingleDocument(req: ModifiedRequest, res: Re
         const user = await User.findOne({ _id: userId }).populate("tags_R").exec();
         const nextPrimaryNumber = await getNextPrimaryNumber(userId);
 
-        console.log("req.body=", req.body);
+        log.info("req.body=" + JSON.stringify(req.body));
         const uploadDocument: IUploadDocument = JSON.parse(req.body.document);
         const uploadFile: Express.Multer.File = req.file;
 
@@ -49,14 +50,14 @@ export default async function uploadSingleDocument(req: ModifiedRequest, res: Re
         const filePath = generateFilePath(newDocument);
         fs.writeFileSync(filePath, req.file.buffer);
         
-        console.log(`file written: ${filePath}`);
+        log.info(`file written: ${filePath}`);
         await wait(4000);
         res.status(200).send({
             newID: newDocument.id
         });
     } catch(err) {
         res.status(500).send({message: "Please see console output for error message."});
-        console.error(err);
+        log.error(JSON.stringify(err));
     }
 }
 
