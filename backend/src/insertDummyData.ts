@@ -227,6 +227,4 @@ export async function insertDummyData() {
 
         log.info(`\tDocument ${i} of ${documents.length} has been saved (primary: ${document.number.primary}, userId: ${document.user_R._id})`)
     }
-
-    log.success("All dummy-entries inserted");
 }

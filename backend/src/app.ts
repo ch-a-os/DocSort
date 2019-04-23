@@ -47,7 +47,7 @@ async function run() {
         log.success("DocSort is ready to use");
         if(configManager.config.mongodb.eraseOnStartup) {
             insertDummyData().then(() => {
-                log.info("insertDummyData finished");
+                log.success("insertDummyData finished");
             });
         }
     });  

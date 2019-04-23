@@ -4,6 +4,7 @@ import { IUser } from '../models/user/user.interface';
 import { User } from '../models/user/user.model';
 import { createPasswordHash } from '../lib/security';
 import { configManager } from '../app';
+import { log } from '../lib/logging';
 
 export default async function login(req: Request, res: Response) {
     const username = req.header("username");
@@ -22,9 +23,9 @@ export default async function login(req: Request, res: Response) {
     }
 
     const hashedPassword = await createPasswordHash(password, user.salt);
-    console.log("login: hashedPassword=" + hashedPassword);
+    log.info("login: hashedPassword=" + hashedPassword);
     if(user.password == hashedPassword) {
-        console.log(`User ${username} is now logged in.`);
+        log.success(`User ${username} is now logged in.`);
 
         const jwtBody = {
             id: user.id,
