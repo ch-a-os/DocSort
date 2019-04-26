@@ -4,20 +4,26 @@ import { User } from "../models/user/user.model";
 import { ModifiedRequest } from "../lib/jwt";
 import { Document } from "../models/document/document.model";
 import { ITag } from '../models/tag/tag.interface';
+import { errorHandler } from '../lib/errorHandler';
 
 export default async function getAllTags(req: ModifiedRequest, res: any) {
-    // Get all tags for the user
-    const user: IUser = await User.findById(req.userID).populate('tags_R').exec();
-    let newTagObj: Array<TagCount> = new Array<TagCount>();
+    try {
+        // Get all tags for the user
+        const user: IUser = await User.findById(req.userID).populate('tags_R').exec();
+        let newTagObj: Array<TagCount> = new Array<TagCount>();
 
-    // Get the document-count for that tag
-    for(let i = 0; i < user.tags_R.length; i++) {
-        const currentTag = user.tags_R[i] as ITag;
-        const docCount: number = await Document.countDocuments({tags_R: {$elemMatch: {$eq: mongoose.Types.ObjectId(currentTag._id)}}});
-        const tagCount: TagCount = new TagCount(currentTag, docCount);
-        newTagObj.push(tagCount);
+        // Get the document-count for that tag
+        for(let i = 0; i < user.tags_R.length; i++) {
+            const currentTag = user.tags_R[i] as ITag;
+            const docCount: number = await Document.countDocuments({tags_R: {$elemMatch: {$eq: mongoose.Types.ObjectId(currentTag._id)}}});
+            const tagCount: TagCount = new TagCount(currentTag, docCount);
+            newTagObj.push(tagCount);
+        }
+        res.status(200).send(newTagObj);
+    } catch(err) {
+        errorHandler(err);
+        res.status(500).send();
     }
-    res.status(200).send(newTagObj);
 }
 
 class TagCount {

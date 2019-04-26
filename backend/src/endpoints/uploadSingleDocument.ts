@@ -8,6 +8,7 @@ import { extractFileExtension, generateFilePath } from "../lib/documentOperation
 import { getNextPrimaryNumber } from "../lib/userUtils";
 import { ModifiedRequest } from "../lib/jwt";
 import { log } from "../lib/logging";
+import { errorHandler } from "../lib/errorHandler";
 
 export default async function uploadSingleDocument(req: ModifiedRequest, res: Response) {
     try {
@@ -56,8 +57,8 @@ export default async function uploadSingleDocument(req: ModifiedRequest, res: Re
             newID: newDocument.id
         });
     } catch(err) {
-        res.status(500).send({message: "Please see console output for error message."});
-        log.error(JSON.stringify(err));
+        errorHandler(err);
+        res.status(500).send();
     }
 }
 
