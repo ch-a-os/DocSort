@@ -27,8 +27,11 @@
 
 <div class="gridItem selectFile">
   <div class="clickDragDrop" (click)="fileSelectInput.click()">
-    <span>
+    <span *ngIf="fileSelectInput.files[0] == null" class="none-selected">
       SELECT FILE FOR UPLOAD
+    </span>
+    <span *ngIf="fileSelectInput.files[0] != null" class="selected">
+      {{fileSelectInput.files[0].name}}
     </span>
   </div>
   <input #fileSelectInput type="file" class="selectFile" (change)="onFileChanged($event.target.files)"><br>
