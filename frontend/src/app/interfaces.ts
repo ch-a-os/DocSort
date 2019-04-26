@@ -54,6 +54,7 @@ export interface IDocument {
       finished?: boolean;
       content?: string;
   };
+  marked: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }

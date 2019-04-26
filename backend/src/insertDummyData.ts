@@ -82,6 +82,7 @@ export async function insertDummyData() {
             fileExtension: 'pdf',
             user_R: user_test,
             tags: [tagMisc],
+            marked: true,
             createdAt: new Date(2018, 4, 26)
         },
         {
@@ -98,6 +99,7 @@ export async function insertDummyData() {
             fileExtension: 'png',
             user_R: user_test,
             tags: [tagTravel, tagInvoice],
+            marked: true,
             createdAt: new Date(2018, 4, 27)
         },
         {
@@ -210,6 +212,7 @@ export async function insertDummyData() {
             fileExtension: 'jpg',
             user_R: user_brother,
             tags_R: [tagWaitForReponse, tagTUI],
+            marked: true,
             createdAt: new Date(2019, 2, 16)
         }
     ]

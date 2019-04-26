@@ -21,6 +21,8 @@ export interface IDocument extends mongoose.Document {
         content?: string;
     }
 
+    marked: Boolean;
+
     createdAt?: Date;   // Durch Timestamps = true
     updatedAt?: Date;   // Durch Timestamps = true
 }

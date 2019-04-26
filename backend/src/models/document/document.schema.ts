@@ -25,6 +25,8 @@ export let Schema_Document: mongoose.Schema = new mongoose.Schema({
 
     mimeType: { type: String, required: false },
     textRecognition: { type: Schema_DocumentTextRecognition, required: false },
+
+    marked: { type: Boolean, required: false }
 }, {
     timestamps: true
 });
