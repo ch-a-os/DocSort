@@ -40,4 +40,8 @@ export class PageUploadSingleFileComponent implements OnInit {
       this.document.tags_R.push(id);
     }
   }
+
+  getFileSize(size: number) {
+    return (size / 1024 / 1024).toFixed(2)
+  }
 }
