@@ -3,6 +3,10 @@ node_js:
   - "10"
 services:
   - mongodb
+mongodb:
+   database: test123
+mongo:
+   database: test1456
 before_install:
   - cd backend
 install:
