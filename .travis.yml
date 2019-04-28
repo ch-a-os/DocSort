@@ -3,10 +3,6 @@ node_js:
   - "10"
 services:
   - mongodb
-mongodb:
-   database: test123
-mongo:
-   database: test1456
 before_install:
   - cd backend
 install:
@@ -14,6 +10,6 @@ install:
   - npm run build
 before_script:
   - sleep 15
-  - mongo mydb_test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
+  - mongo DocSort --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
 script:
   - npm test
