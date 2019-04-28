@@ -8,5 +8,5 @@ describe('Test #1', () => {
 })
 
 function randomMath(a: number, b: number, c: number) {
-    return a*b*(c/2)*2.5
+    return a*b*(c/2)*2.4
 }
