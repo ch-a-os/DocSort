@@ -4,7 +4,7 @@
   "description": "Program to scan your documents, search for them and find them physically in your chaos.",
   "main": "app.ts",
   "scripts": {
-    "test": "mocha dist/test || true",
+    "test": "mocha dist/test",
     "start": "ts-node src/app.ts",
     "build": "tsc"
   },
