@@ -19,6 +19,7 @@ import { TagSelectItemComponent } from './tag-select-item/tag-select-item.compon
 import { PageHistoryComponent } from './page-history/page-history.component';
 import { DocumentComponent } from './document/document.component';
 import { TokenInterceptor } from './httpInterceptor';
+import { TextboxComponent } from './textbox/textbox.component';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { TokenInterceptor } from './httpInterceptor';
     TagSelectContainerComponent,
     TagSelectItemComponent,
     PageHistoryComponent,
-    DocumentComponent
+    DocumentComponent,
+    TextboxComponent
   ],
   imports: [
     BrowserModule,

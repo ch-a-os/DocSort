@@ -3,17 +3,12 @@
 </div>
 
 <div class="gridItem title">
-  <span>
-    Title:
-  </span>
-  <input type="text" [(ngModel)]="document.title">
+  <app-textbox label="Title" width="250px" (onChange)="changedTitle($event)"></app-textbox>
+  <!--<input type="text" [(ngModel)]="document.title">-->
 </div>
 
 <div class="gridItem note">
-    <span>
-      Note:
-    </span>
-    <input type="text" [(ngModel)]="document.note"><br>
+  <app-textbox label="Note" width="100%" (onChange)="changedNote($event)"></app-textbox>
 </div>
 
 <div class="gridItem textRecognition">

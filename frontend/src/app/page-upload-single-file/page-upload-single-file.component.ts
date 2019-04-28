@@ -40,4 +40,14 @@ export class PageUploadSingleFileComponent implements OnInit {
       this.document.tags_R.push(id);
     }
   }
+
+  changedTitle(value: string) {
+    this.document.title = value;
+    console.log("title=" + this.document.title);
+  }
+
+  changedNote(value: string) {
+    this.document.note = value;
+    console.log("note=" + this.document.note);
+  }
 }
