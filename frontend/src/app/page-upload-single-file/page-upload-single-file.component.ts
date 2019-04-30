@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ITag, IDocument } from '../interfaces';
 import { ApiService } from '../api.service';
+import { TextboxComponent } from '../textbox/textbox.component';
 
 @Component({
   selector: 'app-page-upload-single-file',
@@ -8,6 +9,9 @@ import { ApiService } from '../api.service';
   styleUrls: ['./page-upload-single-file.component.scss']
 })
 export class PageUploadSingleFileComponent implements OnInit {
+
+  @ViewChild('titleTextbox') titleTextbox: TextboxComponent;
+  @ViewChild('noteTextbox') noteTextbox: TextboxComponent;
   selectedFile: File;
   document: IDocument;
 
@@ -41,13 +45,22 @@ export class PageUploadSingleFileComponent implements OnInit {
     }
   }
 
-  changedTitle(value: string) {
-    this.document.title = value;
-    console.log("title=" + this.document.title);
+  ngAfterViewInit() {
+    console.log('ngAfterViewInit has finished');
   }
 
-  changedNote(value: string) {
-    this.document.note = value;
-    console.log("note=" + this.document.note);
+  getTitleValue() {
+    this.document.title = this.titleTextbox.getValue();
+    console.log("this.document.title=" + this.document.title);
+  }
+
+  getNoteValue() {
+    this.document.note = this.noteTextbox.getValue();
+    console.log("this.document.note=" + this.document.note);
+  }
+
+  test() {
+    this.getTitleValue();
+    this.getNoteValue();
   }
 }

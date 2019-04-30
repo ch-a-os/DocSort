@@ -1,4 +1,4 @@
-import { Component, OnInit , Input, Output, EventEmitter} from '@angular/core';
+import { Component, Input, ViewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-textbox',
@@ -8,25 +8,28 @@ import { Component, OnInit , Input, Output, EventEmitter} from '@angular/core';
     '[style.width]': 'width'
   }
 })
-export class TextboxComponent implements OnInit {
-  elementWidth: string;
+export class TextboxComponent {
+  @ViewChild('input') textbox: ElementRef<HTMLInputElement>;
 
   @Input() label: string;
   @Input() width: string;
 
-  @Output()
-  text: EventEmitter<string>;
+  elementWidth: string;
+  isInitialized: boolean;
 
   constructor() {
-    this.text =  new EventEmitter<string>();
+    this.isInitialized = false;
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
+    this.isInitialized = true;
   }
 
-  onChange(event: any) {
-    this.text.emit(event.target.value);
-    console.log("onChange");
+  getValue() {
+    if(this.isInitialized) {
+      return this.textbox.nativeElement.value;
+    } else {
+      console.log("Error: Tried to 'getvalue()' before 'ngAfterViewInit()' was finished.");
+    }
   }
-
 }

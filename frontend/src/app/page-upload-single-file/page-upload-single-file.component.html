@@ -1,14 +1,13 @@
 <div class="gridItem headline">
-  <h1>Here you can upload a new document</h1>
+  <h1 (click)="test()">Here you can upload a new document</h1>
 </div>
 
 <div class="gridItem title">
-  <app-textbox label="Title" width="250px" (onChange)="changedTitle($event)"></app-textbox>
-  <!--<input type="text" [(ngModel)]="document.title">-->
+  <app-textbox #titleTextbox label="Title" width="250px"></app-textbox>
 </div>
 
 <div class="gridItem note">
-  <app-textbox label="Note" width="100%" (onChange)="changedNote($event)"></app-textbox>
+  <app-textbox #noteTextbox label="Note" width="100%"></app-textbox>
 </div>
 
 <div class="gridItem textRecognition">
