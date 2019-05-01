@@ -5,7 +5,7 @@ import { ModifiedRequest } from '../lib/jwt';
 import { Document } from '../models/document/document.model';
 import { User } from '../models/user/user.model';
 import { log } from '../lib/logging';
-import { errorHandler } from '../lib/errorHandler';
+import { formatError } from '../lib/errorHandler';
 
 export default async function getDocument(req: ModifiedRequest, res: Response) {
     try {
@@ -19,7 +19,7 @@ export default async function getDocument(req: ModifiedRequest, res: Response) {
         });
         return true;
     } catch(err) {
-        errorHandler(err);
+        formatError(err);
         res.status(500).send();
     }
 }

@@ -4,7 +4,7 @@ import { User } from "../models/user/user.model";
 import { ModifiedRequest } from "../lib/jwt";
 import { Document } from "../models/document/document.model";
 import { ITag } from '../models/tag/tag.interface';
-import { errorHandler } from '../lib/errorHandler';
+import { formatError } from '../lib/errorHandler';
 
 export default async function getAllTags(req: ModifiedRequest, res: any) {
     try {
@@ -21,7 +21,7 @@ export default async function getAllTags(req: ModifiedRequest, res: any) {
         }
         res.status(200).send(newTagObj);
     } catch(err) {
-        errorHandler(err);
+        formatError(err);
         res.status(500).send();
     }
 }

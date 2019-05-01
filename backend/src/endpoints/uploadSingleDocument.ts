@@ -8,7 +8,7 @@ import { extractFileExtension, generateFilePath } from "../lib/documentOperation
 import { getNextPrimaryNumber } from "../lib/userUtils";
 import { ModifiedRequest } from "../lib/jwt";
 import { log } from "../lib/logging";
-import { errorHandler } from "../lib/errorHandler";
+import { formatError } from "../lib/errorHandler";
 
 export default async function uploadSingleDocument(req: ModifiedRequest, res: Response) {
     try {
@@ -57,7 +57,7 @@ export default async function uploadSingleDocument(req: ModifiedRequest, res: Re
             newID: newDocument.id
         });
     } catch(err) {
-        errorHandler(err);
+        formatError(err);
         res.status(500).send();
     }
 }

@@ -4,7 +4,7 @@ import { Document } from "../models/document/document.model";
 import * as mongoose from "mongoose";
 import { ModifiedRequest } from "../lib/jwt";
 import { log } from "../lib/logging";
-import { errorHandler } from "../lib/errorHandler";
+import { formatError } from "../lib/errorHandler";
 
 export default async function searchDocuments(req: ModifiedRequest, res: Response) {
     /**
@@ -162,7 +162,7 @@ export default async function searchDocuments(req: ModifiedRequest, res: Respons
 
         res.status(200).send(result);
     } catch(err) {
-        errorHandler(err);
+        formatError(err);
         res.status(500).send();
     }
 }

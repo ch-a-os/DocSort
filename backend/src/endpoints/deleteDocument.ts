@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import { Document } from "../models/document/document.model";
 import { generateFilePath } from '../lib/documentOperations';
 import { ModifiedRequest } from '../lib/jwt';
-import { errorHandler } from '../lib/errorHandler';
+import { formatError } from '../lib/errorHandler';
 
 export default async function deleteDocument(req: ModifiedRequest, res) {
     try {
@@ -34,7 +34,7 @@ export default async function deleteDocument(req: ModifiedRequest, res) {
             res.status(200).send();
         })
     } catch(err) {
-        errorHandler(err);
+        formatError(err);
         res.status(500).send();
     }
     

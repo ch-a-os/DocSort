@@ -3,7 +3,7 @@ import { Tag } from "../models/tag/tag.model";
 import { IUser } from "../models/user/user.interface";
 import { User } from "../models/user/user.model";
 import { ModifiedRequest } from "../lib/jwt";
-import { errorHandler } from "../lib/errorHandler";
+import { formatError } from "../lib/errorHandler";
 
 export default async function createTag(req: ModifiedRequest, res: any) {
     try {
@@ -38,7 +38,7 @@ export default async function createTag(req: ModifiedRequest, res: any) {
         // Response with new tag ID
         res.status(200).send(newTag);
     } catch(err) {
-        errorHandler(err);
+        formatError(err);
         res.status(500).send();
     }
 }

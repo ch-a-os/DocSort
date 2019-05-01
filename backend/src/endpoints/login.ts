@@ -5,7 +5,7 @@ import { User } from '../models/user/user.model';
 import { createPasswordHash } from '../lib/security';
 import { configManager } from '../app';
 import { log } from '../lib/logging';
-import { errorHandler } from '../lib/errorHandler';
+import { formatError, ApplicationError, ERROR } from '../lib/errorHandler';
 
 export default async function login(req: Request, res: Response) {
     try {
@@ -18,6 +18,8 @@ export default async function login(req: Request, res: Response) {
         }
 
         const user: IUser = await User.findOne({ username: username }).exec();
+
+        throw new ApplicationError(ERROR.NotFoundError, null, res)
 
         if(user == null) {
             res.status(404).send();
@@ -41,7 +43,9 @@ export default async function login(req: Request, res: Response) {
         }
         res.status(401).send();
     } catch(err) {
-        errorHandler(err);
-        res.status(500).send();
+        if(res.headersSent) formatError(err);
+        else {
+            formatError(new ApplicationError(ERROR.UnknownError, null, res));
+        }
     }
 }
