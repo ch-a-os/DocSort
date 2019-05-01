@@ -9,27 +9,31 @@ import { Component, Input, ViewChild, ElementRef } from '@angular/core';
   }
 })
 export class TextboxComponent {
-  @ViewChild('input') textbox: ElementRef<HTMLInputElement>;
+  @ViewChild('input')
+  textbox: ElementRef<HTMLInputElement>;
 
-  @Input() label: string;
-  @Input() width: string;
+  @Input()
+  label: string;
 
-  elementWidth: string;
-  isInitialized: boolean;
+  @Input()
+  width: string;
+
+  viewIsInitialized: boolean;
 
   constructor() {
-    this.isInitialized = false;
+    this.viewIsInitialized = false;
   }
 
   ngAfterViewInit() {
-    this.isInitialized = true;
+    this.viewIsInitialized = true;
   }
 
   getValue() {
-    if(this.isInitialized) {
+    if(this.viewIsInitialized) {
       return this.textbox.nativeElement.value;
     } else {
       console.log("Error: Tried to 'getvalue()' before 'ngAfterViewInit()' was finished.");
+      return null;
     }
   }
 }

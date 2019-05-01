@@ -10,16 +10,22 @@ import { TextboxComponent } from '../textbox/textbox.component';
 })
 export class PageUploadSingleFileComponent implements OnInit {
 
-  @ViewChild('titleTextbox') titleTextbox: TextboxComponent;
-  @ViewChild('noteTextbox') noteTextbox: TextboxComponent;
+  @ViewChild('titleTextbox')
+  titleTextbox: TextboxComponent;
+
+  @ViewChild('noteTextbox')
+  noteTextbox: TextboxComponent;
+  
   selectedFile: File;
   document: IDocument;
+  viewIsInitialized: boolean;
 
-  constructor(private api: ApiService) { }
+  constructor(private api: ApiService) {
+    this.viewIsInitialized = false;
+  }
 
   ngOnInit() {
     this.document = {};
-
     this.document.title = "";
     this.document.note = "";
     this.document.tags_R = new Array();
@@ -32,10 +38,12 @@ export class PageUploadSingleFileComponent implements OnInit {
   }
 
   onUpload() {
-    this.api.uploadFile({
-      file: this.selectedFile,
-      document: this.document
-    });
+    if(this.getTitleValue() && this.getNoteValue()) {
+      this.api.uploadFile({
+        file: this.selectedFile,
+        document: this.document
+      });
+    }
   }
 
   tagsToSendList(idList: Array<string>) {
@@ -46,21 +54,26 @@ export class PageUploadSingleFileComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    console.log('ngAfterViewInit has finished');
+    this.viewIsInitialized = true;
   }
 
-  getTitleValue() {
-    this.document.title = this.titleTextbox.getValue();
-    console.log("this.document.title=" + this.document.title);
+  getTitleValue(): boolean {
+    if(this.viewIsInitialized) {
+      this.document.title = this.titleTextbox.getValue();
+      return true;
+    } else {
+      console.log("Error: Tried to 'getTitleValue()' before 'ngAfterViewInit()' was finished.");
+      return false;
+    }
   }
 
-  getNoteValue() {
-    this.document.note = this.noteTextbox.getValue();
-    console.log("this.document.note=" + this.document.note);
-  }
-
-  test() {
-    this.getTitleValue();
-    this.getNoteValue();
+  getNoteValue(): boolean {
+    if(this.viewIsInitialized) {
+      this.document.note = this.noteTextbox.getValue();
+      return true;
+    } else {
+      console.log("Error: Tried to 'getTitleValue()' before 'ngAfterViewInit()' was finished.");
+      return false;
+    }
   }
 }

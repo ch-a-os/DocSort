@@ -8,6 +8,7 @@
     "note isInGroup"
     "numbers date"
     "tagSelector tagSelector"
+    "searchButton searchButton"
     "results results";
     font-size: 18pt;
     padding: 4px;
@@ -111,6 +112,19 @@ input {
 
 .tagSelector {
     grid-area: tagSelector;
+}
+
+.searchButton {
+    grid-area: searchButton;
+    text-align: center;
+    h2 {
+        display: inline-block;
+        background-color: greenyellow;
+        color:grey;
+        width: 90%;
+        border-radius: 5px;
+        cursor: pointer;
+    }
 }
 
 .results {
