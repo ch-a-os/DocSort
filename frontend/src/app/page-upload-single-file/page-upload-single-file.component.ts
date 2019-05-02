@@ -25,6 +25,14 @@ export class PageUploadSingleFileComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.initializeDocument();
+  }
+
+  ngAfterViewInit() {
+    this.viewIsInitialized = true;
+  }
+
+  initializeDocument() {
     this.document = {};
     this.document.title = "";
     this.document.note = "";
@@ -33,16 +41,29 @@ export class PageUploadSingleFileComponent implements OnInit {
     this.document.textRecognition = {};
   }
 
-  onFileChanged(files: FileList) {
+  selectedFileChanged(files: FileList) {
     this.selectedFile = files.item(0);
   }
 
-  onUpload() {
-    if(this.getTitleValue() && this.getNoteValue()) {
+  getFieldValues() {
+    if(this.viewIsInitialized) {
+      this.document.title = this.titleTextbox.getValue();
+      this.document.note = this.noteTextbox.getValue();
+      return true;
+    } else {
+      console.log("Error: Tried to access ViewChild before 'ngAfterViewInit()' was finished.");
+      return false;
+    }
+  }
+
+  uploadDocument() {
+    if(this.getFieldValues()) {
       this.api.uploadFile({
         file: this.selectedFile,
         document: this.document
       });
+    } else {
+      console.log("Error: 'getValues()' returned false.");
     }
   }
 
@@ -50,30 +71,6 @@ export class PageUploadSingleFileComponent implements OnInit {
     this.document.tags_R = new Array();
     for (const id of idList) {
       this.document.tags_R.push(id);
-    }
-  }
-
-  ngAfterViewInit() {
-    this.viewIsInitialized = true;
-  }
-
-  getTitleValue(): boolean {
-    if(this.viewIsInitialized) {
-      this.document.title = this.titleTextbox.getValue();
-      return true;
-    } else {
-      console.log("Error: Tried to 'getTitleValue()' before 'ngAfterViewInit()' was finished.");
-      return false;
-    }
-  }
-
-  getNoteValue(): boolean {
-    if(this.viewIsInitialized) {
-      this.document.note = this.noteTextbox.getValue();
-      return true;
-    } else {
-      console.log("Error: Tried to 'getTitleValue()' before 'ngAfterViewInit()' was finished.");
-      return false;
     }
   }
 }

@@ -25,9 +25,9 @@
       SELECT FILE FOR UPLOAD
     </span>
   </div>
-  <input #fileSelectInput type="file" class="selectFile" (change)="onFileChanged($event.target.files)"><br>
+  <input #fileSelectInput type="file" class="selectFile" (change)="selectedFileChanged($event.target.files)"><br>
 </div>
 
 <div class="gridItem upload">
-  <span (click)="onUpload()">UPLOAD</span>
+  <span (click)="uploadDocument()">UPLOAD</span>
 </div>

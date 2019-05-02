@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ApiService } from '../api.service';
 import { IDocument } from '../interfaces';
-import { SafeResourceUrl } from '@angular/platform-browser';
 
 import { TextboxComponent } from '../textbox/textbox.component';
 
@@ -26,10 +25,6 @@ export class PageSearchComponent implements OnInit, AfterViewInit {
 
   searchData: ISearchData;
   viewIsInitialized: boolean;
-
-  //search: string;
-  //searchBy: string;
-  //docURL: SafeResourceUrl;
   foundDocuments: Array<IDocument>;
   stateCheckBox: IStateCheckBox;
 
@@ -39,8 +34,6 @@ export class PageSearchComponent implements OnInit, AfterViewInit {
       title: "",
       note: ""
     };
-    //this.search = "";
-    //this.searchBy = "Title";
     this.foundDocuments = [];
     this.stateCheckBox = {
       textRecognition: false,
@@ -51,7 +44,6 @@ export class PageSearchComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.doSearch()
-    //this.docURL = "alkalökl"
   }
 
   ngAfterViewInit() {
@@ -59,67 +51,33 @@ export class PageSearchComponent implements OnInit, AfterViewInit {
   }
 
   async doSearch() {
-    console.log(JSON.stringify(this.searchData));
     this.foundDocuments = await this.api.searchDocumentsByTitle(this.searchData.title);
   }
 
-  async download(doc) {
-    await this.api.prompDownloadDocument(doc);
+  async download(document) {
+    await this.api.prompDownloadDocument(document);
   }
 
-  async delete(doc) {
-    await this.api.deleteDocument(doc._id);
+  async delete(document) {
+    await this.api.deleteDocument(document._id);
     await this.doSearch();
   }
 
   async search() {
-    this.refreshSearchData();
-    this.foundDocuments = await this.api.searchDocumentsByTitle(this.searchData.title);
+    if(this.getFieldValues()) {
+      this.foundDocuments = await this.api.searchDocumentsByTitle(this.searchData.title);
+    }
   }
 
-  refreshSearchData() {
-    this.getTitleValue();
-    this.getNoteValue();
-    this.getPrimaryNumberValue();
-    this.getPrimaryNumberValue();
-  }
-
-  getTitleValue() {
+  getFieldValues() {
     if(this.viewIsInitialized) {
       this.searchData.title = this.titleTextbox.getValue();
-      return true;
-    } else {
-      console.log("Error: Tried to 'getTitleValue()' before 'ngAfterViewInit()' was finished.");
-      return false;
-    }
-  }
-
-  getNoteValue() {
-    if(this.viewIsInitialized) {
       this.searchData.note = this.noteTextbox.getValue();
-      return true;
-    } else {
-      console.log("Error: Tried to 'getNoteValue()' before 'ngAfterViewInit()' was finished.");
-      return false;
-    }
-  }
-
-  getPrimaryNumberValue() {
-    if(this.viewIsInitialized) {
       this.searchData.primaryNumber = this.primaryNumberTextbox.getValue();
-      return true;
-    } else {
-      console.log("Error: Tried to 'getPrimaryNumberValue()' before 'ngAfterViewInit()' was finished.");
-      return false;
-    }
-  }
-
-  getSecondaryNumberValue() {
-    if(this.viewIsInitialized) {
       this.searchData.secondaryNumber = this.secondaryNumberTextbox.getValue();
       return true;
     } else {
-      console.log("Error: Tried to 'getSecondaryNumberValue()' before 'ngAfterViewInit()' was finished.");
+      console.log("Error: Tried to 'getFieldValues()' before 'ngAfterViewInit()' was finished.");
       return false;
     }
   }
