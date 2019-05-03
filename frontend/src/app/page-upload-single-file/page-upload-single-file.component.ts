@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ITag, IDocument } from '../interfaces';
 import { ApiService } from '../api.service';
+import { TextboxComponent } from '../textbox/textbox.component';
 
 @Component({
   selector: 'app-page-upload-single-file',
@@ -8,14 +9,31 @@ import { ApiService } from '../api.service';
   styleUrls: ['./page-upload-single-file.component.scss']
 })
 export class PageUploadSingleFileComponent implements OnInit {
+
+  @ViewChild('titleTextbox')
+  titleTextbox: TextboxComponent;
+
+  @ViewChild('noteTextbox')
+  noteTextbox: TextboxComponent;
+  
   selectedFile: File;
   document: IDocument;
+  viewIsInitialized: boolean;
 
-  constructor(private api: ApiService) { }
+  constructor(private api: ApiService) {
+    this.viewIsInitialized = false;
+  }
 
   ngOnInit() {
-    this.document = {};
+    this.initializeDocument();
+  }
 
+  ngAfterViewInit() {
+    this.viewIsInitialized = true;
+  }
+
+  initializeDocument() {
+    this.document = {};
     this.document.title = "";
     this.document.note = "";
     this.document.tags_R = new Array();
@@ -23,15 +41,30 @@ export class PageUploadSingleFileComponent implements OnInit {
     this.document.textRecognition = {};
   }
 
-  onFileChanged(files: FileList) {
+  selectedFileChanged(files: FileList) {
     this.selectedFile = files.item(0);
   }
 
-  onUpload() {
-    this.api.uploadFile({
-      file: this.selectedFile,
-      document: this.document
-    });
+  getFieldValues() {
+    if(this.viewIsInitialized) {
+      this.document.title = this.titleTextbox.getValue();
+      this.document.note = this.noteTextbox.getValue();
+      return true;
+    } else {
+      console.log("Error: Tried to access ViewChild before 'ngAfterViewInit()' was finished.");
+      return false;
+    }
+  }
+
+  uploadDocument() {
+    if(this.getFieldValues()) {
+      this.api.uploadFile({
+        file: this.selectedFile,
+        document: this.document
+      });
+    } else {
+      console.log("Error: 'getValues()' returned false.");
+    }
   }
 
   tagsToSendList(idList: Array<string>) {

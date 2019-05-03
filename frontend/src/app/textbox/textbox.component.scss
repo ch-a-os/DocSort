@@ -1,0 +1,53 @@
+:host() {
+    display: inline-block;
+    position: relative;
+    height: 30px;
+}
+
+input:placeholder-shown + .label {
+    position: absolute;
+    margin-left: 15px;
+    margin-top: 8px;
+    height: 18px;
+    font-size: 14pt;
+    transform: translateY(0px);
+    transition: all 0.4s linear;
+    z-index: 2;
+    pointer-events: none;
+    color: grey;
+}
+
+input:not(placeholder-shown) + .label {
+    position: absolute;
+    margin-left: 4px;
+    margin-top: 0px;
+    height: 19px;
+    font-size: 10pt;
+    transform: translateY(-16px);
+    transition: all 0.4s linear;
+    z-index: 2;
+    pointer-events: none;
+    color: red;
+}
+
+input {
+    /*  Width needs to be recalculated by hand
+        (until fully switched to scss-technique) everytime the
+        border-thicknes or padding of input changes.
+        Those values need to be subtracted from the 100%.
+    */
+    width: calc(100% - 34px);
+    border: 2px solid #d1d3d4;
+    padding: 10px 15px;
+    position: absolute;
+    z-index: 1;
+    border-radius: 6px;
+    outline: none;
+    transition: border 0.2s;
+    color: black;
+}
+
+input:focus {
+    border: 2px solid blue;
+    transition: border 0.2s;
+}

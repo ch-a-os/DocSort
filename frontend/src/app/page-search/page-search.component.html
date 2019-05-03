@@ -1,9 +1,10 @@
 <div class="headline">
-  <h1 (click)="test()">Search</h1>
+  <h1>Search</h1>
 </div>
 
 <div class="title">
-  <input placeholder="Search for title..." type="text" [(ngModel)]="searchData.title">
+  <app-textbox #titleTextbox label="Search for title" width="250px"></app-textbox>
+  <!--<input placeholder="Search for title..." type="text" [(ngModel)]="searchData.title">-->
 </div>
 
 <div class="textRecognitionEnabled">
@@ -15,7 +16,8 @@
 </div>
 
 <div class="note">
-  <input placeholder="Search for note..." type="text" [(ngModel)]="searchData.note">
+  <app-textbox #noteTextbox label="Search for note" width="250px"></app-textbox>
+  <!--<input placeholder="Search for note..." type="text" [(ngModel)]="searchData.note">-->
 </div>
 
 <div class="isInGroup">
@@ -27,8 +29,8 @@
 </div>
 
 <div class="numbers">
-  <input placeholder="#1" class="primary" type="text" [(ngModel)]="searchData.primaryNumber">
-  <input placeholder="#2" class="secondary" type="text" [(ngModel)]="searchData.secondaryNumber">
+  <app-textbox #primaryNumberTextbox label="#1" width="50px"></app-textbox>
+  <app-textbox #secondaryNumberTextbox label="#2" width="50px"></app-textbox>
 </div>
 
 <div class="date">
@@ -42,6 +44,10 @@
 
 <div class="tagSelector">
   <app-tag-select-container (tagsToSend)="tagsToSendList($event)"></app-tag-select-container>
+</div>
+
+<div class="searchButton">
+  <div (click)="search()"><h2>SEARCH</h2></div>
 </div>
 
 <div class="results">

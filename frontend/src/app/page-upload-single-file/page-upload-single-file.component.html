@@ -1,19 +1,13 @@
 <div class="gridItem headline">
-  <h1>Here you can upload a new document</h1>
+  <h1 (click)="test()">Here you can upload a new document</h1>
 </div>
 
 <div class="gridItem title">
-  <span>
-    Title:
-  </span>
-  <input type="text" [(ngModel)]="document.title">
+  <app-textbox #titleTextbox label="Title" width="250px"></app-textbox>
 </div>
 
 <div class="gridItem note">
-    <span>
-      Note:
-    </span>
-    <input type="text" [(ngModel)]="document.note"><br>
+  <app-textbox #noteTextbox label="Note" width="100%"></app-textbox>
 </div>
 
 <div class="gridItem textRecognition">
@@ -35,9 +29,9 @@
       <small>{{getFileSize(fileSelectInput.files[0].size)}} MB</small>
     </span>
   </div>
-  <input #fileSelectInput type="file" class="selectFile" (change)="onFileChanged($event.target.files)"><br>
+  <input #fileSelectInput type="file" class="selectFile" (change)="selectedFileChanged($event.target.files)"><br>
 </div>
 
 <div class="gridItem upload">
-  <span (click)="onUpload()">UPLOAD</span>
+  <span (click)="uploadDocument()">UPLOAD</span>
 </div>
