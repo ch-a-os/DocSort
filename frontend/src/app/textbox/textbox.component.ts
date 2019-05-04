@@ -13,6 +13,9 @@ export class TextboxComponent {
   textbox: ElementRef<HTMLInputElement>;
 
   @Input()
+  focus: any;
+
+  @Input()
   label: string;
 
   @Input()
@@ -26,6 +29,9 @@ export class TextboxComponent {
 
   ngAfterViewInit() {
     this.viewIsInitialized = true;
+    if(this.focus != null) {
+      this.textbox.nativeElement.focus();
+    }
   }
 
   getValue() {
