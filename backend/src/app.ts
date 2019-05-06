@@ -5,7 +5,7 @@ import * as del from "del";
 import { createExpressServer, registerExpressRoutes } from './lib/express';
 import { Config } from './config';
 import { log } from './lib/logging';
-import { formatError } from './lib/errorHandler';
+import { formatError, ApplicationError, ERROR } from './lib/errorHandler';
 
 const mongoose: Mongoose = require("mongoose");
 
@@ -54,7 +54,7 @@ async function run() {
             }
         });
     } catch(err) {
-        formatError(err);
+        formatError(new ApplicationError(ERROR.UncaughtError, err.message));
     }
 }
 

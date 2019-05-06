@@ -19,10 +19,6 @@ export default async function login(req: Request, res: Response) {
 
         const user: IUser = await User.findOne({ username: username }).exec();
 
-        //@ts-ignore
-        console.log(a.gggf)
-        //new ApplicationError(ERROR.NotFoundError, null, res);
-
         if(user == null) {
             res.status(404).send();
             return;
