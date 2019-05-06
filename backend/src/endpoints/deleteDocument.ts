@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import { Document } from "../models/document/document.model";
 import { generateFilePath } from '../lib/documentOperations';
 import { ModifiedRequest } from '../lib/jwt';
-import { formatError } from '../lib/errorHandler';
+import { formatError, ApplicationError, ERROR } from '../lib/errorHandler';
 
 export default async function deleteDocument(req: ModifiedRequest, res) {
     try {
@@ -34,8 +34,10 @@ export default async function deleteDocument(req: ModifiedRequest, res) {
             res.status(200).send();
         })
     } catch(err) {
-        formatError(err);
-        res.status(500).send();
+        if(res.headersSent) formatError(err);
+        else {
+            formatError(new ApplicationError(ERROR.UncaughtError, err.message, res));
+        }
     }
     
 }

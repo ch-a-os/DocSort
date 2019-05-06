@@ -8,7 +8,7 @@ import { extractFileExtension, generateFilePath } from "../lib/documentOperation
 import { getNextPrimaryNumber } from "../lib/userUtils";
 import { ModifiedRequest } from "../lib/jwt";
 import { log } from "../lib/logging";
-import { formatError } from "../lib/errorHandler";
+import { formatError, ApplicationError, ERROR } from "../lib/errorHandler";
 
 export default async function uploadSingleDocument(req: ModifiedRequest, res: Response) {
     try {
@@ -57,8 +57,10 @@ export default async function uploadSingleDocument(req: ModifiedRequest, res: Re
             newID: newDocument.id
         });
     } catch(err) {
-        formatError(err);
-        res.status(500).send();
+        if(res.headersSent) formatError(err);
+        else {
+            formatError(new ApplicationError(ERROR.UncaughtError, err.message, res));
+        }
     }
 }
 
