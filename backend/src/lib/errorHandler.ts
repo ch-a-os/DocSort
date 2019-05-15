@@ -5,7 +5,8 @@ import { Response } from 'express';
 export enum ERROR {
     NotFoundError = 404,
     AuthenticationError = 401,
-    UncaughtError = 500
+    UncaughtError = 500,
+    UnhandledRejection = 500
 }
 
 export class ApplicationError extends Error {
@@ -20,7 +21,11 @@ export class ApplicationError extends Error {
         },
         UncaughtError: {
             crititcal: true,
-            default: null
+            default: "A error occured and we didn't catched it. Blame us."
+        },
+        UnhandledRejection: {
+            crititcal: true,
+            default: "A promise rejected and we didn't catched it. Blame us."
         }
     }
     status: number;
@@ -48,12 +53,13 @@ export class ApplicationError extends Error {
         this.response = response;
 
         // Decide to throw error or just print a small line
-        if(this.errors[ERROR[type]].crititcal) {
+        if(this.errors[errorName].crititcal) {
             Error.captureStackTrace(this);
         } else {
             log.warn(this.message);
         }
 
+        // Send response to client
         if(this.response != undefined && !this.response.headersSent) {
             this.response.status(this.status);
             this.response.send({
@@ -97,18 +103,18 @@ export async function formatError(error: ApplicationError) {
         "At least your screen is not blue!",
         "Hey! It's not a bug, it's a feature!",
         "Report it at Por- GitHub!",
-        "Look! There is a flying elephant!",
-        "The following lines are not for people under 1337 years.",
+        "Look! There is a flying elephant! This is not interesting.",
         "Following lines may contain swearwords for programmers.",
         "Be aware of sharing the following error. It can lead to crying programmers.",
         "What do we got here? An error! AGAIN?!",
-        "What would a developer say? \"We're just in alpha, this can happen\"",
-        "It worked on my machine",
+        "\"We're just in alpha, this can happen.\"",
+        "It worked on my machine...",
         "I think you're using DocSort wrong",
         "It seems like an error but it's not, it's a feature (⌐▀͡ ̯ʖ▀)",
         "It's aaaaaaall your fault",
         "WW91IGtuZXcgaXQgd2FzIEJhc2U2NCwgbm93IHlvdSBjYW4gZml4IGl0IGZvciB5b3Vyc2VsZiwgZGV2ZWxvcGVyLg==",
-        "Guess what that means. Yes, someone messed something really up."
+        "Guess what that means. Yes, someone messed something really up.",
+        "What did you do, huh?"
     ]
     const rnd: number = Number((Math.random() * ((errorMessages.length-1) - 0) + 0).toFixed(0));
 

@@ -11,24 +11,24 @@ export default async function login(req: Request, res: Response) {
     try {
         const username = req.header("username");
         const password = req.header("password");
-
+    
         if(username == null || password == null) {
             res.status(400).send();
             return;
         }
-
+    
         const user: IUser = await User.findOne({ username: username }).exec();
-
+    
         if(user == null) {
             res.status(404).send();
             return;
         }
-
+    
         const hashedPassword = await createPasswordHash(password, user.salt);
         log.info("login: hashedPassword=" + hashedPassword);
         if(user.password == hashedPassword) {
             log.success(`User ${username} is now logged in.`);
-
+    
             const jwtBody = {
                 id: user.id,
                 username: user.username
@@ -39,7 +39,7 @@ export default async function login(req: Request, res: Response) {
             });
             return;
         }
-        res.status(401).send();
+        res.status(401).send();    
     } catch(err) {
         if(res.headersSent) formatError(err);
         else {
