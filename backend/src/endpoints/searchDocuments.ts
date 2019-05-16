@@ -28,12 +28,15 @@ export default async function searchDocuments(req: ModifiedRequest, res: Respons
      */
     const userId = req.userID;
     const user = await User.findOne({ _id: userId });
+
     if(user == null) {
         log.warn(`User with ID ${userId} does not exist in the database`);
         res.status(500).send();
         return;
     }
     let query = Document.where("user_R").equals(userId);
+
+    console.log("Got request:", req.headers)
 
     // take
     const limit = parseInt(req.header("option-limit"), 10);
@@ -100,8 +103,6 @@ export default async function searchDocuments(req: ModifiedRequest, res: Respons
     const textRecognitionEnabled = req.header("option-where-textRecognition-enabled");
     if(textRecognitionEnabled == "true") {
         query.where("textRecognition.enabled").equals(true);
-    } else if(textRecognitionEnabled == "false") {
-        query.where("textRecognition.enabled").equals(false);
     }
 
     // textRecognition-finished
@@ -119,11 +120,15 @@ export default async function searchDocuments(req: ModifiedRequest, res: Respons
     }
 
     // createdAt range
-    const createdFrom = parseDateFromHeader(req, "option-where-created-from");
-    const createdTo = parseDateFromHeader(req, "option-where-created-to");
-    if(createdFrom != null && createdTo != null) {
-        query.where("createdAt").gte(createdFrom).lte(createdTo);
+    let createdFrom = parseDateFromHeader(req, "option-where-created-from");
+    let createdTo = parseDateFromHeader(req, "option-where-created-to");
+    if(createdFrom == null) {
+        createdFrom = new Date(0, 0, 0);
     }
+    if(createdTo == null) {
+        createdTo = new Date();
+    }
+    query.where("createdAt").gte(createdFrom).lte(createdTo);
 
     // updatedAt range
     const updatedFrom = parseDateFromHeader(req, "option-where-updated-from");
@@ -137,7 +142,7 @@ export default async function searchDocuments(req: ModifiedRequest, res: Respons
     if(tags != null) {
         let parsedTags: Array<string>;
         try {
-            parsedTags = JSON.parse(tags);
+            parsedTags = tags.split(",");
             let objectIds = parsedTags.map((entry) => {
                 return mongoose.Types.ObjectId(entry);
             });
@@ -157,7 +162,7 @@ export default async function searchDocuments(req: ModifiedRequest, res: Respons
     console.log("queryOptions=" + JSON.stringify(query.getOptions(), null, 4));
     console.log("################################################################");
     console.log("result=" + JSON.stringify(result, null, 4));*/
-
+    
     res.status(200).send(result);
 }
 

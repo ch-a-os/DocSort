@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Router } from "@angular/router";
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { SnotifyService, SnotifyPosition, SnotifyToastConfig, SnotifyToast } from 'ng-snotify';
@@ -7,12 +7,25 @@ import { IDocument, IDecodedJwt, IUploadFile, ITag } from './interfaces';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import * as filesaver from 'file-saver';
 
+export interface ISearchQuery {
+  title?: string;
+  note?: string;
+  primaryNumber?: string;
+  secondaryNumber?: string;
+  textRecognition?: boolean;
+  fileExtension?: string;
+  group?: Array<any>;
+  dateFrom?: Date;
+  dateTo?: Date;
+  tags?: Array<string>;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
-  private serverString: string;
   private jwt: string;
+  public serverString: string;
   public isLoggedIn: boolean;
   public decodedJwt: IDecodedJwt;
 
@@ -191,61 +204,32 @@ export class ApiService {
   }
 
   /**
-   * Searches documents based on their title and note
-   * @param title Complete or part of the title
+   * Performs a search request and returns a array of documents matching `searchQuery`.
+   * @param searchQuery Objects that defines in which field(s) should be searched and for what.
    */
-  async searchDocumentsByTitle(title: string): Promise<Array<IDocument>> {
-    let response = null;
-    try {
-      response = await this.http.get(`${this.serverString}/searchDocuments`, {
-        reportProgress: true,
-        observe: 'events',
-        headers: new HttpHeaders().set('option-where-title', title)
-      }).toPromise()
-    } catch (error) {
-      console.log("error in searchDocumentsByTitle: " + error);
-    }
-    console.log(response.body);
-    return response.body;
-  }
+  async doSearch(searchQuery: ISearchQuery): Promise<any> {
+    let headers: HttpHeaders = new HttpHeaders();
+    if(searchQuery.title != undefined && searchQuery.title != "") headers = headers.append('option-where-title', searchQuery.title);
+    if(searchQuery.note != undefined && searchQuery.note != "") headers = headers.append('option-where-note', searchQuery.note);
+    if(searchQuery.primaryNumber != undefined && searchQuery.note != "") headers = headers.append('option-where-number-primary', searchQuery.primaryNumber);
+    if(searchQuery.secondaryNumber != undefined && searchQuery.note != "") headers = headers.append('option-where-number-secondary', searchQuery.secondaryNumber);
+    if(searchQuery.fileExtension != undefined && searchQuery.fileExtension != "") headers = headers.append('option-where-fileextension', searchQuery.fileExtension);
+    if(searchQuery.tags != undefined && searchQuery.tags.length != 0) headers = headers.append('option-where-tags', `${searchQuery.tags}`);
+    if(searchQuery.textRecognition != undefined && searchQuery.textRecognition) headers = headers.append('option-where-textRecognition-enabled', searchQuery.textRecognition.toString());
+    if(searchQuery.dateFrom != undefined) headers = headers.append('option-where-created-from', searchQuery.dateFrom.toString());
+    if(searchQuery.dateTo != undefined) headers = headers.append('option-where-created-to', searchQuery.dateTo.toString());
 
-  /**
-   * Searches documents based on their title and note
-   * @param note Complete or part of the note
-   */
-  async searchDocumentsByNote(note: string): Promise<Array<IDocument>> {
-    let response = null;
     try {
-      response = await this.http.get(`${this.serverString}/searchDocuments`, {
+      const response = await this.http.get(`${this.serverString}/searchDocuments`, {
         reportProgress: true,
-        observe: 'events',
-        headers: new HttpHeaders().set('option-where-note', note)
-      }).toPromise()
-    } catch (error) {
-      console.log("error in searchDocumentsByNote: " + error);
+        observe: 'response',
+        headers: headers
+      }).toPromise();
+      return response.body;
+    } catch(error) {
+      console.error("error in searchDocumentsByNote: " + error);
+      return null;
     }
-    console.log("Note:", response.body);
-    return response.body;
-  }
-
-  /**
-   * Searches documents based on their title and note
-   * @param search Text that could be title and or the note
-   */
-  async searchDocumentsByTitleAndNote(search: string): Promise<Array<IDocument>> {
-    console.log("Search for", search)
-    let response = null;
-    try {
-      response = await this.http.get(`${this.serverString}/searchDocuments`, {
-        reportProgress: true,
-        observe: 'events',
-        headers: new HttpHeaders().set('option-where-title', search)
-      }).toPromise()
-    } catch (error) {
-      console.log("error in searchDocumentsByNote: " + error);
-    }
-    console.log("Note:", response.body);
-    return response.body;
   }
 
   /**

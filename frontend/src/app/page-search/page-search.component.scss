@@ -6,7 +6,8 @@
     "headline headline"
     "title textRecognitionEnabled"
     "note isInGroup"
-    "numbers date"
+    "fileextension date"
+    "numbers ."
     "tagSelector tagSelector"
     "searchButton searchButton"
     "results results";
@@ -72,6 +73,20 @@ input {
         input {
             display: none;
         }
+    }
+}
+
+.fileextension {
+    grid-area: fileextension;
+
+    input {
+        margin-top: 1px;
+        padding: 2px;
+        width: 50px;
+    }
+
+    .primary {
+        margin-right: 10px;
     }
 }
 

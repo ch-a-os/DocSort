@@ -172,7 +172,10 @@ export async function insertDummyData() {
             fileExtension: 'pdf',
             user_R: user_test,
             tags: [tagMisc, tagInvoice],
-            createdAt: new Date(2019, 2, 17)
+            createdAt: new Date(2019, 2, 17),
+            number: {
+                secondary: 1
+            }
         },
         {
             title: "Sample document 13",
@@ -220,7 +223,7 @@ export async function insertDummyData() {
     log.info("Saving dummy documents...")
     for(let i = 0; i < documents.length; i++) {
         const document = documents[i];
-        document.number = {};
+        if(document.number == undefined) document.number = {};
         document.number.primary = await getNextPrimaryNumber(document.user_R._id);
         const db = await Document.create(document);
 
