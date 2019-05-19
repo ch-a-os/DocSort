@@ -5,25 +5,16 @@ import * as del from "del";
 import { createExpressServer, registerExpressRoutes } from './lib/express';
 import { Config } from './config';
 import { log } from './lib/logging';
-import { formatError, ApplicationError, ERROR } from './lib/errorHandler';
+import { setProcessEvents } from "./lib/processEvents";
+import { ApplicationError } from './lib/applicationError';
 
 const mongoose: Mongoose = require("mongoose");
 
 export const configManager: Config = new Config(null);
 
 async function run() {
-    try {
-        // Define process events
-        process.on('uncaughtException', (err) => {
-            formatError(new ApplicationError(ERROR.UncaughtError, err.message));
-        });
-        process.on('unhandledRejection', () => {
-            formatError(new ApplicationError(ERROR.UnhandledRejection));
-        });
-        process.on('warning', (warn) => {
-            log.warn(`${warn.name}: ${warn.message}`);
-        })
-
+    setProcessEvents();
+    try {        
         // Init and validate config.json
         await configManager.readConfig();
         log.info("DocSort is starting, please stand by ...");
@@ -66,7 +57,7 @@ async function run() {
             }
         });
     } catch(err) {
-        formatError(new ApplicationError(ERROR.UncaughtError, err.message));
+        //formatError(new ApplicationError(ERROR.UncaughtError, err.message));
     }
 }
 

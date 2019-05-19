@@ -3,7 +3,7 @@ import { User } from "../models/user/user.model";
 import { Tag } from "../models/tag/tag.model";
 import { ITag } from "../models/tag/tag.interface";
 import { ModifiedRequest } from "../lib/jwt";
-import { formatError, ApplicationError, ERROR } from "../lib/errorHandler";
+import { ApplicationError } from "../lib/applicationError";
 
 export default async function updateTag(req: ModifiedRequest, res) {
     try {
@@ -26,9 +26,6 @@ export default async function updateTag(req: ModifiedRequest, res) {
 
         res.status(200).send();
     } catch(err) {
-        if(res.headersSent) formatError(err);
-        else {
-            formatError(new ApplicationError(ERROR.UncaughtError, err.message, res));
-        }
+        throw new ApplicationError("error in updateTag");
     }
 }

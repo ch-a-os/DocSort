@@ -39,7 +39,13 @@ class LogManager {
 
     error(text: string) {
         if(this.logError) {
-            console.log(chalk.redBright("-#!-") + " " + text);
+            console.log(chalk.redBright("-#-") + " " + text);
+        }
+    }
+
+    exception(text: string) {
+        if(this.logError) {
+            console.log(chalk.bgRedBright("-#!-") + " " + text);
         }
     }
 }

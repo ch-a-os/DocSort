@@ -5,7 +5,7 @@ import { User } from '../models/user/user.model';
 import { createPasswordHash } from '../lib/security';
 import { configManager } from '../app';
 import { log } from '../lib/logging';
-import { formatError, ApplicationError, ERROR } from '../lib/errorHandler';
+import { ApplicationError } from '../lib/applicationError';
 
 export default async function login(req: Request, res: Response) {
     try {
@@ -41,9 +41,6 @@ export default async function login(req: Request, res: Response) {
         }
         res.status(401).send();    
     } catch(err) {
-        if(res.headersSent) formatError(err);
-        else {
-            formatError(new ApplicationError(ERROR.UncaughtError, err.message, res));
-        }
+        throw new ApplicationError("error in login");
     }
 }

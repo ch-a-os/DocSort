@@ -4,7 +4,7 @@ import { Document } from "../models/document/document.model";
 import * as mongoose from "mongoose";
 import { ModifiedRequest } from "../lib/jwt";
 import { log } from "../lib/logging";
-import { formatError, ApplicationError, ERROR } from "../lib/errorHandler";
+import { ApplicationError } from "../lib/applicationError";
 
 export default async function searchDocuments(req: ModifiedRequest, res: Response) {
     /**
@@ -162,10 +162,7 @@ export default async function searchDocuments(req: ModifiedRequest, res: Respons
 
         res.status(200).send(result);
     } catch(err) {
-        if(res.headersSent) formatError(err);
-        else {
-            formatError(new ApplicationError(ERROR.UncaughtError, err.message, res));
-        }
+        throw new ApplicationError("error in searchDocuments");
     }
 }
 

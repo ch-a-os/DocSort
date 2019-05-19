@@ -1,7 +1,7 @@
 import { ModifiedRequest } from '../lib/jwt';
 import { IDocument } from '../models/document/document.interface';
 import { Document } from '../models/document/document.model';
-import { formatError, ApplicationError, ERROR } from '../lib/errorHandler';
+import { ApplicationError } from '../lib/applicationError';
 
 export default async function updateDocument(req: ModifiedRequest, res) {
     try {
@@ -24,9 +24,6 @@ export default async function updateDocument(req: ModifiedRequest, res) {
 
         res.status(200).send();
     } catch(err) {
-        if(res.headersSent) formatError(err);
-        else {
-            formatError(new ApplicationError(ERROR.UncaughtError, err.message, res));
-        }
+        throw new ApplicationError("error in updateDocument");
     }
 }

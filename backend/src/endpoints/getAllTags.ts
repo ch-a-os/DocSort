@@ -4,7 +4,7 @@ import { User } from "../models/user/user.model";
 import { ModifiedRequest } from "../lib/jwt";
 import { Document } from "../models/document/document.model";
 import { ITag } from '../models/tag/tag.interface';
-import { formatError, ApplicationError, ERROR } from '../lib/errorHandler';
+import { ApplicationError } from '../lib/applicationError';
 
 export default async function getAllTags(req: ModifiedRequest, res: any) {
     try {
@@ -21,10 +21,7 @@ export default async function getAllTags(req: ModifiedRequest, res: any) {
         }
         res.status(200).send(newTagObj);
     } catch(err) {
-        if(res.headersSent) formatError(err);
-        else {
-            formatError(new ApplicationError(ERROR.UncaughtError, err.message, res));
-        }
+        throw new ApplicationError("error in getAllTags");
     }
 }
 

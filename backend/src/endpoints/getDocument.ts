@@ -5,7 +5,7 @@ import { ModifiedRequest } from '../lib/jwt';
 import { Document } from '../models/document/document.model';
 import { User } from '../models/user/user.model';
 import { log } from '../lib/logging';
-import { formatError, ApplicationError, ERROR } from '../lib/errorHandler';
+import { ApplicationError } from '../lib/applicationError';
 
 export default async function getDocument(req: ModifiedRequest, res: Response) {
     try {
@@ -19,9 +19,6 @@ export default async function getDocument(req: ModifiedRequest, res: Response) {
         });
         return true;
     } catch(err) {
-        if(res.headersSent) formatError(err);
-        else {
-            formatError(new ApplicationError(ERROR.UncaughtError, err.message, res));
-        }
+        throw new ApplicationError("error in getDocument");
     }
 }
