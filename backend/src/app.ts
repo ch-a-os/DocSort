@@ -13,7 +13,10 @@ const mongoose: Mongoose = require("mongoose");
 export const configManager: Config = new Config(null);
 
 async function run() {
+
+    // Setup ErrorHandlers
     setProcessEvents();
+
     try {        
         // Init and validate config.json
         await configManager.readConfig();
@@ -57,7 +60,7 @@ async function run() {
             }
         });
     } catch(err) {
-        //formatError(new ApplicationError(ERROR.UncaughtError, err.message));
+        throw err;
     }
 }
 
