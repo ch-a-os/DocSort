@@ -1,4 +1,5 @@
-import { Component, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, Output } from '@angular/core';
+import { ApiService } from '../api.service';
 
 @Component({
   selector: 'app-textbox',
@@ -21,9 +22,17 @@ export class TextboxComponent {
   @Input()
   width: string;
 
+  @Output()
+  set onEnter(func: Function) {
+    this.onEnterFunction = func;
+  }
+
+  get onEnter(): Function { return this.onEnterFunction; }
+
+  onEnterFunction: Function;
   viewIsInitialized: boolean;
 
-  constructor() {
+  constructor(private api: ApiService) {
     this.viewIsInitialized = false;
   }
 
@@ -40,6 +49,11 @@ export class TextboxComponent {
     } else {
       console.log("Error: Tried to 'getvalue()' before 'ngAfterViewInit()' was finished.");
       return null;
+    }
+  }
+  private handleInput(event: KeyboardEvent): void {
+    if(event.key == "Enter") {
+      if(this.onEnterFunction != undefined) this.onEnterFunction();
     }
   }
 }

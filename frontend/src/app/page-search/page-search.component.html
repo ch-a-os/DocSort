@@ -3,7 +3,7 @@
 </div>
 
 <div class="title">
-  <app-textbox focus #titleTextbox label="Search for title" width="250px"></app-textbox>
+  <app-textbox focus #titleTextbox label="Search for title" width="250px" (onEnter)="doSearch()"></app-textbox>
 </div>
 
 <div class="textRecognitionEnabled">
@@ -15,7 +15,7 @@
 </div>
 
 <div class="note">
-  <app-textbox #noteTextbox label="Search for note" width="250px"></app-textbox>
+  <app-textbox #noteTextbox label="Search for note" width="250px" (onEnter)="doSearch()"></app-textbox>
 </div>
 
 <div class="isInGroup">
@@ -27,8 +27,8 @@
 </div>
 
 <div class="numbers">
-  <app-textbox #primaryNumberTextbox label="#1" width="50px"></app-textbox>
-  <app-textbox #secondaryNumberTextbox label="#2" width="50px"></app-textbox>
+  <app-textbox #primaryNumberTextbox label="#1" width="50px" (onEnter)="doSearch()"></app-textbox>
+  <app-textbox #secondaryNumberTextbox label="#2" width="50px" (onEnter)="doSearch()"></app-textbox>
 </div>
 
 <div class="date">
@@ -59,7 +59,6 @@
       <span class="title">{{doc.title}}</span>
       <span class="dot"> • </span>
       <span class="note">{{doc.note}}</span>
-        
     </div>
 
     <div class="date">

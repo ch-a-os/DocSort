@@ -1,4 +1,4 @@
-<input #input type="text" placeholder=" ">
+<input #input (keypress)="this.handleInput($event)" type="text" placeholder=" ">
 <div class="label">
   {{label}}
 </div>

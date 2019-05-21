@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../api.service';
+import { TextboxComponent } from '../textbox/textbox.component';
 
 @Component({
   selector: 'app-menu',

@@ -43,7 +43,7 @@ export class PageSearchComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.doSearch()
+    this.doSearch();
   }
 
   ngAfterViewInit() {
@@ -51,6 +51,7 @@ export class PageSearchComponent implements OnInit, AfterViewInit {
   }
 
   async doSearch() {
+    console.log("Called.")
     this.foundDocuments = await this.api.searchDocumentsByTitle(this.searchData.title);
   }
 
