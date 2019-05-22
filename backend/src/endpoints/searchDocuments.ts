@@ -161,8 +161,8 @@ export default async function searchDocuments(req: ModifiedRequest, res: Respons
         console.log("result=" + JSON.stringify(result, null, 4));*/
 
         res.status(200).send(result);
-    } catch(err) {
-        throw new ApplicationError("error in searchDocuments");
+    } catch(error) {
+        throw new ApplicationError("error in searchDocuments", error);
     }
 }
 

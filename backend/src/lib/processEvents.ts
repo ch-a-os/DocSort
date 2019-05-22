@@ -11,6 +11,7 @@ export function setProcessEvents() {
 }
 
 function handleError(err: ApplicationError | Error) {
+    let logString =  `${err.name} : ${err.message} : ${err.stack}`;
     if('applicationError' in err) {
         if(err.response != null)
         {
@@ -21,8 +22,8 @@ function handleError(err: ApplicationError | Error) {
                 });
             }
         }
-        log.exception("Predicted Error : " + err.note + " : " + err.name + " : " + err.message);
+        log.exception(`Application Error : ${err.note} : ${logString}`);
     } else {
-        log.exception("Unpredicted Error : " + err.name + " : " + err.message);
+        log.exception(`Unknown Error : ${logString}`);
     }
 }

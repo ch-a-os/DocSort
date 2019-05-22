@@ -23,7 +23,7 @@ export default async function updateDocument(req: ModifiedRequest, res) {
         await Document.update({_id: changedDoc._id, user_R: user}, changedDoc).exec();
 
         res.status(200).send();
-    } catch(err) {
-        throw new ApplicationError("error in updateDocument");
+    } catch(error) {
+        throw new ApplicationError("error in updateDocument", error);
     }
 }

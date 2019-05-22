@@ -28,20 +28,18 @@ async function run() {
         fs.mkdirSync("./uploads");
         log.info("Uploads-folder existing");
         
-        // Create connection to MongoDB
+        mongoose.set("bufferCommands", false); // Disable Command-Buffering (DEV-MODE)
+        mongoose.set("useNewUrlParser", true);
+        mongoose.set("useFindAndModify", false);
+        mongoose.set("useCreateIndex", true);
+        log.info("Connect to db...");
         try {
-            mongoose.set("bufferCommands", false); // Disable Command-Buffering (DEV-MODE)
-            mongoose.set("useNewUrlParser", true);
-            mongoose.set("useFindAndModify", false);
-            mongoose.set("useCreateIndex", true);
-            log.info("Connect to db...");
             await mongoose.connect(configManager.config.mongodb.url);
-            log.success("Connected to db");
         } catch (error) {
-            log.error("There is an error while connection to the database:" + error);
-            process.exit(1);
+            throw new ApplicationError("error while connecting to the database", error);
         }
-
+        log.success("Connected to db");
+        
         // Create Express server
         const { app, server } = createExpressServer();
 
@@ -59,8 +57,8 @@ async function run() {
                 });
             }
         });
-    } catch(err) {
-        throw err;
+    } catch(error) {
+        throw new ApplicationError("error in main app.js", error);
     }
 }
 

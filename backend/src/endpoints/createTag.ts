@@ -37,7 +37,7 @@ export default async function createTag(req: ModifiedRequest, res: any) {
 
         // Response with new tag ID
         res.status(200).send(newTag);
-    } catch(err) {
-        throw new ApplicationError("error in createTag");
+    } catch(error) {
+        throw new ApplicationError("error in createTag", error);
     }
 }

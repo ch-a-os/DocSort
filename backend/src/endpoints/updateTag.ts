@@ -25,7 +25,7 @@ export default async function updateTag(req: ModifiedRequest, res) {
         await Tag.update({_id: changedTag._id}, changedTag).exec();
 
         res.status(200).send();
-    } catch(err) {
-        throw new ApplicationError("error in updateTag");
+    } catch(error) {
+        throw new ApplicationError("error in updateTag", error);
     }
 }

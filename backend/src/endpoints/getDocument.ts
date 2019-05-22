@@ -18,7 +18,7 @@ export default async function getDocument(req: ModifiedRequest, res: Response) {
             document: document
         });
         return true;
-    } catch(err) {
-        throw new ApplicationError("error in getDocument");
+    } catch(error) {
+        throw new ApplicationError("error in getDocument", error);
     }
 }

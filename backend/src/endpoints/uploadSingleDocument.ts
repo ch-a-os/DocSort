@@ -56,8 +56,8 @@ export default async function uploadSingleDocument(req: ModifiedRequest, res: Re
         res.status(200).send({
             newID: newDocument.id
         });
-    } catch(err) {
-        throw new ApplicationError("error in uploadSingleDocument");
+    } catch(error) {
+        throw new ApplicationError("error in uploadSingleDocument", error);
     }
 }
 

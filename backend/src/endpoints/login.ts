@@ -40,7 +40,7 @@ export default async function login(req: Request, res: Response) {
             return;
         }
         res.status(401).send();    
-    } catch(err) {
-        throw new ApplicationError("error in login");
+    } catch(error) {
+        throw new ApplicationError("error in login", error);
     }
 }
