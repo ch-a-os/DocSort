@@ -1,5 +1,6 @@
 import { log } from "./logging";
 import { ApplicationError } from "./applicationError";
+import chalk from 'chalk';
 
 export function setProcessEvents() {
     process.on('uncaughtException', (err: Error | ApplicationError) => {
@@ -21,8 +22,8 @@ function handleError(err: ApplicationError | Error) {
                 });
             }
         }
-        log.exception("Predicted Error : " + err.note + " : " + err.name + " : " + err.message);
+        log.exception(`${chalk.redBright("Predicted Error: ")} ${chalk.bold(err.note)} : ${err.name} => ${err.message} (find more in frontend)`);
     } else {
-        log.exception("Unpredicted Error : " + err.name + " : " + err.message);
+        log.exception(`${chalk.redBright("Unpredicted Error: ")} ${chalk.bold(err.name)} => ${err.message} (find more in frontend)`);
     }
 }
