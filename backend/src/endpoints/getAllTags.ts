@@ -20,8 +20,8 @@ export default async function getAllTags(req: ModifiedRequest, res: any) {
             newTagObj.push(tagCount);
         }
         res.status(200).send(newTagObj);
-    } catch(err) {
-        throw new ApplicationError("error in getAllTags");
+    } catch(error) {
+        throw new ApplicationError("error in getAllTags", error);
     }
 }
 

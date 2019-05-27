@@ -24,7 +24,7 @@ export default async function deleteTag(req: ModifiedRequest, res) {
         await Tag.deleteOne({_id: toDelete}).exec();
 
         res.status(200).send();
-    } catch(err) {
-        throw new ApplicationError("error in deleteTag");
+    } catch(error) {
+        throw new ApplicationError("error in deleteTag", error);
     }
 }

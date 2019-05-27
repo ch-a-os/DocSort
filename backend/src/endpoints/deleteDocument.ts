@@ -33,8 +33,8 @@ export default async function deleteDocument(req: ModifiedRequest, res) {
         
             res.status(200).send();
         })
-    } catch(err) {
-        throw new ApplicationError("error in deleteDocument");
+    } catch(error) {
+        throw new ApplicationError("error in deleteDocument", error);
     }
     
 }

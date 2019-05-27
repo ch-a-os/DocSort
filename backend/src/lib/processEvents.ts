@@ -12,6 +12,7 @@ export function setProcessEvents() {
 }
 
 function handleError(err: ApplicationError | Error) {
+    let logString =  `${err.name} : ${err.message} : ${err.stack}`;
     if('applicationError' in err) {
         if(err.response != null)
         {
