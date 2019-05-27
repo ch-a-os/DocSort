@@ -81,7 +81,7 @@ export async function insertDummyData() {
             note: "What the title says",
             fileExtension: 'pdf',
             user_R: user_test,
-            tags: [tagMisc],
+            tags_R: [tagMisc],
             marked: true,
             createdAt: new Date(2018, 4, 26)
         },
@@ -90,7 +90,7 @@ export async function insertDummyData() {
             note: "This is cool text",
             fileExtension: 'pdf',
             user_R: user_test,
-            tags: [tagWarning, tagInvoice],
+            tags_R: [tagWarning, tagInvoice],
             createdAt: new Date(2018, 4, 27)
         },
         {
@@ -98,7 +98,7 @@ export async function insertDummyData() {
             note: "$4.500 :(",
             fileExtension: 'png',
             user_R: user_test,
-            tags: [tagTravel, tagInvoice],
+            tags_R: [tagTravel, tagInvoice],
             marked: true,
             createdAt: new Date(2018, 4, 27)
         },
@@ -107,7 +107,7 @@ export async function insertDummyData() {
             note: "Awwww",
             fileExtension: 'pdf',
             user_R: user_test,
-            tags: [tagMisc],
+            tags_R: [tagMisc],
             createdAt: new Date(2018, 5, 10)
         },
         {
@@ -115,7 +115,7 @@ export async function insertDummyData() {
             note: "Did you????",
             fileExtension: 'pdf',
             user_R: user_test,
-            tags: [tagInvoice, tagWarning],
+            tags_R: [tagInvoice, tagWarning],
             createdAt: new Date(2018, 5, 30)
         },
         {
@@ -123,7 +123,7 @@ export async function insertDummyData() {
             note: "Right?",
             fileExtension: 'pdf',
             user_R: user_test,
-            tags: [tagMisc, tagWarning],
+            tags_R: [tagMisc, tagWarning],
             createdAt: new Date(2018, 7, 6)
         },
         {
@@ -131,7 +131,7 @@ export async function insertDummyData() {
             note: "More magic",
             fileExtension: 'pdf',
             user_R: user_test,
-            tags: [tagInvoice, tagMisc, tagTravel, tagWarning],
+            tags_R: [tagInvoice, tagMisc, tagTravel, tagWarning],
             createdAt: new Date(2018, 7, 14)
         },
         {
@@ -139,7 +139,7 @@ export async function insertDummyData() {
             note: "[Fill in here a good note]",
             fileExtension: 'pdf',
             user_R: user_brother,
-            tags: [tagInvoice],
+            tags_R: [tagInvoice],
             createdAt: new Date(2018, 9, 11)
         },
         {
@@ -147,7 +147,7 @@ export async function insertDummyData() {
             note: "Bipp, boop, bipp",
             fileExtension: 'pdf',
             user_R: user_brother,
-            tags: [tagMisc, tagWarning],
+            tags_R: [tagMisc, tagWarning],
             createdAt: new Date(2018, 9, 31)
         },
         {
@@ -155,7 +155,7 @@ export async function insertDummyData() {
             note: "Funny joke",
             fileExtension: 'pdf',
             user_R: user_test,
-            tags: [tagTravel],
+            tags_R: [tagTravel],
             createdAt: new Date(2018, 12, 3)
         },
         {
@@ -163,7 +163,7 @@ export async function insertDummyData() {
             note: "ftw!!!!!!",
             fileExtension: 'pdf',
             user_R: user_test,
-            tags: [tagInvoice],
+            tags_R: [tagInvoice],
             createdAt: new Date(2019, 1, 12)
         },
         {
@@ -171,7 +171,7 @@ export async function insertDummyData() {
             note: "PDF is boring, now PNG.",
             fileExtension: 'pdf',
             user_R: user_test,
-            tags: [tagMisc, tagInvoice],
+            tags_R: [tagMisc, tagInvoice],
             createdAt: new Date(2019, 2, 17),
             number: {
                 secondary: 1
