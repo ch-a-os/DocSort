@@ -8,6 +8,7 @@ import { extractFileExtension, generateFilePath } from "../lib/documentOperation
 import { getNextPrimaryNumber } from "../lib/userUtils";
 import { ModifiedRequest } from "../lib/jwt";
 import { log } from "../lib/logging";
+import { ApplicationError } from "../lib/applicationError";
 
 export default async function uploadSingleDocument(req: ModifiedRequest, res: Response) {
     try {
@@ -55,9 +56,8 @@ export default async function uploadSingleDocument(req: ModifiedRequest, res: Re
         res.status(200).send({
             newID: newDocument.id
         });
-    } catch(err) {
-        res.status(500).send({message: "Please see console output for error message."});
-        log.error(JSON.stringify(err));
+    } catch(error) {
+        throw new ApplicationError("error in uploadSingleDocument", error);
     }
 }
 
