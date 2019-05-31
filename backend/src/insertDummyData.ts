@@ -7,6 +7,7 @@ import { connection } from "mongoose";
 import { generateFilePath } from "./lib/documentOperations";
 import { getNextPrimaryNumber } from "./lib/userUtils";
 import { log } from "./lib/logging";
+import { IDocument } from "./models/document/document.interface";
 
 export async function insertDummyData() {
 
@@ -82,6 +83,11 @@ export async function insertDummyData() {
             fileExtension: 'pdf',
             user_R: user_test,
             tags_R: [tagMisc],
+            textRecognition: {
+                content: "DocSort",
+                enabled: true,
+                finished: false
+            },
             marked: true,
             createdAt: new Date(2018, 4, 26)
         },
@@ -91,6 +97,11 @@ export async function insertDummyData() {
             fileExtension: 'pdf',
             user_R: user_test,
             tags_R: [tagWarning, tagInvoice],
+            textRecognition: {
+                content: "This text is actually not in the document.",
+                enabled: true,
+                finished: true
+            },
             createdAt: new Date(2018, 4, 27)
         },
         {
@@ -99,6 +110,11 @@ export async function insertDummyData() {
             fileExtension: 'png',
             user_R: user_test,
             tags_R: [tagTravel, tagInvoice],
+            textRecognition: {
+                content: "Wait, why are we doing this?",
+                enabled: true,
+                finished: false
+            },
             marked: true,
             createdAt: new Date(2018, 4, 27)
         },
@@ -108,6 +124,11 @@ export async function insertDummyData() {
             fileExtension: 'pdf',
             user_R: user_test,
             tags_R: [tagMisc],
+            textRecognition: {
+                content: "=3*x!$ Wrong OCR",
+                enabled: true,
+                finished: false
+            },
             createdAt: new Date(2018, 5, 10)
         },
         {
@@ -116,6 +137,11 @@ export async function insertDummyData() {
             fileExtension: 'pdf',
             user_R: user_test,
             tags_R: [tagInvoice, tagWarning],
+            textRecognition: {
+                content: "You have to pay $300k to me in Bitcoin!",
+                enabled: true,
+                finished: true
+            },
             createdAt: new Date(2018, 5, 30)
         },
         {
@@ -207,6 +233,11 @@ export async function insertDummyData() {
             fileExtension: 'png',
             user_R: user_brother,
             tags_R: [tagWarning, tagTUI],
+            textRecognition: {
+                content: "Cards Against Humanity costs $25 but it's the same in euro. Why?",
+                enabled: true,
+                finished: true
+            },
             createdAt: new Date(2019, 2, 14)
         },
         {
@@ -215,6 +246,11 @@ export async function insertDummyData() {
             fileExtension: 'jpg',
             user_R: user_brother,
             tags_R: [tagWaitForReponse, tagTUI],
+            textRecognition: {
+                content: "Pizza is like sex. If it's good, it's really good. If it's bad it's still good.",
+                enabled: true,
+                finished: false
+            },
             marked: true,
             createdAt: new Date(2019, 2, 16)
         }

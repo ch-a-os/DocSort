@@ -25,7 +25,6 @@ export default async function getAllTags(req: ModifiedRequest, res: any) {
         const tagCount: TagCount = new TagCount(currentTag, docCount);
         newTagObj.push(tagCount);
     }
-    console.log("Found:", newTagObj)
     res.status(200).send(newTagObj);
 }
 

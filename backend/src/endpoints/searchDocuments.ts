@@ -80,17 +80,13 @@ export default async function searchDocuments(req: ModifiedRequest, res: Respons
     // title
     let title = req.header("option-where-title");
     if(title != null) {
-        title = title.replace(/([.+?=^!:${}()|[\]\/\\])/g, '\\$1');
-        title = title.replace(/\*{2,}|\*/g, ".*");
-        query.where("title").regex(new RegExp(`${title}`, 'i'));  // Ignoring upper and lower case
+        query.where("title").regex(ignoreUpperLowerCaseRegex(title));
     }
 
     // note
     let note = req.header("option-where-note");
     if(note != null) {
-        note = note.replace(/([.+?=^!:${}()|[\]\/\\])/g, '\\$1');
-        note = note.replace(/\*{2,}|\*/g, ".*");
-        query.where("note").regex(new RegExp(`${note}`, 'i'));  // Ignoring upper and lower case    
+        query.where("note").regex(ignoreUpperLowerCaseRegex(note));
     }
 
     // mimeType
@@ -106,7 +102,7 @@ export default async function searchDocuments(req: ModifiedRequest, res: Respons
     }
 
     // textRecognition-finished
-    const textRecognitionFinished = req.header("option-where-textRecognition-finished");
+    const textRecognitionFinished = req.header("option-where-textrecognition-finished");
     if(textRecognitionFinished == "true") {
         query.where("textRecognition.finished").equals(true);
     } else if(textRecognitionFinished == "false") {
@@ -114,9 +110,9 @@ export default async function searchDocuments(req: ModifiedRequest, res: Respons
     }
 
     // textRecognition-content
-    const textRecognitionContent = req.header("option-where-textRecognition-content");
+    const textRecognitionContent = req.header("option-where-textrecognition-content");
     if(textRecognitionContent != null) {
-        query.where("textRecognition.content").regex(new RegExp(`${textRecognitionContent}`));
+        query.where("textRecognition.content").regex(ignoreUpperLowerCaseRegex(textRecognitionContent));
     }
 
     // createdAt range
@@ -185,4 +181,10 @@ function parseDateFromHeader(req: Request, fieldName: string): Date|null {
     let dayInt = parseInt(day);
     let date = new Date(yearInt, monthInt, dayInt);
     return date;
+}
+
+function ignoreUpperLowerCaseRegex(toRegex: string): RegExp {
+    toRegex = toRegex.replace(/([.+?=^!:${}()|[\]\/\\])/g, '\\$1');
+    toRegex = toRegex.replace(/\*{2,}|\*/g, ".*");
+    return new RegExp(`${toRegex}`, 'i');  // Ignoring upper and lower case  
 }

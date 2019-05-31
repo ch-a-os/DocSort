@@ -13,6 +13,7 @@ export interface ISearchQuery {
   primaryNumber?: string;
   secondaryNumber?: string;
   textRecognition?: boolean;
+  textRecognitionText?: string;
   fileExtension?: string;
   group?: Array<any>;
   dateFrom?: Date;
@@ -211,11 +212,12 @@ export class ApiService {
     let headers: HttpHeaders = new HttpHeaders();
     if(searchQuery.title != undefined && searchQuery.title != "") headers = headers.append('option-where-title', searchQuery.title);
     if(searchQuery.note != undefined && searchQuery.note != "") headers = headers.append('option-where-note', searchQuery.note);
-    if(searchQuery.primaryNumber != undefined && searchQuery.note != "") headers = headers.append('option-where-number-primary', searchQuery.primaryNumber);
-    if(searchQuery.secondaryNumber != undefined && searchQuery.note != "") headers = headers.append('option-where-number-secondary', searchQuery.secondaryNumber);
+    if(searchQuery.primaryNumber != undefined && searchQuery.primaryNumber != "") headers = headers.append('option-where-number-primary', searchQuery.primaryNumber);
+    if(searchQuery.secondaryNumber != undefined && searchQuery.secondaryNumber != "") headers = headers.append('option-where-number-secondary', searchQuery.secondaryNumber);
     if(searchQuery.fileExtension != undefined && searchQuery.fileExtension != "") headers = headers.append('option-where-fileextension', searchQuery.fileExtension);
     if(searchQuery.tags != undefined && searchQuery.tags.length != 0) headers = headers.append('option-where-tags', `${searchQuery.tags}`);
     if(searchQuery.textRecognition != undefined && searchQuery.textRecognition) headers = headers.append('option-where-textRecognition-enabled', searchQuery.textRecognition.toString());
+    if(searchQuery.textRecognitionText != undefined && searchQuery.textRecognition) headers = headers.append('option-where-textRecognition-content', searchQuery.textRecognitionText);
     if(searchQuery.dateFrom != undefined) headers = headers.append('option-where-created-from', searchQuery.dateFrom.toString());
     if(searchQuery.dateTo != undefined) headers = headers.append('option-where-created-to', searchQuery.dateTo.toString());
 
