@@ -22,14 +22,9 @@ export class TextboxComponent {
   @Input()
   width: string;
 
-  @Output()
-  set onEnter(func: Function) {
-    this.onEnterFunction = func;
-  }
+  @Input()
+  name: string;
 
-  get onEnter(): Function { return this.onEnterFunction; }
-
-  onEnterFunction: Function;
   viewIsInitialized: boolean;
 
   constructor(private api: ApiService) {
@@ -38,6 +33,7 @@ export class TextboxComponent {
 
   ngAfterViewInit() {
     this.viewIsInitialized = true;
+    this.textbox.nativeElement.name = this.name;
     if(this.focus != null) {
       this.textbox.nativeElement.focus();
     }
@@ -49,11 +45,6 @@ export class TextboxComponent {
     } else {
       console.log("Error: Tried to 'getvalue()' before 'ngAfterViewInit()' was finished.");
       return null;
-    }
-  }
-  private handleInput(event: KeyboardEvent): void {
-    if(event.key == "Enter") {
-      if(this.onEnterFunction != undefined) this.onEnterFunction();
     }
   }
 }

@@ -51,8 +51,8 @@ export class PageSearchComponent implements OnInit, AfterViewInit {
   }
 
   async doSearch() {
-    console.log("Called.")
     this.foundDocuments = await this.api.searchDocumentsByTitle(this.searchData.title);
+    console.log("Called:", this.foundDocuments)
   }
 
   async download(document) {

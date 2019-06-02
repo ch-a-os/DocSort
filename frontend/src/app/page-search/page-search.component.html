@@ -2,52 +2,55 @@
   <h1>Search</h1>
 </div>
 
-<div class="title">
-  <app-textbox focus #titleTextbox label="Search for title" width="250px" (onEnter)="doSearch()"></app-textbox>
+<div class="container">
+  <form (ngSubmit)="doSearch()">
+    <div class="formGroup" id="title">
+        <app-textbox focus #titleTextbox label="Search for title" width="250px" name="title" class="form-control"></app-textbox>
+    </div>
+    
+    <div class="textRecognitionEnabled">
+      <input type="checkbox" [(ngModel)]="stateCheckBox.textRecognition" name="textRecognition">
+      <span [className]="stateCheckBox.textRecognition ? 'active' : 'inactive'">
+        Text-Recognition: 
+        <input type="checkbox" [(ngModel)]="searchData.textRecognitionEnabled" name="textRecognitionEnabled">
+      </span>
+    </div>
+    
+    <div class="formGroup" id="note">
+      <app-textbox #noteTextbox label="Search for note" width="250px" name="noteTextbox"></app-textbox>
+    </div>
+    
+    <div class="formGroup" id="isInGroup">
+        <input type="checkbox" [(ngModel)]="stateCheckBox.isInGroup" name="isInGroup">
+        <span [className]="stateCheckBox.isInGroup ? 'active' : 'inactive'">
+          Is in group: 
+        <input type="checkbox" [(ngModel)]="searchData.isInGroup" name="isInGroup">
+        </span>
+    </div>
+    
+    <div class="formGroup" id="numbers">
+      <app-textbox #primaryNumberTextbox label="#1" width="50px" name="primary"></app-textbox>
+      <app-textbox #secondaryNumberTextbox label="#2" width="50px" name="secondary"></app-textbox>
+    </div>
+    
+    <div class="formGroup" id="date">
+        <input type="checkbox" [(ngModel)]="stateCheckBox.date" name="date">
+        <span [className]="stateCheckBox.date ? 'active' : 'inactive'">
+          Date: 
+          <input class="dateFrom" type="date" [(ngModel)]="searchData.dateFrom" name="dateFrom"><br>
+          <input class="dateTo" type="date" [(ngModel)]="searchData.dateTo" name="dateTo">
+        </span>
+    </div>
+    
+    <div class="formGroup" id="tagSelector">
+      <app-tag-select-container (tagsToSend)="tagsToSendList($event)"></app-tag-select-container>
+    </div>
+    
+    <div class="formGroup" id="searchButton">
+      <button type="submit"><div (click)="search()" #searchButton><h2>SEARCH</h2></div></button>
+    </div>      
+  </form>
 </div>
-
-<div class="textRecognitionEnabled">
-  <input type="checkbox" [(ngModel)]="stateCheckBox.textRecognition">
-  <span [className]="stateCheckBox.textRecognition ? 'active' : 'inactive'">
-    Text-Recognition: 
-    <input type="checkbox" [(ngModel)]="searchData.textRecognitionEnabled">
-  </span>
-</div>
-
-<div class="note">
-  <app-textbox #noteTextbox label="Search for note" width="250px" (onEnter)="doSearch()"></app-textbox>
-</div>
-
-<div class="isInGroup">
-    <input type="checkbox" [(ngModel)]="stateCheckBox.isInGroup">
-    <span [className]="stateCheckBox.isInGroup ? 'active' : 'inactive'">
-      Is in group: 
-    <input type="checkbox" [(ngModel)]="searchData.isInGroup">
-    </span>
-</div>
-
-<div class="numbers">
-  <app-textbox #primaryNumberTextbox label="#1" width="50px" (onEnter)="doSearch()"></app-textbox>
-  <app-textbox #secondaryNumberTextbox label="#2" width="50px" (onEnter)="doSearch()"></app-textbox>
-</div>
-
-<div class="date">
-    <input type="checkbox" [(ngModel)]="stateCheckBox.date">
-    <span [className]="stateCheckBox.date ? 'active' : 'inactive'">
-      Date: 
-      <input class="dateFrom" type="date" [(ngModel)]="searchData.dateFrom"><br>
-      <input class="dateTo" type="date" [(ngModel)]="searchData.dateTo">
-    </span>
-</div>
-
-<div class="tagSelector">
-  <app-tag-select-container (tagsToSend)="tagsToSendList($event)"></app-tag-select-container>
-</div>
-
-<div class="searchButton">
-  <div (click)="search()"><h2>SEARCH</h2></div>
-</div>
-
 <div class="results">
   <div *ngFor="let doc of foundDocuments" class="result">
     

@@ -25,7 +25,7 @@ input {
     font-size: 16pt;
 }
 
-.title {
+#title {
     grid-area: title;
 
     input {
@@ -34,7 +34,7 @@ input {
     }
 }
 
-.textRecognitionEnabled {
+#textRecognitionEnabled {
     grid-area: textRecognitionEnabled;
 
     .active {
@@ -50,7 +50,7 @@ input {
     }
 }
 
-.note {
+#note {
     grid-area: note;
 
     input {
@@ -59,7 +59,7 @@ input {
     }
 }
 
-.isInGroup {
+#isInGroup {
     grid-area: isInGroup;
 
     .active {
@@ -75,7 +75,7 @@ input {
     }
 }
 
-.numbers {
+#numbers {
     grid-area: numbers;
 
     input {
@@ -89,7 +89,7 @@ input {
     }
 }
 
-.date {
+#date {
     grid-area: date;
 
     .active {
@@ -110,11 +110,11 @@ input {
     }
 }
 
-.tagSelector {
+#tagSelector {
     grid-area: tagSelector;
 }
 
-.searchButton {
+#searchButton {
     grid-area: searchButton;
     text-align: center;
     h2 {
