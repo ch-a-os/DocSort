@@ -7,12 +7,18 @@
     <div class="formGroup" id="title">
         <app-textbox focus #titleTextbox label="Search for title" width="250px" name="title" class="form-control"></app-textbox>
     </div>
+
+    <div class="fileextension">
+      <app-textbox #fileExtensionTextbox label="File extension" width="250px"></app-textbox>
+    </div>
     
     <div class="textRecognitionEnabled">
       <input type="checkbox" [(ngModel)]="stateCheckBox.textRecognition" name="textRecognition">
-      <span [className]="stateCheckBox.textRecognition ? 'active' : 'inactive'">
-        Text-Recognition: 
+      Text-Recognition: 
+      <span *ngIf="stateCheckBox.textRecognition"><br>
+        Enabled: 
         <input type="checkbox" [(ngModel)]="searchData.textRecognitionEnabled" name="textRecognitionEnabled">
+        <app-textbox #textRecognitionText *ngIf="searchData.textRecognitionEnabled" label="Text" width="250px"></app-textbox>
       </span>
     </div>
     

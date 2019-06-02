@@ -209,6 +209,7 @@ export class ApiService {
    * @param searchQuery Objects that defines in which field(s) should be searched and for what.
    */
   async doSearch(searchQuery: ISearchQuery): Promise<any> {
+    console.log("Search with", searchQuery)
     let headers: HttpHeaders = new HttpHeaders();
     if(searchQuery.title != undefined && searchQuery.title != "") headers = headers.append('option-where-title', searchQuery.title);
     if(searchQuery.note != undefined && searchQuery.note != "") headers = headers.append('option-where-note', searchQuery.note);

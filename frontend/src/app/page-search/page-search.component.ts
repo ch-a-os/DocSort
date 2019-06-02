@@ -26,6 +26,9 @@ export class PageSearchComponent implements AfterViewInit {
   @ViewChild('fileExtensionTextbox')
   fileExtensionTextbox: TextboxComponent;
 
+  @ViewChild('textRecognitionText')
+  textRecognitionTextbox: TextboxComponent;
+
   searchData: ISearchQuery;
   viewIsInitialized: boolean;
   foundDocuments: Array<IDocument>;
@@ -68,17 +71,22 @@ export class PageSearchComponent implements AfterViewInit {
 
   getFieldValues() {
     if(this.viewIsInitialized) {
-      this.searchData.title = this.titleTextbox.getValue();
-      this.searchData.note = this.noteTextbox.getValue();
-      this.searchData.primaryNumber = this.primaryNumberTextbox.getValue();
-      this.searchData.secondaryNumber = this.secondaryNumberTextbox.getValue();
-      this.searchData.fileExtension = this.fileExtensionTextbox.getValue();
-      this.searchData.textRecognition = this.stateCheckBox.textRecognition;
-      if(!this.stateCheckBox.date) {
-        this.searchData.dateFrom = undefined;
-        this.searchData.dateTo = undefined;
-      }
-      return true;
+      try {
+        this.searchData.title = this.titleTextbox.getValue();
+        this.searchData.note = this.noteTextbox.getValue();
+        this.searchData.primaryNumber = this.primaryNumberTextbox.getValue();
+        this.searchData.secondaryNumber = this.secondaryNumberTextbox.getValue();
+        this.searchData.fileExtension = this.fileExtensionTextbox.getValue();
+        if(!this.stateCheckBox.date) {
+          this.searchData.dateFrom = undefined;
+          this.searchData.dateTo = undefined;
+        }
+        this.searchData.textRecognition = this.stateCheckBox.textRecognition;
+        this.searchData.textRecognitionText = this.textRecognitionTextbox.getValue();
+        return true;
+      } catch(err) {
+        return true;
+      }      
     } else {
       console.error("Error: Tried to 'getFieldValues()' before 'ngAfterViewInit()' was finished.");
       return false;

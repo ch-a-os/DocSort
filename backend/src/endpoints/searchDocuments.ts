@@ -150,18 +150,18 @@ export default async function searchDocuments(req: ModifiedRequest, res: Respons
             } catch (error) {
                 log.error("searchDocuments: error while parsing/searching tags: " + error);
             }
-
-            let result = await query.exec();
-            
-            // code-block for detailed query-debugging. Can be removed later
-            /*console.log("done with query--------------------------------------------------- ");
-            console.log("query=" + JSON.stringify(query.getQuery(), null, 4));
-            console.log("queryOptions=" + JSON.stringify(query.getOptions(), null, 4));
-            console.log("################################################################");
-            console.log("result=" + JSON.stringify(result, null, 4));*/
-
-            res.status(200).send(result);
         }
+
+        let result = await query.exec();
+            
+        // code-block for detailed query-debugging. Can be removed later
+        /*console.log("done with query--------------------------------------------------- ");
+        console.log("query=" + JSON.stringify(query.getQuery(), null, 4));
+        console.log("queryOptions=" + JSON.stringify(query.getOptions(), null, 4));
+        console.log("################################################################");
+        console.log("result=" + JSON.stringify(result, null, 4));*/
+
+        res.status(200).send(result);
     } catch(error) {
         throw new ApplicationError("error in searchDocuments", error);
     }
