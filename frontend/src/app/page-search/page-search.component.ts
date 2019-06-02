@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { ApiService } from '../api.service';
+import { ApiService, ISearchQuery } from '../api.service';
 import { IDocument } from '../interfaces';
 
 import { TextboxComponent } from '../textbox/textbox.component';
@@ -9,7 +9,7 @@ import { TextboxComponent } from '../textbox/textbox.component';
   templateUrl: './page-search.component.html',
   styleUrls: ['./page-search.component.scss']
 })
-export class PageSearchComponent implements OnInit, AfterViewInit {
+export class PageSearchComponent implements AfterViewInit {
 
   @ViewChild('titleTextbox')
   titleTextbox: TextboxComponent;
@@ -23,17 +23,17 @@ export class PageSearchComponent implements OnInit, AfterViewInit {
   @ViewChild('secondaryNumberTextbox')
   secondaryNumberTextbox: TextboxComponent;
 
-  searchData: ISearchData;
+  @ViewChild('fileExtensionTextbox')
+  fileExtensionTextbox: TextboxComponent;
+
+  searchData: ISearchQuery;
   viewIsInitialized: boolean;
   foundDocuments: Array<IDocument>;
   stateCheckBox: IStateCheckBox;
 
   constructor(private api: ApiService) {
     this.viewIsInitialized = false;
-    this.searchData = {
-      title: "",
-      note: ""
-    };
+    this.searchData = {};
     this.foundDocuments = [];
     this.stateCheckBox = {
       textRecognition: false,
@@ -48,11 +48,13 @@ export class PageSearchComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.viewIsInitialized = true;
+    this.doSearch();
   }
 
   async doSearch() {
-    this.foundDocuments = await this.api.searchDocumentsByTitle(this.searchData.title);
-    console.log("Called:", this.foundDocuments)
+    if(this.getFieldValues()) {
+      this.foundDocuments = await this.api.doSearch(this.searchData);
+    }
   }
 
   async download(document) {
@@ -64,21 +66,21 @@ export class PageSearchComponent implements OnInit, AfterViewInit {
     await this.doSearch();
   }
 
-  async search() {
-    if(this.getFieldValues()) {
-      this.foundDocuments = await this.api.searchDocumentsByTitle(this.searchData.title);
-    }
-  }
-
   getFieldValues() {
     if(this.viewIsInitialized) {
       this.searchData.title = this.titleTextbox.getValue();
       this.searchData.note = this.noteTextbox.getValue();
       this.searchData.primaryNumber = this.primaryNumberTextbox.getValue();
       this.searchData.secondaryNumber = this.secondaryNumberTextbox.getValue();
+      this.searchData.fileExtension = this.fileExtensionTextbox.getValue();
+      this.searchData.textRecognition = this.stateCheckBox.textRecognition;
+      if(!this.stateCheckBox.date) {
+        this.searchData.dateFrom = undefined;
+        this.searchData.dateTo = undefined;
+      }
       return true;
     } else {
-      console.log("Error: Tried to 'getFieldValues()' before 'ngAfterViewInit()' was finished.");
+      console.error("Error: Tried to 'getFieldValues()' before 'ngAfterViewInit()' was finished.");
       return false;
     }
   }
@@ -95,16 +97,4 @@ interface IStateCheckBox {
   textRecognition: boolean;
   isInGroup: boolean;
   date: boolean;
-}
-
-interface ISearchData {
-  title?: string;
-  note?: string;
-  primaryNumber?: string;
-  secondaryNumber?: string;
-  textRecognitionEnabled?: boolean;
-  isInGroup?: boolean;
-  dateFrom?: Date;
-  dateTo?: Date;
-  tags?: Array<string>;
 }

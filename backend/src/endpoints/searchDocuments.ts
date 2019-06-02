@@ -7,35 +7,38 @@ import { log } from "../lib/logging";
 import { ApplicationError } from "../lib/applicationError";
 
 export default async function searchDocuments(req: ModifiedRequest, res: Response) {
-    /**
-     * A list of possible search querys:
-     *  - option-order-order
-     *  - option-order-field
-     *  - option-limit
-     *  - option-where-number-primary
-     *  - option-where-number-secondary
-     *  - option-where-fileextension
-     *  - option-where-title (default)
-     *  - option-where-note
-     *  - option-where-mimetype
-     *  - option-where-textRecognition-enabled
-     *  - option-where-textRecognition-finished
-     *  - option-where-textRecognition-content
-     *  - option-where-created-from
-     *  - option-where-created-to
-     *  - option-where-updated-from
-     *  - option-where-updated-to
-     *  - option-where-tags
-     */
     try {
+        /**
+         * A list of possible search querys:
+         *  - option-order-order
+         *  - option-order-field
+         *  - option-limit
+         *  - option-where-number-primary
+         *  - option-where-number-secondary
+         *  - option-where-fileextension
+         *  - option-where-title (default)
+         *  - option-where-note
+         *  - option-where-mimetype
+         *  - option-where-textRecognition-enabled
+         *  - option-where-textRecognition-finished
+         *  - option-where-textRecognition-content
+         *  - option-where-created-from
+         *  - option-where-created-to
+         *  - option-where-updated-from
+         *  - option-where-updated-to
+         *  - option-where-tags
+         */
         const userId = req.userID;
         const user = await User.findOne({ _id: userId });
+
         if(user == null) {
             log.warn(`User with ID ${userId} does not exist in the database`);
             res.status(500).send();
             return;
         }
         let query = Document.where("user_R").equals(userId);
+
+        console.log("Got request:", req.headers)
 
         // take
         const limit = parseInt(req.header("option-limit"), 10);
@@ -79,17 +82,13 @@ export default async function searchDocuments(req: ModifiedRequest, res: Respons
         // title
         let title = req.header("option-where-title");
         if(title != null) {
-            title = title.replace(/([.+?=^!:${}()|[\]\/\\])/g, '\\$1');
-            title = title.replace(/\*{2,}|\*/g, ".*");
-            query.where("title").regex(new RegExp(`${title}`, 'i'));  // Ignoring upper and lower case
+            query.where("title").regex(ignoreUpperLowerCaseRegex(title));
         }
 
         // note
         let note = req.header("option-where-note");
         if(note != null) {
-            note = note.replace(/([.+?=^!:${}()|[\]\/\\])/g, '\\$1');
-            note = note.replace(/\*{2,}|\*/g, ".*");
-            query.where("note").regex(new RegExp(`${note}`, 'i'));  // Ignoring upper and lower case    
+            query.where("note").regex(ignoreUpperLowerCaseRegex(note));
         }
 
         // mimeType
@@ -102,12 +101,10 @@ export default async function searchDocuments(req: ModifiedRequest, res: Respons
         const textRecognitionEnabled = req.header("option-where-textRecognition-enabled");
         if(textRecognitionEnabled == "true") {
             query.where("textRecognition.enabled").equals(true);
-        } else if(textRecognitionEnabled == "false") {
-            query.where("textRecognition.enabled").equals(false);
         }
 
         // textRecognition-finished
-        const textRecognitionFinished = req.header("option-where-textRecognition-finished");
+        const textRecognitionFinished = req.header("option-where-textrecognition-finished");
         if(textRecognitionFinished == "true") {
             query.where("textRecognition.finished").equals(true);
         } else if(textRecognitionFinished == "false") {
@@ -115,17 +112,21 @@ export default async function searchDocuments(req: ModifiedRequest, res: Respons
         }
 
         // textRecognition-content
-        const textRecognitionContent = req.header("option-where-textRecognition-content");
+        const textRecognitionContent = req.header("option-where-textrecognition-content");
         if(textRecognitionContent != null) {
-            query.where("textRecognition.content").regex(new RegExp(`${textRecognitionContent}`));
+            query.where("textRecognition.content").regex(ignoreUpperLowerCaseRegex(textRecognitionContent));
         }
 
         // createdAt range
-        const createdFrom = parseDateFromHeader(req, "option-where-created-from");
-        const createdTo = parseDateFromHeader(req, "option-where-created-to");
-        if(createdFrom != null && createdTo != null) {
-            query.where("createdAt").gte(createdFrom).lte(createdTo);
+        let createdFrom = parseDateFromHeader(req, "option-where-created-from");
+        let createdTo = parseDateFromHeader(req, "option-where-created-to");
+        if(createdFrom == null) {
+            createdFrom = new Date(0, 0, 0);
         }
+        if(createdTo == null) {
+            createdTo = new Date();
+        }
+        query.where("createdAt").gte(createdFrom).lte(createdTo);
 
         // updatedAt range
         const updatedFrom = parseDateFromHeader(req, "option-where-updated-from");
@@ -139,7 +140,7 @@ export default async function searchDocuments(req: ModifiedRequest, res: Respons
         if(tags != null) {
             let parsedTags: Array<string>;
             try {
-                parsedTags = JSON.parse(tags);
+                parsedTags = tags.split(",");
                 let objectIds = parsedTags.map((entry) => {
                     return mongoose.Types.ObjectId(entry);
                 });
@@ -149,18 +150,18 @@ export default async function searchDocuments(req: ModifiedRequest, res: Respons
             } catch (error) {
                 log.error("searchDocuments: error while parsing/searching tags: " + error);
             }
+
+            let result = await query.exec();
+            
+            // code-block for detailed query-debugging. Can be removed later
+            /*console.log("done with query--------------------------------------------------- ");
+            console.log("query=" + JSON.stringify(query.getQuery(), null, 4));
+            console.log("queryOptions=" + JSON.stringify(query.getOptions(), null, 4));
+            console.log("################################################################");
+            console.log("result=" + JSON.stringify(result, null, 4));*/
+
+            res.status(200).send(result);
         }
-
-        let result = await query.exec();
-        
-        // code-block for detailed query-debugging. Can be removed later
-        /*console.log("done with query--------------------------------------------------- ");
-        console.log("query=" + JSON.stringify(query.getQuery(), null, 4));
-        console.log("queryOptions=" + JSON.stringify(query.getOptions(), null, 4));
-        console.log("################################################################");
-        console.log("result=" + JSON.stringify(result, null, 4));*/
-
-        res.status(200).send(result);
     } catch(error) {
         throw new ApplicationError("error in searchDocuments", error);
     }
@@ -185,4 +186,10 @@ function parseDateFromHeader(req: Request, fieldName: string): Date|null {
     let dayInt = parseInt(day);
     let date = new Date(yearInt, monthInt, dayInt);
     return date;
+}
+
+function ignoreUpperLowerCaseRegex(toRegex: string): RegExp {
+    toRegex = toRegex.replace(/([.+?=^!:${}()|[\]\/\\])/g, '\\$1');
+    toRegex = toRegex.replace(/\*{2,}|\*/g, ".*");
+    return new RegExp(`${toRegex}`, 'i');  // Ignoring upper and lower case  
 }

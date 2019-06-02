@@ -65,7 +65,7 @@ export class Config {
             log.warn(`**SECURITY ISSUE** Value \`secretJWT\` is less then 16 characters long! We recommend to use a key that has length of 16 at minimum.`)
             this.config.serverPort = userConfig.serverPort; 
         } else {
-            this.config.serverPort = userConfig.serverPort; 
+            this.config.secretJWT = userConfig.secretJWT; 
         }
     
         // Check mongodb.url
@@ -74,18 +74,18 @@ export class Config {
         } else if(typeof(userConfig.mongodb.url) != "string") {
             log.warn(`Value \`mongodb.url\` is not a string! Using default: ${this.config.mongodb.url}`)
         } else if (!userConfig.mongodb.url.startsWith("mongodb://")) {
-            log.warn(`Value \`mongodb.url\` has a invaild protocol. It has to start with "mongodb://". Using default: ${this.config.mongodb}`)
+            log.warn(`Value \`mongodb.url\` is a invaild protocol. It has to start with "mongodb://". Using default: ${this.config.mongodb.url}`)
         } else {
-            this.config.serverPort = userConfig.serverPort; 
+            this.config.mongodb.url = userConfig.mongodb.url; 
         }
 
         // Check mongodb.eraseOnStartup
         if(userConfig.mongodb.eraseOnStartup == undefined) {
-            log.warn(`Value \`mongodb.url\` is undefined! Using default: ${this.config.mongodb.eraseOnStartup}`)
+            log.warn(`Value \`mongodb.eraseOnStartup\` is undefined! Using default: ${this.config.mongodb.eraseOnStartup}`)
         } else if(typeof(userConfig.mongodb.eraseOnStartup) != "boolean") {
-            log.warn(`Value \`mongodb.url\` is not a boolean! Using default: ${this.config.mongodb.eraseOnStartup}`)
+            log.warn(`Value \`mongodb.eraseOnStartup\` is not a boolean! Using default: ${this.config.mongodb.eraseOnStartup}`)
         } else {
-            this.config.serverPort = userConfig.serverPort; 
+            this.config.mongodb.eraseOnStartup = userConfig.mongodb.eraseOnStartup; 
         }
     }
 }
