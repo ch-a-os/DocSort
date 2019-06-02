@@ -5,6 +5,7 @@ import { ModifiedRequest } from '../lib/jwt';
 import { Document } from '../models/document/document.model';
 import { User } from '../models/user/user.model';
 import { log } from '../lib/logging';
+import { ApplicationError } from '../lib/applicationError';
 
 export default async function getDocument(req: ModifiedRequest, res: Response) {
     try {
@@ -17,8 +18,7 @@ export default async function getDocument(req: ModifiedRequest, res: Response) {
             document: document
         });
         return true;
-    } catch(err) {
-        log.error(err);
-        res.status(500).send({error: "Please see console output for error message."})
+    } catch(error) {
+        throw new ApplicationError("error in getDocument", error);
     }
 }

@@ -11,6 +11,7 @@ import deleteTag from "../endpoints/deleteTag";
 import updateDocument from "../endpoints/updateDocument";
 import deleteDocument from "../endpoints/deleteDocument";
 
+/* Library for upload */
 const multer = require('multer');
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -47,7 +48,7 @@ export function registerExpressRoutes(app: express.Application) {
     app.patch('/updateDocument', addUserToRequest, validateJWT, updateDocument);
     app.delete('/deleteDocument', addUserToRequest, validateJWT, deleteDocument);
     
-	/* TAG */
+    /* TAG */
     app.get('/getAllTags', addUserToRequest, validateJWT, getAllTags);
     app.post('/createTag', addUserToRequest, validateJWT, createTag);
     app.patch('/updateTag', addUserToRequest, validateJWT, updateTag);
